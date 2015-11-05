@@ -2,8 +2,6 @@
 
 High-level network layer abstraction library written in Swift.
 
-
-
 ## TODO
 
 - [x] Wrap `Alamofire`
@@ -55,4 +53,8 @@ let loginApi = LoginApi(userName: "user", passWord: "pass")
 
 ## License
 
+<<<<<<< HEAD
 `Redes` is available under the MIT license. See the LICENSE file for more info.
+=======
+`Redes` is available under the MIT license. See the LICENSE file for more info.
+>>>>>>> 993ae63dc381e5ae7d9c21ffb51ec1c7fe6de3f0
