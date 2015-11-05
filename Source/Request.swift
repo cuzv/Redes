@@ -11,10 +11,13 @@ import Alamofire
 
 public class Request {
     internal let originalCommand: protocol<Requestable, Responseable>
-    private(set) var originalUploaCommand: Uploadable?
+    private(set) var originalUploadCommand: Uploadable?
     private(set) var originalDownloadCommand: Downloadable?
     
     var request: Alamofire.Request?
+
+    deinit {
+    }
     
     init(command: protocol<Requestable, Responseable>) {
         originalCommand = command
@@ -22,7 +25,7 @@ public class Request {
     }
     init(command: protocol<Requestable, Responseable, Uploadable>) {
         originalCommand = command
-        originalUploaCommand = command
+        originalUploadCommand = command
         sendCommand()
     }
     init(command: protocol<Requestable, Responseable, Downloadable>) {
@@ -32,7 +35,7 @@ public class Request {
     }
     init(command: protocol<Requestable, Responseable, Uploadable, Downloadable>) {
         originalCommand = command
-        originalUploaCommand = command
+        originalUploadCommand = command
         originalDownloadCommand = command
         sendCommand()
     }
@@ -46,13 +49,13 @@ public class Request {
         let requestURLPath = originalCommand.requestURLPath
         let requestHeaderParameters = originalCommand.requestHeaderParameters
         
-        if let uploaCommand = originalUploaCommand {
+        if let uploaCommand = originalUploadCommand {
             // Need download
             if !uploaCommand.validateUpload {
-                fatalError("You must implement one of follow `uploadXXX` methos.")
+                fatalError("You must implement one of protocol `Uploadable` `uploadXXX` methods.")
             }
             
-            if let uploadFileURL = originalUploaCommand?.uploadFileURL {
+            if let uploadFileURL = originalUploadCommand?.uploadFileURL {
                 request = Alamofire.upload(
                     method,
                     requestURLPath,
@@ -60,7 +63,7 @@ public class Request {
                     file: uploadFileURL
                 )
                 return
-            } else if let data = originalUploaCommand?.uploadData {
+            } else if let data = originalUploadCommand?.uploadData {
                 request = Alamofire.upload(
                         method,
                         requestURLPath,
@@ -68,7 +71,7 @@ public class Request {
                         data: data
                 )
                 return
-            } else if let stream = originalUploaCommand?.uploadStream {
+            } else if let stream = originalUploadCommand?.uploadStream {
                 request = Alamofire.upload(
                     method,
                     requestURLPath,
@@ -76,7 +79,7 @@ public class Request {
                     stream: stream
                 )
                 return
-            } else if let (dataClosure, encodingResultClosure, threshold) = originalUploaCommand?.uploadMultipartFormDataTuple {
+            } else if let (dataClosure, encodingResultClosure, threshold) = originalUploadCommand?.uploadMultipartFormDataTuple {
                 Alamofire.upload(
                     method,
                     requestURLPath,

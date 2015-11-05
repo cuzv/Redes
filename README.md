@@ -37,18 +37,18 @@ struct LoginApi: Requestable, Responseable {
 ``` swift
 import Redes
 let loginApi = LoginApi(userName: "user", passWord: "pass")
-        Redes.request(loginApi)
-            .responseJSON {
-                debugPrint($0)
+    Redes.request(loginApi)
+        .responseJSON {
+            debugPrint($0)
+        }
+        .responseString {
+            switch $0 {
+            case .Success(_, let string):
+                debugPrint(string)
+            case .Failure(_, let error):
+                debugPrint(error)
             }
-            .responseString {
-                switch $0 {
-                case .Success(_, let string):
-                    debugPrint(string)
-                case .Failure(_, let error):
-                    debugPrint(error)
-                }
-            }
+        }
 ```
 
 ## License

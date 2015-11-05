@@ -95,13 +95,14 @@ public extension Request {
     public func responseData(
         completionHandler: Result<Response, NSData, NSError> -> Void)
         -> Self {
-            request?.responseData({
+            // Trailing closure
+            request?.responseData() {
                 self.bridgeToResultCompletionHandler(
                     completionHandler,
                     validationHandler: self.originalCommand.responseDataValidation,
                     response: $0
                 )
-            })
+            }
             
             return self
     }
