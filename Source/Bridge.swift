@@ -15,6 +15,7 @@ import Alamofire
 
 public protocol URLStringConvertible: Alamofire.URLStringConvertible {
 }
+
 extension String: URLStringConvertible {
     public var URLString: String {
         return self

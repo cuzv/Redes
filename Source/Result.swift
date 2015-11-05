@@ -28,14 +28,13 @@ public enum Result<R, Value, Error: ErrorType> {
         return !isSuccess
     }
     
-    
     /// Returns the associated response
-    public var response: R? {
+    public var response: R {
         switch self {
         case .Success(let response, _):
             return response
-        case .Failure(let respone, _):
-            return respone
+        case .Failure(let response, _):
+            return response
         }
     }
     

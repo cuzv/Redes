@@ -68,6 +68,8 @@ extension ViewController {
                     debugPrint(error)
                 }
             }
+//            .cancel()
+        
     }
 }
 

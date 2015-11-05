@@ -27,10 +27,9 @@ public protocol Responseable {
     var responseDataValidation: NSData -> (Bool, NSData, String, Int) { get }
     /// Validate server response string
     var responseStringValidation: String -> (Bool, String, String, Int) { get }
-    
     /// Validate server response JSON
     var responseJSONValidation: AnyObject -> (Bool, AnyObject, String, Int) { get }
-    
+    /// Validate server response PList
     var responsePropertyListValidation: AnyObject -> (Bool, AnyObject, String, Int) { get }
 }
 
@@ -57,7 +56,6 @@ public extension Responseable {
     
     var responseJSONValidation: AnyObject -> (Bool, AnyObject, String, Int) {
         let validationClosure: AnyObject -> (Bool, AnyObject, String, Int) = {
-            
             /// Upwrap Int value form json, it may be a String returned by server
             func unwrapIntValueFromJSON(jsonValue: AnyObject, key: String) -> Int? {
                 if let value = jsonValue[key] as? String {
@@ -101,6 +99,5 @@ public extension Responseable {
         
         return validationClosure
     }
-
 }
 

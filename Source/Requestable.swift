@@ -32,12 +32,15 @@ public extension Requestable {
     var requestBodyParameters: [String: AnyObject] {
         return [:]
     }
+    
     var requestHeaderParameters: [String: String] {
         return [:]
     }
+    
     var requestParameterEncoding: ParameterEncoding {
         return .URL
     }
+    
     var requestTimeoutInterval: Double {
         return 10
     }
@@ -67,12 +70,15 @@ public extension Uploadable {
     var uploadFileURL: NSURL? {
         return nil
     }
+    
     var uploadData: NSData? {
         return nil
     }
+    
     var uploadStream: NSInputStream? {
         return nil
     }
+    
     var multipartDataUploadTuple: (
         (MultipartFormData -> Void),
         (MultipartFormDataEncodingResult -> Void)?,
@@ -105,6 +111,5 @@ public protocol Downloadable {
 }
 
 public extension Downloadable {
-    
 }
 

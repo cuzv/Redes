@@ -23,23 +23,29 @@ public class Request {
         originalCommand = command
         sendCommand()
     }
+    
     init(command: protocol<Requestable, Responseable, Uploadable>) {
         originalCommand = command
         originalUploadCommand = command
         sendCommand()
     }
+    
     init(command: protocol<Requestable, Responseable, Downloadable>) {
         originalCommand = command
         originalDownloadCommand = command
         sendCommand()
     }
+    
     init(command: protocol<Requestable, Responseable, Uploadable, Downloadable>) {
         originalCommand = command
         originalUploadCommand = command
         originalDownloadCommand = command
         sendCommand()
     }
-    
+}
+
+// MARK: - Send request and cancel request
+public extension Request {
     private func sendCommand() {
         debugPrint(self)
         
@@ -65,10 +71,10 @@ public class Request {
                 return
             } else if let data = originalUploadCommand?.uploadData {
                 request = Alamofire.upload(
-                        method,
-                        requestURLPath,
-                        headers: requestHeaderParameters,
-                        data: data
+                    method,
+                    requestURLPath,
+                    headers: requestHeaderParameters,
+                    data: data
                 )
                 return
             } else if let stream = originalUploadCommand?.uploadStream {
@@ -119,9 +125,19 @@ public class Request {
             headers: requestHeaderParameters
         )
     }
+    
+    public func cancel() {
+        guard let request = request else {
+            return
+        }
+        
+        let state = request.task.state
+        if state == .Running || state == .Suspended {
+            request.task.cancel()
+            debugPrint("Canceling request...")
+        }
+    }
 }
-
-
 
 // MARK: - CustomStringConvertible
 
