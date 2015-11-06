@@ -94,7 +94,7 @@ public extension Request {
     /// Resposne data
     public func responseData(
         completionHandler: Result<Response, NSData, NSError> -> Void)
-        -> Self {
+        -> Request {
             // Trailing closure
             request?.responseData() {
                 self.bridgeToResultCompletionHandler(
@@ -111,7 +111,7 @@ public extension Request {
     public func responseString(
         encoding encoding: NSStringEncoding? = nil,
         completionHandler: Result<Response, String, NSError>-> Void)
-        -> Self
+        -> Request
     {
         request?.responseString(encoding: encoding, completionHandler: {
             self.bridgeToResultCompletionHandler(
@@ -128,7 +128,7 @@ public extension Request {
     public func responseJSON(
         options options: NSJSONReadingOptions = .AllowFragments,
         completionHandler: Result<Response, AnyObject, NSError> -> Void)
-        -> Self
+        -> Request
     {
         request?.responseJSON(options: options, completionHandler: {
             self.bridgeToResultCompletionHandler(
@@ -145,7 +145,7 @@ public extension Request {
     public func responsePropertyList(
         options options: NSPropertyListReadOptions = NSPropertyListReadOptions(),
         completionHandler: Result<Response, AnyObject, NSError> -> Void)
-        -> Self
+        -> Request
     {
         request?.responsePropertyList(options: options, completionHandler: {
             self.bridgeToResultCompletionHandler(

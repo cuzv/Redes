@@ -2,13 +2,18 @@
 
 High-level network layer abstraction library written in Swift.
 
-## TODO
+## Features
 
-- [x] Wrap `Alamofire`
+- [x] Wrap `Alamofire`, which means support `Alamofire`'s all features
 - [ ] Networking status check
 - [ ] Result cache
 
-## How to use ?
+## Requirements
+
+- iOS 8.0+
+- Xcode 7.1+
+
+## Usage
 
 - Make your API conforms to `protocol<Requestable, Responseable>`
 
@@ -32,7 +37,7 @@ struct LoginApi: Requestable, Responseable {
 }
 ```
 
-- Build api and start request & process result
+- Build api and start request && process result
 
 ``` swift
 import Redes
@@ -49,8 +54,15 @@ let loginApi = LoginApi(userName: "user", passWord: "pass")
                 debugPrint(error)
             }
         }
+//        .cancel()
 ```
+
+- More information see the demo in project.
 
 ## License
 
 `Redes` is available under the MIT license. See the LICENSE file for more info.
+
+## Contact
+
+Follow me on Twitter ([@mochxiao](https://twitter.com/mochxiao))

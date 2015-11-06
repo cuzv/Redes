@@ -9,16 +9,13 @@
 import Foundation
 import Alamofire
 
-public class Request {
+public struct Request {
     internal let originalCommand: protocol<Requestable, Responseable>
     private(set) var originalUploadCommand: Uploadable?
     private(set) var originalDownloadCommand: Downloadable?
     
     var request: Alamofire.Request?
 
-    deinit {
-    }
-    
     init(command: protocol<Requestable, Responseable>) {
         originalCommand = command
         sendCommand()
@@ -46,7 +43,7 @@ public class Request {
 
 // MARK: - Send request and cancel request
 public extension Request {
-    private func sendCommand() {
+    private mutating func sendCommand() {
         debugPrint(self)
         
         Alamofire.Manager.sharedInstance.session.configuration.timeoutIntervalForRequest = originalCommand.requestTimeoutInterval
