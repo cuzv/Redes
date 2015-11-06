@@ -2,6 +2,14 @@
 
 High-level network layer abstraction library written in Swift.
 
+## Why not just use `Alamofire` directly
+
+- If one day the project manager tell you need to use `Socket` reconstruct all network interfaces, you are going to all the business code to replace the ` Alamofire` to new `Socket` requests?
+- A few days late, the project manager tell you some old interfaces must compatible with previous methods, but requires the use of `Socket` new interfaces to achieve, you are going to change the network interfaces which you already reconstructed back?
+- Direct use `Alamofire`, all requests related parameters are located in the business code, and there are several different methods of calling the request, such as uploading and downloading and a normal request invoke methods on the inconsistency. Pack all related parameters into an object, you can use only one very method to achieve all different situations request call. Conforms to the [Command Pattern](https://en.wikipedia.org/wiki/Command_pattern) rules
+- wrap network layer, brings more conducive to expansion. If you preferred use `Alamofire` and` Socket` both, only need to specify which way you want to use for request in command inside, and then expand the corresponding request mode implement (default only implements `Alamofire`)
+- The code change of network layer does not affect the  business layer, underlying free replacement transducer, a request to call as long as the business layer rule to conform `redes` ask
+
 ## Features
 
 - [x] Wrap `Alamofire`, which means support `Alamofire`'s all features
