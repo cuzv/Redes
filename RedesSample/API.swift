@@ -9,6 +9,7 @@
 import Foundation
 import Redes
 
+/// ATTENTION: change to your api setup
 public extension Responseable {
     var responseCodeFieldName: String {
         return "code"
@@ -24,6 +25,7 @@ public extension Responseable {
     }
 }
 
+/// ATTENTION: change to your api setup
 struct LoginApi: Requestable, Responseable {
     var userName: String = ""
     var passWord: String = ""
@@ -41,4 +43,3 @@ struct LoginApi: Requestable, Responseable {
         ]
     }
 }
-

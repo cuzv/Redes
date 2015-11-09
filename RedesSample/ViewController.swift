@@ -9,7 +9,7 @@
 import UIKit
 import Redes
 
-class SomeClass: Uploadable, Downloadable {
+class SomeApi: Uploadable, Downloadable {
     var uploadFileURL: NSURL? {
         return nil
     }
@@ -37,27 +37,26 @@ class SomeClass: Uploadable, Downloadable {
         }
         return (nil, downloadFileDestination)
     }
-
 }
 
 class ViewController: UIViewController  {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         performLogin()
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        performLogin()
+        test()
     }
     
 }
 
 extension ViewController {
     func performLogin() {
-        let loginApi = LoginApi(userName: "user", passWord: "pass")
-        Redes.request(loginApi)
-            .responseJSON {
+        let loginApi = LoginApi()
+        let request = Redes.request(loginApi)
+            request.responseJSON {
                 debugPrint($0)
             }
             .responseString {
@@ -69,7 +68,16 @@ extension ViewController {
                 }
             }
 //            .cancel()
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (Int64)(NSEC_PER_SEC*1)), dispatch_get_main_queue()) {
+//            request.responseString(completionHandler: {
+//                debugPrint($0)
+//                
+//            })
+//        }
         
+    }
+    
+    func test() {
     }
 }
 

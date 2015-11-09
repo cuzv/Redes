@@ -9,14 +9,17 @@
 import Foundation
 import Alamofire
 
-public func request<T: protocol<Requestable, Responseable>>(command: T) -> Request {
-    return Request(command: command)
+/// T: protocol<Requestable, Responseable>
+public func request<T: protocol<Requestable, Responseable>>(setup: T) -> Request {
+    return Request(setup: setup)
 }
 
-public func request<T: protocol<Requestable, Responseable, Uploadable>>(command: T) -> Request {
-    return Request(command: command)
+/// T: protocol<Requestable, Responseable, Uploadable>
+public func request<T: protocol<Requestable, Responseable, Uploadable>>(setup: T) -> Request {
+    return Request(setup: setup)
 }
 
-public func request<T: protocol<Requestable, Responseable, Downloadable>>(command: T) -> Request {
-    return Request(command: command)
+/// T: protocol<Requestable, Responseable, Downloadable>
+public func request<T: protocol<Requestable, Responseable, Downloadable>>(setup: T) -> Request {
+    return Request(setup: setup)
 }

@@ -9,85 +9,6 @@
 import Foundation
 import Alamofire
 
-// MARK: - Response helper methods
-
-extension Request {
-    /// Generate manual failure closure parameters
-    func buildFailureResultByResponse<T>(
-        response: Alamofire.Response<T, NSError>,
-        message: String = "Server response llegal",
-        statusCode: Int = RequestFailureStatusCode
-        ) -> Result<Response, T, NSError>
-    {
-        let rsp = Response(
-            command: self.originalCommand,
-            data: response.data,
-            message: message,
-            statusCode: statusCode
-        )
-        let error = Error.errorWithCode(statusCode, failureReason: message)
-        return .Failure(rsp, error)
-    }
-
-    /// Generate server request failure closure parameters
-    func requestFailureResultByResponse<T>(response: Alamofire.Response<T, NSError>)
-        -> Result<Response, T, NSError>
-    {
-        let codeValue = response.response?.statusCode ?? RequestFailureStatusCode;
-        return buildFailureResultByResponse(
-            response,
-            message: "Request failed.",
-            statusCode:
-            codeValue
-        )
-    }
-    
-    /// Generate success closure parameters
-    func buildSuccessResultByResponse<T>(
-        response: Alamofire.Response<T, NSError>,
-        result: T,
-        message: String,
-        statusCode: Int) -> Result<Response, T, NSError> {
-        let rsp = Response(
-            command: self.originalCommand,
-            data: response.data,
-            message: message,
-            statusCode: statusCode
-        )
-        return .Success(rsp, result)
-    }
-    
-    /// Birdege `Alamofire` response to `Redes` result
-    func bridgeToResultCompletionHandler<K>(
-        completionHandler: Result<Response, K, NSError> -> Void,
-        validationHandler: K -> (Bool, K, String, Int),
-        response: Alamofire.Response<K, NSError>) {
-            if response.result.isSuccess {
-                // pretty value
-                guard let pretty = response.result.value else {
-                    // Server did not return data
-                    return completionHandler(self.buildFailureResultByResponse(response))
-                }
-                // Print pertty value
-                debugPrint(pretty)
-                
-                let (success, result, message, statusCode) = validationHandler(pretty)
-                if success {
-                    completionHandler(self.buildSuccessResultByResponse(
-                        response,
-                        result: result,
-                        message: message,
-                        statusCode: statusCode)
-                    )
-                } else {
-                    completionHandler(self.buildFailureResultByResponse(response))
-                }
-            } else {
-                completionHandler(self.requestFailureResultByResponse(response))
-            }
-    }
-}
-
 // MARK: - Response serialization
 
 public extension Request {
@@ -95,15 +16,7 @@ public extension Request {
     public func responseData(
         completionHandler: Result<Response, NSData, NSError> -> Void)
         -> Request {
-            // Trailing closure
-            request?.responseData() {
-                self.bridgeToResultCompletionHandler(
-                    completionHandler,
-                    validationHandler: self.originalCommand.responseDataValidation,
-                    response: $0
-                )
-            }
-            
+            command.responseData(completionHandler)
             return self
     }
     
@@ -113,14 +26,7 @@ public extension Request {
         completionHandler: Result<Response, String, NSError>-> Void)
         -> Request
     {
-        request?.responseString(encoding: encoding, completionHandler: {
-            self.bridgeToResultCompletionHandler(
-                completionHandler,
-                validationHandler: self.originalCommand.responseStringValidation,
-                response: $0
-            )
-        })
-        
+        command.responseString(encoding: encoding, completionHandler: completionHandler)
         return self
     }
 
@@ -130,14 +36,7 @@ public extension Request {
         completionHandler: Result<Response, AnyObject, NSError> -> Void)
         -> Request
     {
-        request?.responseJSON(options: options, completionHandler: {
-            self.bridgeToResultCompletionHandler(
-                completionHandler,
-                validationHandler: self.originalCommand.responseJSONValidation,
-                response: $0
-            )
-        })
-
+        command.responseJSON(options: options, completionHandler: completionHandler)
         return self
     }
     
@@ -147,14 +46,7 @@ public extension Request {
         completionHandler: Result<Response, AnyObject, NSError> -> Void)
         -> Request
     {
-        request?.responsePropertyList(options: options, completionHandler: {
-            self.bridgeToResultCompletionHandler(
-                completionHandler,
-                validationHandler: self.originalCommand.responsePropertyListValidation,
-                response: $0
-            )
-        })
-        
+        command.responsePropertyList(options: options, completionHandler: completionHandler)
         return self
     }
 }

@@ -17,6 +17,10 @@ public protocol Requestable {
     /// The request method
     var requestMethod: Method { get }
 
+    
+    /// The request command, `AlamofireCommand` by default
+    var requestCommand: Command { get }
+    
     /// The request body parameters, empty by default
     var requestBodyParameters: [String: AnyObject] { get }
     /// The request header parameters, empty by default
@@ -29,6 +33,11 @@ public protocol Requestable {
 
 /// Implement the optional methods
 public extension Requestable {
+    
+    var requestCommand: Command {
+        return AlamofireCommand()
+    }
+
     var requestBodyParameters: [String: AnyObject] {
         return [:]
     }

@@ -45,7 +45,7 @@ struct LoginApi: Requestable, Responseable {
 }
 ```
 
-- Build api and start request && process result
+- Build api and start request & process result
 
 ``` swift
 import Redes

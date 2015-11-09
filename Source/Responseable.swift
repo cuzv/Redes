@@ -91,7 +91,8 @@ public extension Responseable {
         
         return validationClosure
     }
-    
+
+    /// Simply return received string
     var responsePropertyListValidation: AnyObject -> (Bool, AnyObject, String, Int) {
         let validationClosure: AnyObject -> (Bool, AnyObject, String, Int) = {
             return (true, $0, "", 0)

@@ -9,130 +9,51 @@
 import Foundation
 import Alamofire
 
-public struct Request {
-    internal let originalCommand: protocol<Requestable, Responseable>
-    private(set) var originalUploadCommand: Uploadable?
-    private(set) var originalDownloadCommand: Downloadable?
+public class Request {
+    internal var setup: protocol<Requestable, Responseable>
+    public private(set) var command: Command
     
-    var request: Alamofire.Request?
+    deinit {
+        debugPrint("Request deinit...")
+    }
+    
+    init(setup: protocol<Requestable, Responseable>) {
+        self.setup = setup
+        self.command = setup.requestCommand
+        sendCommand()
+    }
 
-    init(command: protocol<Requestable, Responseable>) {
-        originalCommand = command
+    init(setup: protocol<Requestable, Responseable, Uploadable>) {
+        self.setup = setup
+        self.command = setup.requestCommand
         sendCommand()
     }
     
-    init(command: protocol<Requestable, Responseable, Uploadable>) {
-        originalCommand = command
-        originalUploadCommand = command
+    init(setup: protocol<Requestable, Responseable, Downloadable>) {
+        self.setup = setup
+        self.command = setup.requestCommand
         sendCommand()
     }
     
-    init(command: protocol<Requestable, Responseable, Downloadable>) {
-        originalCommand = command
-        originalDownloadCommand = command
-        sendCommand()
-    }
-    
-    init(command: protocol<Requestable, Responseable, Uploadable, Downloadable>) {
-        originalCommand = command
-        originalUploadCommand = command
-        originalDownloadCommand = command
+    init(setup: protocol<Requestable, Responseable, Uploadable, Downloadable>) {
+        self.setup = setup
+        self.command = setup.requestCommand
         sendCommand()
     }
 }
 
-// MARK: - Send request and cancel request
+// MARK: - Send request & cancel request
+
 public extension Request {
-    private mutating func sendCommand() {
+    /// Send the `start request` command
+    private func sendCommand() {
         debugPrint(self)
-        
-        Alamofire.Manager.sharedInstance.session.configuration.timeoutIntervalForRequest = originalCommand.requestTimeoutInterval
-        
-        let method = originalCommand.requestMethod.method()
-        let requestURLPath = originalCommand.requestURLPath
-        let requestHeaderParameters = originalCommand.requestHeaderParameters
-        
-        if let uploaCommand = originalUploadCommand {
-            // Need download
-            if !uploaCommand.validateUpload {
-                fatalError("You must implement one of protocol `Uploadable` `uploadXXX` methods.")
-            }
-            
-            if let uploadFileURL = originalUploadCommand?.uploadFileURL {
-                request = Alamofire.upload(
-                    method,
-                    requestURLPath,
-                    headers: requestHeaderParameters,
-                    file: uploadFileURL
-                )
-                return
-            } else if let data = originalUploadCommand?.uploadData {
-                request = Alamofire.upload(
-                    method,
-                    requestURLPath,
-                    headers: requestHeaderParameters,
-                    data: data
-                )
-                return
-            } else if let stream = originalUploadCommand?.uploadStream {
-                request = Alamofire.upload(
-                    method,
-                    requestURLPath,
-                    headers: requestHeaderParameters,
-                    stream: stream
-                )
-                return
-            } else if let (dataClosure, encodingResultClosure, threshold) = originalUploadCommand?.uploadMultipartFormDataTuple {
-                Alamofire.upload(
-                    method,
-                    requestURLPath,
-                    headers: requestHeaderParameters,
-                    multipartFormData: dataClosure,
-                    encodingMemoryThreshold: threshold,
-                    encodingCompletion: encodingResultClosure
-                )
-                return
-            }
-        } else if let _ = originalDownloadCommand {
-            // Need upload
-            guard let (resumeData, downloadFileDestination) = originalDownloadCommand?.downloadDestinationTuple else {
-                fatalError("You must implement `downloadDestinationTuple` property correct.")
-            }
-            if let resumeData = resumeData {
-                request = Alamofire.download(resumeData: resumeData, destination: downloadFileDestination)
-            } else {
-                request = Alamofire.download(
-                    method,
-                    requestURLPath,
-                    parameters: originalCommand.requestBodyParameters,
-                    encoding: originalCommand.requestParameterEncoding.parameterEncoding(),
-                    headers: requestHeaderParameters,
-                    destination: downloadFileDestination
-                )
-            }
-            return
-        }
-        
-        // Use Alamofire start networking request
-        request = Alamofire.request(
-            method,
-            requestURLPath,
-            parameters: originalCommand.requestBodyParameters,
-            encoding: originalCommand.requestParameterEncoding.parameterEncoding(),
-            headers: requestHeaderParameters
-        )
+        command.injectRequest(self)
     }
     
+    /// Cancel the request
     public func cancel() {
-        guard let request = request else {
-            return
-        }
-        
-        let state = request.task.state
-        if state == .Running || state == .Suspended {
-            request.task.cancel()
-            debugPrint("Canceling request...")
-        }
+        command.removeRequest()
     }
 }
 
@@ -154,10 +75,10 @@ extension Request: CustomDebugStringConvertible {
     public var debugDescription: String {
         var output: [String] = []
         output.append("-------------------------------------------------")
-        output.append("requestURLPath: \(originalCommand.requestURLPath)")
-        output.append("requestMethod: \(originalCommand.requestMethod)")
-        output.append("requestHeaderParameters: \(originalCommand.requestHeaderParameters)")
-        output.append("requestBodyParameters: \(originalCommand.requestBodyParameters)")
+        output.append("requestURLPath: \(setup.requestURLPath)")
+        output.append("requestMethod: \(setup.requestMethod)")
+        output.append("requestHeaderParameters: \(setup.requestHeaderParameters)")
+        output.append("requestBodyParameters: \(setup.requestBodyParameters)")
         output.append("-------------------------------------------------")        
         return output.joinWithSeparator("\n")
     }

@@ -11,7 +11,7 @@ import Alamofire
 
 public struct Response {
     /// The request sent to the server.
-    public let originalCommand: protocol<Requestable, Responseable>
+    public let originalSetup: protocol<Requestable, Responseable>
     /// The data returned by the server.
     public let originalData: NSData?
     /// The message returned by the server.
@@ -19,8 +19,8 @@ public struct Response {
     /// The status code returned by the server.
     public let originalStatusCode: Int?
     
-    public init(command: protocol<Requestable, Responseable>, data: NSData?, message: String?, statusCode: Int?) {
-        originalCommand = command
+    public init(setup: protocol<Requestable, Responseable>, data: NSData?, message: String?, statusCode: Int?) {
+        originalSetup = setup
         originalData = data
         originalMessage = message
         originalStatusCode = statusCode
