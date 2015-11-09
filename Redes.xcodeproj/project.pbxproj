@@ -85,11 +85,11 @@
 				466CB6AB1BE9D67500327014 /* Requestable.swift */,
 				466CB6AC1BE9D67500327014 /* Responseable.swift */,
 				466CB6B41BE9DD5300327014 /* Request.swift */,
+				46FEE2CE1BEE52FA00A48DBB /* Command.swift */,
+				46FEE2DF1BF097E100A48DBB /* AlamofireCommand.swift */,
 				466CB6BA1BEA076000327014 /* Response.swift */,
 				466CB6BC1BEA0E7400327014 /* Result.swift */,
 				466CB6B61BE9FAEA00327014 /* ResponseSerialization.swift */,
-				46FEE2CE1BEE52FA00A48DBB /* Command.swift */,
-				46FEE2DF1BF097E100A48DBB /* AlamofireCommand.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";

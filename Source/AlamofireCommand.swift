@@ -24,6 +24,14 @@ public extension AlamofireCommand {
     public func injectRequest(request: Request) {
         self.request = request
         
+        produceRequest()
+    }
+    
+    private func produceRequest() {
+        guard let request = request else {
+            return
+        }
+        
         Alamofire.Manager.sharedInstance.session.configuration.timeoutIntervalForRequest = request.setup.requestTimeoutInterval
         
         let method = request.setup.requestMethod.method()
@@ -43,7 +51,6 @@ public extension AlamofireCommand {
                     headers: requestHeaderParameters,
                     file: uploadFileURL
                 )
-                return
             } else if let data = uploadCommand.uploadData {
                 underlyingRequest = Alamofire.upload(
                     method,
@@ -51,7 +58,6 @@ public extension AlamofireCommand {
                     headers: requestHeaderParameters,
                     data: data
                 )
-                return
             } else if let stream = uploadCommand.uploadStream {
                 underlyingRequest = Alamofire.upload(
                     method,
@@ -59,7 +65,6 @@ public extension AlamofireCommand {
                     headers: requestHeaderParameters,
                     stream: stream
                 )
-                return
             } else if let (dataClosure, encodingResultClosure, threshold) = uploadCommand.uploadMultipartFormDataTuple {
                 Alamofire.upload(
                     method,
@@ -69,7 +74,6 @@ public extension AlamofireCommand {
                     encodingMemoryThreshold: threshold,
                     encodingCompletion: encodingResultClosure
                 )
-                return
             }
         } else if let downloadCommand = request.setup as? Downloadable {
             // Need upload
@@ -86,17 +90,16 @@ public extension AlamofireCommand {
                     destination: downloadFileDestination
                 )
             }
-            return
+        } else {
+            // Use Alamofire start networking request
+            underlyingRequest = Alamofire.request(
+                method,
+                requestURLPath,
+                parameters: request.setup.requestBodyParameters,
+                encoding: request.setup.requestParameterEncoding.parameterEncoding(),
+                headers: requestHeaderParameters
+            )
         }
-        
-        // Use Alamofire start networking request
-        underlyingRequest = Alamofire.request(
-            method,
-            requestURLPath,
-            parameters: request.setup.requestBodyParameters,
-            encoding: request.setup.requestParameterEncoding.parameterEncoding(),
-            headers: requestHeaderParameters
-        )
     }
     
     public func removeRequest() {
@@ -120,6 +123,7 @@ public extension AlamofireCommand {
         guard let request = request else {
             return
         }
+        
         // Trailing closure
         underlyingRequest?.responseData() { [unowned self] in
             self.bridgeToResultCompletionHandler(
@@ -137,6 +141,7 @@ public extension AlamofireCommand {
         guard let request = request else {
             return
         }
+        
         underlyingRequest?.responseString(encoding: encoding, completionHandler: { [unowned self] in
             self.bridgeToResultCompletionHandler(
                 completionHandler,
@@ -153,6 +158,7 @@ public extension AlamofireCommand {
         guard let request = request else {
             return
         }
+        
         underlyingRequest?.responseJSON(options: options, completionHandler: { [unowned self] in
             self.bridgeToResultCompletionHandler(
                 completionHandler,
@@ -169,6 +175,7 @@ public extension AlamofireCommand {
         guard let request = request else {
             return
         }
+        
         underlyingRequest?.responsePropertyList(options: options, completionHandler: { [unowned self] in
             self.bridgeToResultCompletionHandler(
                 completionHandler,

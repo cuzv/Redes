@@ -16,7 +16,6 @@ public protocol Requestable {
     var requestURLPath: URLStringConvertible { get }
     /// The request method
     var requestMethod: Method { get }
-
     
     /// The request command, `AlamofireCommand` by default
     var requestCommand: Command { get }
