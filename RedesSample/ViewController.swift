@@ -9,36 +9,6 @@
 import UIKit
 import Redes
 
-class SomeApi: Uploadable, Downloadable {
-    var uploadFileURL: NSURL? {
-        return nil
-    }
-    var uploadData: NSData? {
-        return nil
-    }
-    var uploadStream: NSInputStream? {
-        return nil
-    }
-    var uploadMultipartFormDataTuple: ((MultipartFormData -> Void), (MultipartFormDataEncodingResult -> Void)?, encodingMemoryThreshold: UInt64)? {
-        let dataClosure: (MultipartFormData -> Void) = { multipartFormData -> Void in
-            multipartFormData.appendBodyPart(data: NSData(), name: "PartName")
-        }
-        let encodingResultClosure: (MultipartFormDataEncodingResult -> Void)? = { MultipartFormDataEncodingResult -> Void in
-            
-        }
-        
-        return (dataClosure, encodingResultClosure, MultipartFormDataEncodingMemoryThreshold)
-    }
-    
-    // download
-    var downloadDestinationTuple: (NSData?, DownloadFileDestination) {
-        let downloadFileDestination: DownloadFileDestination = { (url, response) -> NSURL in
-            return url
-        }
-        return (nil, downloadFileDestination)
-    }
-}
-
 class ViewController: UIViewController  {
     
     override func viewDidLoad() {
