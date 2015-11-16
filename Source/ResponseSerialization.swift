@@ -12,41 +12,56 @@ import Alamofire
 // MARK: - Response serialization
 
 public extension Request {
+    /// Response
+    public func response(
+        queue queue: dispatch_queue_t? = nil,
+        completionHandler: (NSURLRequest?, NSHTTPURLResponse?, NSData?, NSError?) -> ())
+        -> Self
+    {
+        command.response(queue: queue, completionHandler: completionHandler)
+        return self
+    }
+
     /// Resposne data
     public func responseData(
+        queue queue: dispatch_queue_t? = nil,
         completionHandler: Result<Response, NSData, NSError> -> ())
-        -> Self {
-            command.responseData(completionHandler)
-            return self
+        -> Self
+    {
+        command.responseData(queue: queue, completionHandler: completionHandler)
+        return self
     }
     
     /// Response strting data
     public func responseString(
-        encoding encoding: NSStringEncoding? = nil,
+        queue queue: dispatch_queue_t? = nil,
+        encoding: NSStringEncoding? = nil,
         completionHandler: Result<Response, String, NSError> -> ())
         -> Self
     {
-        command.responseString(encoding: encoding, completionHandler: completionHandler)
+        command.responseString(queue: queue, encoding: encoding, completionHandler: completionHandler)
         return self
     }
 
     /// Response json data
     public func responseJSON(
-        options options: NSJSONReadingOptions = .AllowFragments,
+        queue queue: dispatch_queue_t? = nil,
+        options: NSJSONReadingOptions = .AllowFragments,
         completionHandler: Result<Response, AnyObject, NSError> -> ())
         -> Self
     {
-        command.responseJSON(options: options, completionHandler: completionHandler)
+        command.responseJSON(queue: queue, options: options, completionHandler: completionHandler)
         return self
     }
     
     /// Response PList
     public func responsePropertyList(
-        options options: NSPropertyListReadOptions = NSPropertyListReadOptions(),
+        queue queue: dispatch_queue_t? = nil,
+        options: NSPropertyListReadOptions = NSPropertyListReadOptions(),
         completionHandler: Result<Response, AnyObject, NSError> -> ())
         -> Self
     {
-        command.responsePropertyList(options: options, completionHandler: completionHandler)
+        command.responsePropertyList(queue: queue, options: options, completionHandler: completionHandler)
         return self
     }
 }

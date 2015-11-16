@@ -15,39 +15,34 @@ class ViewController: UIViewController  {
         super.viewDidLoad()
         performLogin()
     }
-    
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        test()
-    }
-    
 }
 
+// Before you run this project, checkout `API.swift` and change the setups to your server configuration.
 extension ViewController {
     func performLogin() {
         let loginApi = LoginApi()
         let request = Redes.request(loginApi)
-            request.responseJSON {
-                debugPrint($0)
-            }
-            .responseString {
-                switch $0 {
-                case .Success(_, let string):
-                    debugPrint(string)
-                case .Failure(_, let error):
-                    debugPrint(error)
-                }
-            }
-//            .cancel()
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (Int64)(NSEC_PER_SEC*1)), dispatch_get_main_queue()) {
-//            request.responseString(completionHandler: {
-//                debugPrint($0)
-//                
-//            })
-//        }
         
-    }
-    
-    func test() {
+        request.asyncResponseJSON {
+            debugPrint($0)
+        }
+
+        request.responseJSON {
+            debugPrint($0)
+        }
+        .responseString {
+            switch $0 {
+            case .Success(_, let string):
+                debugPrint(string)
+            case .Failure(_, let error):
+                debugPrint(error)
+            }
+        }
+//        .cancel()
     }
 }
+
+
+
+
 

@@ -118,71 +118,101 @@ public extension AlamofireCommand {
 // MARK: - Response
 
 public extension AlamofireCommand {
-    func responseData(completionHandler: Result<Response, NSData, NSError> -> ())
+    func response(
+        queue queue: dispatch_queue_t?,
+        completionHandler: (NSURLRequest?, NSHTTPURLResponse?, NSData?, NSError?) -> ())
+    {
+        underlyingRequest?.response(queue: queue, completionHandler: completionHandler)
+    }
+    
+    func responseData(
+        queue queue: dispatch_queue_t?,
+        completionHandler: Result<Response, NSData, NSError> -> ())
     {
         guard let request = request else {
             return
         }
         
-        // Trailing closure
-        underlyingRequest?.responseData() { [unowned self] in
-            self.bridgeToResultCompletionHandler(
-                completionHandler,
-                validationHandler: request.setup.responseDataValidation,
-                response: $0
-            )
-        }
+        underlyingRequest?.response(
+            queue: queue,
+            responseSerializer: Alamofire.Request.dataResponseSerializer(),
+            completionHandler: {
+                [unowned self] in
+                self.bridgeToResultCompletionHandler(
+                    completionHandler,
+                    validationHandler: request.setup.responseDataValidation,
+                    response: $0
+                )
+        })
     }
     
     func responseString(
-        encoding encoding: NSStringEncoding?,
+        queue queue: dispatch_queue_t?,
+        encoding: NSStringEncoding?,
         completionHandler: Result<Response, String, NSError> -> ())
     {
         guard let request = request else {
             return
         }
         
-        underlyingRequest?.responseString(encoding: encoding, completionHandler: { [unowned self] in
-            self.bridgeToResultCompletionHandler(
-                completionHandler,
-                validationHandler: request.setup.responseStringValidation,
-                response: $0
-            )
-        })
+        underlyingRequest?.response(
+            queue: queue,
+            responseSerializer: Alamofire.Request.stringResponseSerializer(encoding: encoding),
+            completionHandler: {
+                [unowned self] in
+                self.bridgeToResultCompletionHandler(
+                    completionHandler,
+                    validationHandler: request.setup.responseStringValidation,
+                    response: $0
+                )
+            }
+        )
     }
     
     public func responseJSON(
-        options options: NSJSONReadingOptions,
+        queue queue: dispatch_queue_t?,
+        options: NSJSONReadingOptions,
         completionHandler: Result<Response, AnyObject, NSError> -> ())
     {
         guard let request = request else {
             return
         }
         
-        underlyingRequest?.responseJSON(options: options, completionHandler: { [unowned self] in
-            self.bridgeToResultCompletionHandler(
-                completionHandler,
-                validationHandler: request.setup.responseJSONValidation,
-                response: $0
-            )
-        })
+        underlyingRequest?.response(
+            queue: queue,
+            responseSerializer: Alamofire.Request.JSONResponseSerializer(options: options),
+            completionHandler: {
+                [unowned self] in
+                self.bridgeToResultCompletionHandler(
+                    completionHandler,
+                    validationHandler: request.setup.responseJSONValidation,
+                    response: $0
+                )
+            }
+        )
     }
     
     func responsePropertyList(
-        options options: NSPropertyListReadOptions,
+        queue queue: dispatch_queue_t?,
+        options: NSPropertyListReadOptions,
         completionHandler: Result<Response, AnyObject, NSError> -> ())
     {
         guard let request = request else {
             return
         }
         
-        underlyingRequest?.responsePropertyList(options: options, completionHandler: { [unowned self] in
-            self.bridgeToResultCompletionHandler(
-                completionHandler,
-                validationHandler: request.setup.responsePropertyListValidation,
-                response: $0
-            )
-        })
+        underlyingRequest?.response(
+            queue: queue,
+            responseSerializer: Alamofire.Request.propertyListResponseSerializer(options: options),
+            completionHandler: {
+                [unowned self] in
+                self.bridgeToResultCompletionHandler(
+                    completionHandler,
+                    validationHandler: request.setup.responsePropertyListValidation,
+                    response: $0
+                )
+            }
+        )
     }
 }
 
@@ -193,8 +223,8 @@ public extension AlamofireCommand {
     func buildFailureResultByResponse<T>(
         response: Alamofire.Response<T, NSError>,
         message: String = "Server response llegal",
-        statusCode: Int = RequestFailureStatusCode
-    ) -> Result<Response, T, NSError>
+        statusCode: Int = RequestFailureStatusCode)
+        -> Result<Response, T, NSError>
     {
         let rsp = Response(
             setup: self.request!.setup,

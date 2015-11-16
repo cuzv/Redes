@@ -9,6 +9,19 @@
 import Foundation
 import Redes
 
+// MARK: - Resonse JSON asynchronous
+
+public extension Redes.Request  {
+    public func asyncResponseJSON(completionHandler: Result<Response, AnyObject, NSError> -> ())
+        -> Self
+    {
+        responseJSON(queue: dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), completionHandler: completionHandler)
+        return self
+    }
+}
+
+// MARK: - API setups
+
 /// ATTENTION: change to your api setup
 public extension Responseable {
     var responseCodeFieldName: String {
@@ -43,3 +56,4 @@ struct LoginApi: Requestable, Responseable {
         ]
     }
 }
+
