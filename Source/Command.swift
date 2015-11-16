@@ -15,12 +15,12 @@ public protocol Command: class {
     func removeRequest()
     
     /// Response binary data
-    func responseData(completionHandler: Result<Response, NSData, NSError> -> Void)
+    func responseData(completionHandler: Result<Response, NSData, NSError> -> ())
     /// Response string
-    func responseString(encoding encoding: NSStringEncoding?, completionHandler: Result<Response, String, NSError> -> Void)
+    func responseString(encoding encoding: NSStringEncoding?, completionHandler: Result<Response, String, NSError> -> ())
     /// Response JSON
-    func responseJSON(options options: NSJSONReadingOptions, completionHandler: Result<Response, AnyObject, NSError> -> Void)
+    func responseJSON(options options: NSJSONReadingOptions, completionHandler: Result<Response, AnyObject, NSError> -> ())
     /// Response PList
-    func responsePropertyList(options options: NSPropertyListReadOptions, completionHandler: Result<Response, AnyObject, NSError> -> Void)
+    func responsePropertyList(options options: NSPropertyListReadOptions, completionHandler: Result<Response, AnyObject, NSError> -> ())
 }
 

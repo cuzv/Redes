@@ -9,7 +9,7 @@
 import Foundation
 import Alamofire
 
-public class AlamofireCommand: Command {
+final public class AlamofireCommand: Command {
     public private(set) weak var request: Request?
     private var underlyingRequest: Alamofire.Request?
     
@@ -118,7 +118,7 @@ public extension AlamofireCommand {
 // MARK: - Response
 
 public extension AlamofireCommand {
-    func responseData(completionHandler: Result<Response, NSData, NSError> -> Void)
+    func responseData(completionHandler: Result<Response, NSData, NSError> -> ())
     {
         guard let request = request else {
             return
@@ -136,7 +136,7 @@ public extension AlamofireCommand {
     
     func responseString(
         encoding encoding: NSStringEncoding?,
-        completionHandler: Result<Response, String, NSError>-> Void)
+        completionHandler: Result<Response, String, NSError> -> ())
     {
         guard let request = request else {
             return
@@ -153,7 +153,7 @@ public extension AlamofireCommand {
     
     public func responseJSON(
         options options: NSJSONReadingOptions,
-        completionHandler: Result<Response, AnyObject, NSError> -> Void)
+        completionHandler: Result<Response, AnyObject, NSError> -> ())
     {
         guard let request = request else {
             return
@@ -170,7 +170,7 @@ public extension AlamofireCommand {
     
     func responsePropertyList(
         options options: NSPropertyListReadOptions,
-        completionHandler: Result<Response, AnyObject, NSError> -> Void)
+        completionHandler: Result<Response, AnyObject, NSError> -> ())
     {
         guard let request = request else {
             return
@@ -238,7 +238,7 @@ public extension AlamofireCommand {
     
     /// Birdege `Alamofire` response to `Redes` result
     func bridgeToResultCompletionHandler<K>(
-        completionHandler: Result<Response, K, NSError> -> Void,
+        completionHandler: Result<Response, K, NSError> -> (),
         validationHandler: K -> (Bool, K, String, Int),
             response: Alamofire.Response<K, NSError>)
     {

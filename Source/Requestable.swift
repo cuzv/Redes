@@ -12,14 +12,14 @@ import Alamofire
 // MARK: - Requestable
 
 public protocol Requestable {
-    /// The request url string
-    var requestURLPath: URLStringConvertible { get }
-    /// The request method
-    var requestMethod: Method { get }
-    
     /// The request command, `AlamofireCommand` by default
     var requestCommand: Command { get }
     
+    /// The request url string
+    var requestURLPath: URLStringConvertible { get }
+
+    /// The request method
+    var requestMethod: Method { get }
     /// The request body parameters, empty by default
     var requestBodyParameters: [String: AnyObject] { get }
     /// The request header parameters, empty by default
@@ -35,6 +35,10 @@ public extension Requestable {
     
     var requestCommand: Command {
         return AlamofireCommand()
+    }
+    
+    var requestMethod: Method {
+        return .GET
     }
 
     var requestBodyParameters: [String: AnyObject] {
@@ -69,8 +73,8 @@ public protocol Uploadable {
     /// Upload multipart form data
     /// (multipartFormData, encodingCompletion, encodingMemoryThreshold)
     var uploadMultipartFormDataTuple: (
-        (MultipartFormData -> Void),
-        (MultipartFormDataEncodingResult -> Void)?,
+        (MultipartFormData -> ()),
+        (MultipartFormDataEncodingResult -> ())?,
         encodingMemoryThreshold: UInt64)? { get }
 }
 
@@ -88,8 +92,8 @@ public extension Uploadable {
     }
     
     var multipartDataUploadTuple: (
-        (MultipartFormData -> Void),
-        (MultipartFormDataEncodingResult -> Void)?,
+        (MultipartFormData -> ()),
+        (MultipartFormDataEncodingResult -> ())?,
         encodingMemoryThreshold: UInt64)? {
         return nil
     }

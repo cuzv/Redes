@@ -14,8 +14,8 @@ import Alamofire
 public extension Request {
     /// Resposne data
     public func responseData(
-        completionHandler: Result<Response, NSData, NSError> -> Void)
-        -> Request {
+        completionHandler: Result<Response, NSData, NSError> -> ())
+        -> Self {
             command.responseData(completionHandler)
             return self
     }
@@ -23,8 +23,8 @@ public extension Request {
     /// Response strting data
     public func responseString(
         encoding encoding: NSStringEncoding? = nil,
-        completionHandler: Result<Response, String, NSError>-> Void)
-        -> Request
+        completionHandler: Result<Response, String, NSError> -> ())
+        -> Self
     {
         command.responseString(encoding: encoding, completionHandler: completionHandler)
         return self
@@ -33,8 +33,8 @@ public extension Request {
     /// Response json data
     public func responseJSON(
         options options: NSJSONReadingOptions = .AllowFragments,
-        completionHandler: Result<Response, AnyObject, NSError> -> Void)
-        -> Request
+        completionHandler: Result<Response, AnyObject, NSError> -> ())
+        -> Self
     {
         command.responseJSON(options: options, completionHandler: completionHandler)
         return self
@@ -43,8 +43,8 @@ public extension Request {
     /// Response PList
     public func responsePropertyList(
         options options: NSPropertyListReadOptions = NSPropertyListReadOptions(),
-        completionHandler: Result<Response, AnyObject, NSError> -> Void)
-        -> Request
+        completionHandler: Result<Response, AnyObject, NSError> -> ())
+        -> Self
     {
         command.responsePropertyList(options: options, completionHandler: completionHandler)
         return self

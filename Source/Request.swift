@@ -9,7 +9,7 @@
 import Foundation
 import Alamofire
 
-public class Request {
+final public class Request {
     internal var setup: protocol<Requestable, Responseable>
     public private(set) var command: Command
     
