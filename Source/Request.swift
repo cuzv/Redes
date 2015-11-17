@@ -12,30 +12,35 @@ import Alamofire
 final public class Request {
     internal var setup: protocol<Requestable, Responseable>
     public private(set) var command: Command
+    internal var networkUnavailable: Bool /// Default `false`, means network could reach
     
     deinit {
         debugPrint("Request deinit...")
     }
     
     init(setup: protocol<Requestable, Responseable>) {
+        networkUnavailable = false
         self.setup = setup
         self.command = setup.requestCommand
         sendCommand()
     }
 
     init(setup: protocol<Requestable, Responseable, Uploadable>) {
+        networkUnavailable = false
         self.setup = setup
         self.command = setup.requestCommand
         sendCommand()
     }
     
     init(setup: protocol<Requestable, Responseable, Downloadable>) {
+        networkUnavailable = false
         self.setup = setup
         self.command = setup.requestCommand
         sendCommand()
     }
     
     init(setup: protocol<Requestable, Responseable, Uploadable, Downloadable>) {
+        networkUnavailable = false        
         self.setup = setup
         self.command = setup.requestCommand
         sendCommand()

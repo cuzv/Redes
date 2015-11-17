@@ -34,6 +34,7 @@ public protocol Responseable {
 }
 
 internal let RequestFailureStatusCode = -9999
+internal let NetworkUnavailableStatusCode = -9998
 
 public extension Responseable {
     /// Simply return received data

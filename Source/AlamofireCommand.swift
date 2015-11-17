@@ -23,15 +23,26 @@ final public class AlamofireCommand: Command {
 public extension AlamofireCommand {
     public func injectRequest(request: Request) {
         self.request = request
-        
+
         produceRequest()
     }
     
+    // Check network reachability
+    private func isNetworkUnavailable() -> Bool {
+        // Supporse default is available
+        guard let sharedManager = ReachabilityManager.sharedManager else { return false }
+        
+        return !sharedManager.isReachable()
+    }
+    
     private func produceRequest() {
-        guard let request = request else {
+        guard let request = request else { return }
+
+        if isNetworkUnavailable() {
+            request.networkUnavailable = true
             return
         }
-        
+
         Alamofire.Manager.sharedInstance.session.configuration.timeoutIntervalForRequest = request.setup.requestTimeoutInterval
         
         let method = request.setup.requestMethod.method()
@@ -103,9 +114,7 @@ public extension AlamofireCommand {
     }
     
     public func removeRequest() {
-        guard let underlyingRequest = underlyingRequest else {
-            return
-        }
+        guard let underlyingRequest = underlyingRequest else { return }
         
         let state = underlyingRequest.task.state
         if state == .Running || state == .Suspended {
@@ -122,6 +131,15 @@ public extension AlamofireCommand {
         queue queue: dispatch_queue_t?,
         completionHandler: (NSURLRequest?, NSHTTPURLResponse?, NSData?, NSError?) -> ())
     {
+        guard let request = request else { return }
+        
+        if request.networkUnavailable {
+            dispatch_async(queue ?? dispatch_get_main_queue(), {
+                completionHandler(nil, nil, nil, nil)
+            })
+            return
+        }
+        
         underlyingRequest?.response(queue: queue, completionHandler: completionHandler)
     }
     
@@ -129,7 +147,14 @@ public extension AlamofireCommand {
         queue queue: dispatch_queue_t?,
         completionHandler: Result<Response, NSData, NSError> -> ())
     {
-        guard let request = request else {
+        guard let request = request else { return }
+        
+        if request.networkUnavailable {
+            bridgeToNetworkUnavailable(
+                setup: request.setup,
+                completionHandler: completionHandler,
+                queue: queue
+            )
             return
         }
         
@@ -138,8 +163,8 @@ public extension AlamofireCommand {
             responseSerializer: Alamofire.Request.dataResponseSerializer(),
             completionHandler: {
                 [unowned self] in
-                self.bridgeToResultCompletionHandler(
-                    completionHandler,
+                self.bridgeToResult(
+                    completionHandler: completionHandler,
                     validationHandler: request.setup.responseDataValidation,
                     response: $0
                 )
@@ -151,17 +176,24 @@ public extension AlamofireCommand {
         encoding: NSStringEncoding?,
         completionHandler: Result<Response, String, NSError> -> ())
     {
-        guard let request = request else {
+        guard let request = request else { return }
+        
+        if request.networkUnavailable {
+            bridgeToNetworkUnavailable(
+                setup: request.setup,
+                completionHandler: completionHandler,
+                queue: queue
+            )
             return
         }
-        
+
         underlyingRequest?.response(
             queue: queue,
             responseSerializer: Alamofire.Request.stringResponseSerializer(encoding: encoding),
             completionHandler: {
                 [unowned self] in
-                self.bridgeToResultCompletionHandler(
-                    completionHandler,
+                self.bridgeToResult(
+                    completionHandler: completionHandler,
                     validationHandler: request.setup.responseStringValidation,
                     response: $0
                 )
@@ -174,7 +206,14 @@ public extension AlamofireCommand {
         options: NSJSONReadingOptions,
         completionHandler: Result<Response, AnyObject, NSError> -> ())
     {
-        guard let request = request else {
+        guard let request = request else { return }
+        
+        if request.networkUnavailable {
+            bridgeToNetworkUnavailable(
+                setup: request.setup,
+                completionHandler: completionHandler,
+                queue: queue
+            )
             return
         }
         
@@ -183,8 +222,8 @@ public extension AlamofireCommand {
             responseSerializer: Alamofire.Request.JSONResponseSerializer(options: options),
             completionHandler: {
                 [unowned self] in
-                self.bridgeToResultCompletionHandler(
-                    completionHandler,
+                self.bridgeToResult(
+                    completionHandler: completionHandler,
                     validationHandler: request.setup.responseJSONValidation,
                     response: $0
                 )
@@ -197,17 +236,24 @@ public extension AlamofireCommand {
         options: NSPropertyListReadOptions,
         completionHandler: Result<Response, AnyObject, NSError> -> ())
     {
-        guard let request = request else {
+        guard let request = request else { return }
+        
+        if request.networkUnavailable {
+            bridgeToNetworkUnavailable(
+                setup: request.setup,
+                completionHandler: completionHandler,
+                queue: queue
+            )
             return
         }
-        
+
         underlyingRequest?.response(
             queue: queue,
             responseSerializer: Alamofire.Request.propertyListResponseSerializer(options: options),
             completionHandler: {
                 [unowned self] in
-                self.bridgeToResultCompletionHandler(
-                    completionHandler,
+                self.bridgeToResult(
+                    completionHandler: completionHandler,
                     validationHandler: request.setup.responsePropertyListValidation,
                     response: $0
                 )
@@ -220,14 +266,14 @@ public extension AlamofireCommand {
 
 public extension AlamofireCommand {
     /// Generate manual failure closure parameters
-    func buildFailureResultByResponse<T>(
-        response: Alamofire.Response<T, NSError>,
+    func buildFailureResult<T>(
+        response response: Alamofire.Response<T, NSError>,
         message: String = "Server response llegal",
         statusCode: Int = RequestFailureStatusCode)
         -> Result<Response, T, NSError>
     {
         let rsp = Response(
-            setup: self.request!.setup,
+            setup: request!.setup,
             data: response.data,
             message: message,
             statusCode: statusCode
@@ -237,28 +283,28 @@ public extension AlamofireCommand {
     }
     
     /// Generate server request failure closure parameters
-    func requestFailureResultByResponse<T>(response: Alamofire.Response<T, NSError>)
+    func requestFailureResult<T>(response response: Alamofire.Response<T, NSError>)
         -> Result<Response, T, NSError>
     {
         let codeValue = response.response?.statusCode ?? RequestFailureStatusCode;
-        return buildFailureResultByResponse(
-            response,
+
+        return buildFailureResult(
+            response: response,
             message: "Request failed.",
-            statusCode:
-            codeValue
+            statusCode: codeValue
         )
     }
     
     /// Generate success closure parameters
-    func buildSuccessResultByResponse<T>(
-        response: Alamofire.Response<T, NSError>,
+    func buildSuccessResult<T>(
+        response response: Alamofire.Response<T, NSError>,
         result: T,
         message: String,
-        statusCode: Int
-    ) -> Result<Response, T, NSError>
+        statusCode: Int)
+        -> Result<Response, T, NSError>
     {
         let rsp = Response(
-            setup: self.request!.setup,
+            setup: request!.setup,
             data: response.data,
             message: message,
             statusCode: statusCode
@@ -267,33 +313,51 @@ public extension AlamofireCommand {
     }
     
     /// Birdege `Alamofire` response to `Redes` result
-    func bridgeToResultCompletionHandler<K>(
-        completionHandler: Result<Response, K, NSError> -> (),
+    func bridgeToResult<K>(
+        completionHandler completionHandler: Result<Response, K, NSError> -> (),
         validationHandler: K -> (Bool, K, String, Int),
-            response: Alamofire.Response<K, NSError>)
+        response: Alamofire.Response<K, NSError>)
     {
         if response.result.isSuccess {
             // pretty value
             guard let pretty = response.result.value else {
                 // Server did not return data
-                return completionHandler(self.buildFailureResultByResponse(response))
+                return completionHandler(buildFailureResult(response: response))
             }
             // Print pertty value
             debugPrint(pretty)
             
             let (success, result, message, statusCode) = validationHandler(pretty)
             if success {
-                completionHandler(self.buildSuccessResultByResponse(
-                    response,
+                completionHandler(buildSuccessResult(
+                    response: response,
                     result: result,
                     message: message,
                     statusCode: statusCode)
                 )
             } else {
-                completionHandler(self.buildFailureResultByResponse(response))
+                completionHandler(buildFailureResult(response: response))
             }
         } else {
-            completionHandler(self.requestFailureResultByResponse(response))
+            completionHandler(buildFailureResult(response: response))
         }
+    }
+    
+    func bridgeToNetworkUnavailable<T>(
+        setup setup: protocol<Requestable, Responseable>,
+        completionHandler: Result<Response, T, NSError> -> (),
+        queue: dispatch_queue_t?)
+    {
+        dispatch_async(queue ?? dispatch_get_main_queue(), {
+            let message = "Network unavailable"
+            let error = Error.errorWithCode(NetworkUnavailableStatusCode, failureReason: message)
+            let rsp = Response(
+                setup: setup,
+                data: nil,
+                message: message,
+                statusCode: NetworkUnavailableStatusCode
+            )
+            completionHandler(.Failure(rsp, error))
+        })
     }
 }
