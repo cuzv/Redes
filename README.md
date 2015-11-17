@@ -13,7 +13,7 @@ High-level network layer abstraction library written in Swift.
 ## Features
 
 - [x] Wrap `Alamofire`, which means support `Alamofire`'s all features
-- [ ] Networking status check
+- [x] Networking status check
 - [ ] Result cache
 
 ## Requirements
