@@ -13,8 +13,6 @@ High-level network layer abstraction library written in Swift.
 ## Features
 
 - Wrap `Alamofire`, which means support `Alamofire`'s all features
-
-
 - Networking status check
 - Easy to expansion
 
@@ -82,13 +80,13 @@ On your application targets’ “General” settings tab, in the “Linked Fram
 
 On your application targets’ “Build Phases” settings tab, click the “+” icon and choose “New Run Script Phase”. Create a Run Script with the following content:
 
-``` 
+```
 /usr/local/bin/carthage copy-frameworks
 ```
 
 and add the paths to the frameworks you want to use under “Input Files”:
 
-``` 
+```
 $(SRCROOT)/Carthage/Build/iOS/Redes.framework
 ```
 
