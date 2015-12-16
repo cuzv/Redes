@@ -23,3 +23,9 @@ public func request<T: protocol<Requestable, Responseable, Uploadable>>(setup: T
 public func request<T: protocol<Requestable, Responseable, Downloadable>>(setup: T) -> Request {
     return Request(setup: setup)
 }
+
+/// Set up NSURLCache
+/// Should invoke on `application:didFinishLaunchingWithOptions:`
+public func setupSharedURLCache(memoryCapacity memoryCapacity: Int, diskCapacity: Int, diskPath: String? = nil) {
+    NSURLCache.setSharedURLCache(NSURLCache(memoryCapacity: memoryCapacity, diskCapacity: diskCapacity, diskPath: diskPath))
+}

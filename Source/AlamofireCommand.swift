@@ -25,6 +25,7 @@ public extension AlamofireCommand {
         self.request = request
 
         produceRequest()
+        cacheRequest()
     }
     
     // Check network reachability
@@ -110,6 +111,14 @@ public extension AlamofireCommand {
                 encoding: request.setup.requestParameterEncoding.parameterEncoding(),
                 headers: requestHeaderParameters
             )
+        }
+    }
+    
+    private func cacheRequest() {
+        guard let underlyingRequest = underlyingRequest else { return }
+        
+        underlyingRequest.delegate.queue.addOperationWithBlock { () -> Void in
+            debugPrint("Request completion.")
         }
     }
     
@@ -268,7 +277,7 @@ public extension AlamofireCommand {
     /// Generate manual failure closure parameters
     func buildFailureResult<T>(
         response response: Alamofire.Response<T, NSError>,
-        message: String = "Server response llegal",
+        message: String = "Server response illegal.",
         statusCode: Int = RequestFailureStatusCode)
         -> Result<Response, T, NSError>
     {
@@ -349,7 +358,7 @@ public extension AlamofireCommand {
         queue: dispatch_queue_t?)
     {
         dispatch_async(queue ?? dispatch_get_main_queue(), {
-            let message = "Network unavailable"
+            let message = "Network unavailable."
             let error = Error.errorWithCode(NetworkUnavailableStatusCode, failureReason: message)
             let rsp = Response(
                 setup: setup,

@@ -36,7 +36,7 @@ POSSIBILITY OF SUCH DAMAGE.
 import Foundation
 import SystemConfiguration
 
-public class ReachabilityManager {
+final public class ReachabilityManager {
     let reachabilityRef: SCNetworkReachability?
     
     private static let sharedInstance = ReachabilityManager()
