@@ -113,7 +113,6 @@ public extension Uploadable {
     }
 }
 
-
 // MARK: - Downloadable
 
 public protocol Downloadable {

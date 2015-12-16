@@ -12,7 +12,8 @@ import Alamofire
 final public class Request {
     internal var setup: protocol<Requestable, Responseable>
     public private(set) var command: Command
-    internal var networkUnavailable: Bool /// Default `false`, means network could reach
+    /// Default `false`, means network could reach
+    internal var networkUnavailable: Bool
     
     deinit {
         debugPrint("Request deinit...")

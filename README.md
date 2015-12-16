@@ -12,9 +12,11 @@ High-level network layer abstraction library written in Swift.
 
 ## Features
 
-- [x] Wrap `Alamofire`, which means support `Alamofire`'s all features
-- [x] Networking status check
-- [ ] Result cache
+- Wrap `Alamofire`, which means support `Alamofire`'s all features
+
+
+- Networking status check
+- Easy to expansion
 
 ## Requirements
 
@@ -145,6 +147,12 @@ request.responseJSON {
 
 - More information see the demo in project. (Before you run this project, checkout `API.swift` and change the setups to your server configuration.)
 
+### Caching
+
+Caching is handled on the system framework level by [`NSURLCache`](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSURLCache_Class/Reference/Reference.html#//apple_ref/occ/cl/NSURLCache).
+
+You could set shared URLCache by using `setupSharedURLCache(memoryCapacity:diskCapacity:diskPath:)` convenient.
+
 ## License
 
 `Redes` is available under the MIT license. See the LICENSE file for more info.
@@ -152,3 +160,4 @@ request.responseJSON {
 ## Contact
 
 Follow me on Twitter ([@mochxiao](https://twitter.com/mochxiao))
+
