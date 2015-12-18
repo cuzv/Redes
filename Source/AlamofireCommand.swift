@@ -24,8 +24,8 @@ public extension AlamofireCommand {
     public func injectRequest(request: Request) {
         self.request = request
 
-        produceRequest()
-        cacheRequest()
+        processRequest()
+        doneRequest()
     }
     
     // Check network reachability
@@ -36,7 +36,7 @@ public extension AlamofireCommand {
         return !sharedManager.isReachable()
     }
     
-    private func produceRequest() {
+    private func processRequest() {
         guard let request = request else { return }
 
         if isNetworkUnavailable() {
@@ -114,10 +114,10 @@ public extension AlamofireCommand {
         }
     }
     
-    private func cacheRequest() {
+    private func doneRequest() {
         guard let underlyingRequest = underlyingRequest else { return }
         
-        underlyingRequest.delegate.queue.addOperationWithBlock { () -> Void in
+        underlyingRequest.delegate.queue.addOperationWithBlock {
             debugPrint("Request completion.")
         }
     }
@@ -128,7 +128,7 @@ public extension AlamofireCommand {
         let state = underlyingRequest.task.state
         if state == .Running || state == .Suspended {
             underlyingRequest.task.cancel()
-            debugPrint("Canceling request...")
+            debugPrint("Removing request...")
         }
     }
 }

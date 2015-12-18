@@ -27,17 +27,17 @@ extension ViewController {
             debugPrint($0)
         }
 
-        request.responseJSON {
-            debugPrint($0)
-        }
-        .responseString {
-            switch $0 {
-            case .Success(_, let string):
-                debugPrint(string)
-            case .Failure(_, let error):
-                debugPrint(error)
-            }
-        }
+//        request.responseJSON {
+//            debugPrint($0)
+//        }
+//        .responseString {
+//            switch $0 {
+//            case .Success(_, let string):
+//                debugPrint(string)
+//            case .Failure(_, let error):
+//                debugPrint(error)
+//            }
+//        }
 //        .cancel()
     }
 }
