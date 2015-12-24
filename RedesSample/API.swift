@@ -20,6 +20,12 @@ public extension Redes.Request  {
     }
 }
 
+extension Requestable where Self: Responseable {
+    public func asyncResponseJSON(completionHandler: Result<Response, AnyObject, NSError> -> ()) -> Request {
+        return Redes.request(self).asyncResponseJSON(completionHandler)
+    }
+}
+
 // MARK: - API setups
 
 /// ATTENTION: change to your api setup

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Redes
 
 class ViewController: UIViewController  {
     
@@ -21,13 +20,12 @@ class ViewController: UIViewController  {
 extension ViewController {
     func performLogin() {
         let loginApi = LoginApi()
-        let request = Redes.request(loginApi)
-        
-        request.asyncResponseJSON {
+    
+        loginApi.asyncResponseJSON {
             debugPrint($0)
-        }
-
-//        request.responseJSON {
+        }        
+//
+//        loginApi.responseJSON {
 //            debugPrint($0)
 //        }
 //        .responseString {

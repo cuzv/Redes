@@ -80,13 +80,13 @@ On your application targets’ “General” settings tab, in the “Linked Fram
 
 On your application targets’ “Build Phases” settings tab, click the “+” icon and choose “New Run Script Phase”. Create a Run Script with the following content:
 
-```
+``` 
 /usr/local/bin/carthage copy-frameworks
 ```
 
 and add the paths to the frameworks you want to use under “Input Files”:
 
-```
+``` 
 $(SRCROOT)/Carthage/Build/iOS/Redes.framework
 ```
 
@@ -121,15 +121,13 @@ struct LoginApi: Requestable, Responseable {
 - Build api and start request & process result
 
 ``` swift
-import Redes
 let loginApi = LoginApi()
-let request = Redes.request(loginApi)
 
-request.asyncResponseJSON {
+loginApi.asyncResponseJSON {
     debugPrint($0)
-}
+}        
 
-request.responseJSON {
+loginApi.responseJSON {
     debugPrint($0)
 }
 .responseString {
@@ -140,7 +138,7 @@ request.responseJSON {
         debugPrint(error)
     }
 }
-//.cancel()
+// .cancel()
 ```
 
 - More information see the demo in project. (Before you run this project, checkout `API.swift` and change the setups to your server configuration.)
@@ -158,4 +156,3 @@ You could set shared URLCache by using `setupSharedURLCache(memoryCapacity:diskC
 ## Contact
 
 Follow me on Twitter ([@mochxiao](https://twitter.com/mochxiao))
-
