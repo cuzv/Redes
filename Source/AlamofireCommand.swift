@@ -345,7 +345,11 @@ public extension AlamofireCommand {
                     statusCode: statusCode)
                 )
             } else {
-                completionHandler(buildFailureResult(response: response))
+                completionHandler(buildFailureResult(
+                    response: response,
+                    message: message,
+                    statusCode: statusCode)
+                )
             }
         } else {
             completionHandler(buildFailureResult(response: response))
