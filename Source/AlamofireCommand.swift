@@ -278,7 +278,7 @@ public extension AlamofireCommand {
     func buildFailureResult<T>(
         response response: Alamofire.Response<T, NSError>,
         message: String = "Server response illegal.",
-        statusCode: Int = RequestFailureStatusCode)
+        statusCode: Int = RedesStatusCode.DefaultError.rawValue)
         -> Result<Response, T, NSError>
     {
         let rsp = Response(
@@ -295,7 +295,7 @@ public extension AlamofireCommand {
     func requestFailureResult<T>(response response: Alamofire.Response<T, NSError>)
         -> Result<Response, T, NSError>
     {
-        let codeValue = response.response?.statusCode ?? RequestFailureStatusCode;
+        let codeValue = response.response?.statusCode ?? RedesStatusCode.DefaultError.rawValue;
 
         return buildFailureResult(
             response: response,
@@ -363,12 +363,12 @@ public extension AlamofireCommand {
     {
         dispatch_async(queue ?? dispatch_get_main_queue(), {
             let message = "Network unavailable."
-            let error = Error.errorWithCode(NetworkUnavailableStatusCode, failureReason: message)
+            let error = Error.errorWithCode(RedesStatusCode.NetworkUnavailable.rawValue, failureReason: message)
             let rsp = Response(
                 setup: setup,
                 data: nil,
                 message: message,
-                statusCode: NetworkUnavailableStatusCode
+                statusCode: RedesStatusCode.NetworkUnavailable.rawValue
             )
             completionHandler(.Failure(rsp, error))
         })

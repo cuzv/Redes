@@ -17,6 +17,7 @@ public struct Response {
     /// The message returned by the server.
     public let originalMessage: String?
     /// The status code returned by the server.
+    /// If Success will always be `RedesStatusCode.Success.rawValue`, which is `-32768`
     public let originalStatusCode: Int?
     
     public init(setup: protocol<Requestable, Responseable>, data: NSData?, message: String?, statusCode: Int?) {
