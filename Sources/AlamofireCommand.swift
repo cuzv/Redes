@@ -323,7 +323,7 @@ public extension AlamofireCommand {
     
     /// Birdege `Alamofire` response to `Redes` result
     func bridgeToResult<K>(
-        completionHandler completionHandler: Result<Response, K, NSError> -> (),
+        @noescape completionHandler completionHandler: Result<Response, K, NSError> -> (),
         validationHandler: K -> (Bool, K, String, Int),
         response: Alamofire.Response<K, NSError>)
     {
