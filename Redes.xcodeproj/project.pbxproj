@@ -80,34 +80,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		466CB6A61BE9D67500327014 /* Source */ = {
+		466CB6A61BE9D67500327014 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				46FEE2DF1BF097E100A48DBB /* AlamofireCommand.swift */,
+				466CB6A71BE9D67500327014 /* Bridge.swift */,
+				46FEE2CE1BEE52FA00A48DBB /* Command.swift */,
 				466CB6A81BE9D67500327014 /* Info.plist */,
+				468F2ECA1BFB351F004EB867 /* Reachability.swift */,
 				466CB6A91BE9D67500327014 /* Redes.h */,
 				466CB6AA1BE9D67500327014 /* Redes.swift */,
-				466CB6A71BE9D67500327014 /* Bridge.swift */,
-				466CB6AB1BE9D67500327014 /* Requestable.swift */,
-				466CB6AC1BE9D67500327014 /* Responseable.swift */,
 				466CB6B41BE9DD5300327014 /* Request.swift */,
-				46FEE2CE1BEE52FA00A48DBB /* Command.swift */,
-				46FEE2DF1BF097E100A48DBB /* AlamofireCommand.swift */,
+				466CB6AB1BE9D67500327014 /* Requestable.swift */,
 				466CB6BA1BEA076000327014 /* Response.swift */,
-				466CB6BC1BEA0E7400327014 /* Result.swift */,
 				466CB6B61BE9FAEA00327014 /* ResponseSerialization.swift */,
-				468F2ECA1BFB351F004EB867 /* Reachability.swift */,
+				466CB6AC1BE9D67500327014 /* Responseable.swift */,
+				466CB6BC1BEA0E7400327014 /* Result.swift */,
 			);
-			path = Source;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		4697680E1BE8B7D5004D037F = {
 			isa = PBXGroup;
 			children = (
-				466CB6A61BE9D67500327014 /* Source */,
-				469768281BE8B816004D037F /* RedesSample */,
-				469768191BE8B7D5004D037F /* Products */,
-				4F7348C24447166C329A9DFD /* Pods */,
 				57C0845E65AB89143D395CFD /* Frameworks */,
+				4F7348C24447166C329A9DFD /* Pods */,
+				469768191BE8B7D5004D037F /* Products */,
+				469768281BE8B816004D037F /* RedesSample */,
+				466CB6A61BE9D67500327014 /* Sources */,
 			);
 			sourceTree = "<group>";
 		};
@@ -123,13 +123,13 @@
 		469768281BE8B816004D037F /* RedesSample */ = {
 			isa = PBXGroup;
 			children = (
-				469768291BE8B816004D037F /* AppDelegate.swift */,
-				4697682B1BE8B816004D037F /* ViewController.swift */,
 				466CB6B81BEA031E00327014 /* API.swift */,
-				4697682D1BE8B816004D037F /* Main.storyboard */,
+				469768291BE8B816004D037F /* AppDelegate.swift */,
 				469768301BE8B816004D037F /* Assets.xcassets */,
-				469768321BE8B816004D037F /* LaunchScreen.storyboard */,
 				469768351BE8B816004D037F /* Info.plist */,
+				469768321BE8B816004D037F /* LaunchScreen.storyboard */,
+				4697682D1BE8B816004D037F /* Main.storyboard */,
+				4697682B1BE8B816004D037F /* ViewController.swift */,
 			);
 			path = RedesSample;
 			sourceTree = "<group>";
@@ -331,6 +331,7 @@
 				4697682E1BE8B816004D037F /* Base */,
 			);
 			name = Main.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 		469768321BE8B816004D037F /* LaunchScreen.storyboard */ = {
@@ -339,6 +340,7 @@
 				469768331BE8B816004D037F /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -444,7 +446,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = YES;
-				INFOPLIST_FILE = Source/Info.plist;
+				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -466,7 +468,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = YES;
-				INFOPLIST_FILE = Source/Info.plist;
+				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
