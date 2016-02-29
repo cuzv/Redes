@@ -23,7 +23,18 @@ extension ViewController {
     
         loginApi.asyncResponseJSON {
             debugPrint($0)
-        }        
+        }
+//        .responseJSON {
+//            switch $0 {
+//            case .Success(let rsp, _):
+//                if let URLResponse = rsp.URLResponse {
+//                    let headerFields = URLResponse.allHeaderFields
+//                    debugPrint(headerFields)
+//                }
+//            case .Failure(_, let error):
+//                debugPrint(error)
+//            }
+//        }
 //
 //        loginApi.responseJSON {
 //            debugPrint($0)
@@ -39,7 +50,6 @@ extension ViewController {
 //        .cancel()
     }
 }
-
 
 
 

@@ -62,5 +62,3 @@ struct LoginApi: Requestable, Responseable {
         ]
     }
 }
-
-

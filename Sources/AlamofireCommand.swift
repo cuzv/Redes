@@ -284,6 +284,7 @@ public extension AlamofireCommand {
         let rsp = Response(
             setup: request!.setup,
             data: response.data,
+            response: response.response,
             message: message,
             statusCode: statusCode
         )
@@ -315,6 +316,7 @@ public extension AlamofireCommand {
         let rsp = Response(
             setup: request!.setup,
             data: response.data,
+            response: response.response,
             message: message,
             statusCode: statusCode
         )
@@ -367,6 +369,7 @@ public extension AlamofireCommand {
             let rsp = Response(
                 setup: setup,
                 data: nil,
+                response: nil,
                 message: message,
                 statusCode: RedesStatusCode.NetworkUnavailable.rawValue
             )
