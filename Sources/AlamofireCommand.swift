@@ -144,7 +144,8 @@ public extension AlamofireCommand {
         
         if request.networkUnavailable {
             dispatch_async(queue ?? dispatch_get_main_queue(), {
-                completionHandler(nil, nil, nil, nil)
+                let error = Error.errorWithCode(RedesStatusCode.PhysicalError.rawValue, failureReason: "FAILURE: Network unavailable.")
+                completionHandler(nil, nil, nil, error)
             })
             return
         }
@@ -273,12 +274,12 @@ public extension AlamofireCommand {
 
 // MARK: - Helper
 
-public extension AlamofireCommand {
+private extension AlamofireCommand {
     /// Generate manual failure closure parameters
-    func buildFailureResult<T>(
+    func buildOperationFailureResult<T>(
         response response: Alamofire.Response<T, NSError>,
-        message: String = "Server response illegal.",
-        statusCode: Int = RedesStatusCode.DefaultError.rawValue)
+        message: String,
+        statusCode: Int)
         -> Result<Response, T, NSError>
     {
         let rsp = Response(
@@ -293,15 +294,15 @@ public extension AlamofireCommand {
     }
     
     /// Generate server request failure closure parameters
-    func requestFailureResult<T>(response response: Alamofire.Response<T, NSError>)
+    func buildPhysicalFailureResult<T>(response response: Alamofire.Response<T, NSError>)
         -> Result<Response, T, NSError>
     {
-        let codeValue = response.response?.statusCode ?? RedesStatusCode.DefaultError.rawValue;
-
-        return buildFailureResult(
+        debugPrint("Real status code: \(response.response?.statusCode)")
+        
+        return buildOperationFailureResult(
             response: response,
-            message: "Request failed.",
-            statusCode: codeValue
+            message: "FAILURE: Server did not received request or client did not received response.",
+            statusCode: RedesStatusCode.PhysicalError.rawValue
         )
     }
     
@@ -326,15 +327,20 @@ public extension AlamofireCommand {
     /// Birdege `Alamofire` response to `Redes` result
     func bridgeToResult<K>(
         @noescape completionHandler completionHandler: Result<Response, K, NSError> -> (),
-        validationHandler: K -> (Bool, K, String, Int),
+        @noescape validationHandler: K -> (Bool, K, String, Int),
         response: Alamofire.Response<K, NSError>)
     {
         if response.result.isSuccess {
             // pretty value
             guard let pretty = response.result.value else {
                 // Server did not return data
-                return completionHandler(buildFailureResult(response: response))
+                return completionHandler(buildOperationFailureResult(
+                    response: response,
+                    message: "FAILURE: Could not get response data.",
+                    statusCode: RedesStatusCode.CouldNotGetResponseData.rawValue)
+                )
             }
+            
             // Print pertty value
             debugPrint(pretty)
             
@@ -347,14 +353,14 @@ public extension AlamofireCommand {
                     statusCode: statusCode)
                 )
             } else {
-                completionHandler(buildFailureResult(
+                completionHandler(buildOperationFailureResult(
                     response: response,
                     message: message,
                     statusCode: statusCode)
                 )
             }
         } else {
-            completionHandler(buildFailureResult(response: response))
+            completionHandler(buildPhysicalFailureResult(response: response))
         }
     }
     
@@ -364,14 +370,14 @@ public extension AlamofireCommand {
         queue: dispatch_queue_t?)
     {
         dispatch_async(queue ?? dispatch_get_main_queue(), {
-            let message = "Network unavailable."
-            let error = Error.errorWithCode(RedesStatusCode.NetworkUnavailable.rawValue, failureReason: message)
+            let message = "FAILURE: Network unavailable."
+            let error = Error.errorWithCode(RedesStatusCode.PhysicalError.rawValue, failureReason: message)
             let rsp = Response(
                 setup: setup,
                 data: nil,
                 response: nil,
                 message: message,
-                statusCode: RedesStatusCode.NetworkUnavailable.rawValue
+                statusCode: RedesStatusCode.PhysicalError.rawValue
             )
             completionHandler(.Failure(rsp, error))
         })

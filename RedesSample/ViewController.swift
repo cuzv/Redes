@@ -12,6 +12,10 @@ class ViewController: UIViewController  {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         performLogin()
     }
 }
@@ -21,9 +25,9 @@ extension ViewController {
     func performLogin() {
         let loginApi = LoginApi()
     
-        loginApi.asyncResponseJSON {
-            debugPrint($0)
-        }
+//        loginApi.asyncResponseJSON {
+//            debugPrint($0)
+//        }
 //        .responseJSON {
 //            switch $0 {
 //            case .Success(let rsp, _):
@@ -33,6 +37,9 @@ extension ViewController {
 //                }
 //            case .Failure(_, let error):
 //                debugPrint(error)
+//                if error.isFatalError {
+//                    // 404, 408, ...
+//                }
 //            }
 //        }
 //
