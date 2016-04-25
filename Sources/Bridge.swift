@@ -54,9 +54,6 @@ extension NSURLRequest: URLRequestConvertible {
 // MARK: - typealias
 
 public typealias MultipartFormData = Alamofire.MultipartFormData
-public typealias MultipartFormDataEncodingResult = Alamofire.Manager.MultipartFormDataEncodingResult
-public let MultipartFormDataEncodingMemoryThreshold: UInt64 = Alamofire.Manager.MultipartFormDataEncodingMemoryThreshold
-
 public typealias DownloadFileDestination = Alamofire.Request.DownloadFileDestination
 
 // MARK:

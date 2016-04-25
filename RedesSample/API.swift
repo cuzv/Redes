@@ -62,3 +62,38 @@ struct LoginApi: Requestable, Responseable {
         ]
     }
 }
+
+
+/// ATTENTION: change to your api setup
+struct UploadApi: Requestable, Responseable, Uploadable {
+    var requestURLPath: URLStringConvertible {
+        return "https://host/to/path"
+    }
+    
+    var requestMethod: Redes.Method {
+        return .POST
+    }
+    
+    var multipartFormData: (MultipartFormData -> ())? {
+        return { (data) -> () in
+            /// ATTENTION: Add Image
+            let image = UIImage(named: "blank")!
+            let imageData = UIImageJPEGRepresentation(image, 1)!
+            data.appendBodyPart(data:imageData , name: "file", fileName: "test_345909034.png", mimeType: "image/jpeg")
+        }
+    }
+    
+    var responseResultFieldName: String {
+        return "data"
+    }
+    
+    var completionHandler: ((Redes.Request) -> ())? {
+        return { (request) -> () in
+            request.asyncResponseJSON({ (result) in
+                debugPrint(result)
+            })
+        }
+    }
+}
+
+

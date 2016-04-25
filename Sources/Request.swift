@@ -16,7 +16,9 @@ final public class Request {
     internal var networkUnavailable: Bool
     
     deinit {
-        debugPrint("Request deinit...")
+        if RedesDebugModeEnabled {
+            debugPrint("Request deinit...")
+        }
     }
     
     init(setup: protocol<Requestable, Responseable>) {
@@ -53,7 +55,9 @@ final public class Request {
 public extension Request {
     /// Send the `start request` command
     private func sendCommand() {
-        debugPrint(self)
+        if RedesDebugModeEnabled {
+            debugPrint(self)
+        }
         command.injectRequest(self)
     }
     

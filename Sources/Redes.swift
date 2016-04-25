@@ -19,6 +19,11 @@ public func request<T: protocol<Requestable, Responseable, Uploadable>>(setup: T
     return Request(setup: setup)
 }
 
+/// T: protocol<Requestable, Responseable, MultipartUploadable>
+public func request<T: protocol<Requestable, Responseable, MultipartUploadable>>(setup: T) -> Request {
+    return Request(setup: setup)
+}
+
 /// T: protocol<Requestable, Responseable, Downloadable>
 public func request<T: protocol<Requestable, Responseable, Downloadable>>(setup: T) -> Request {
     return Request(setup: setup)
@@ -28,6 +33,11 @@ public func request<T: protocol<Requestable, Responseable, Downloadable>>(setup:
 /// Should invoke on `application:didFinishLaunchingWithOptions:`
 public func setupSharedURLCache(memoryCapacity memoryCapacity: Int, diskCapacity: Int, diskPath: String? = nil) {
     NSURLCache.setSharedURLCache(NSURLCache(memoryCapacity: memoryCapacity, diskCapacity: diskCapacity, diskPath: diskPath))
+}
+
+internal var RedesDebugModeEnabled = false
+public func setupDebugModeEnable(enable: Bool) {
+    RedesDebugModeEnabled = enable
 }
 
 // MARK: - Convenience request & response

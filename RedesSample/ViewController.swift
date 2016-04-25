@@ -17,7 +17,8 @@ class ViewController: UIViewController  {
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        performLogin()
+//        performLogin()
+        perfromUpload()
     }
 }
 
@@ -56,6 +57,14 @@ extension ViewController {
 //            }
 //        }
 //        .cancel()
+    }
+    
+    
+    func perfromUpload() {
+        UploadApi().asyncResponseJSON {
+            /// Never run to here
+            debugPrint($0)
+        }
     }
 }
 

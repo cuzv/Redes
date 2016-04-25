@@ -60,7 +60,7 @@ public extension Requestable {
 
 // MARK: - Uploadable
 
-/// You must implement one of follow `uploadXXX` methos
+/// You must implement one of follow `uploadXXX` methods or `multipartFormData`.
 public protocol Uploadable {
     /// Upload file
     var uploadFileURL: NSURL? { get }
@@ -68,14 +68,6 @@ public protocol Uploadable {
     var uploadData: NSData? { get }
     /// Upload stream
     var uploadStream: NSInputStream? { get }
-    /// Validate Upload, return true can upload
-    var validateUpload: Bool { get }
-    /// Upload multipart form data
-    /// (multipartFormData, encodingCompletion, encodingMemoryThreshold)
-    var uploadMultipartFormDataTuple: (
-        (MultipartFormData -> ()),
-        (MultipartFormDataEncodingResult -> ())?,
-        encodingMemoryThreshold: UInt64)? { get }
 }
 
 public extension Uploadable {
@@ -91,25 +83,32 @@ public extension Uploadable {
         return nil
     }
     
-    var uploadMultipartFormDataTuple: (
-        (MultipartFormData -> ()),
-        (MultipartFormDataEncodingResult -> ())?,
-        encodingMemoryThreshold: UInt64)? {
-        return nil
-    }
-
-    var validateUpload: Bool {
+    /// Helper func
+    internal var isImplementedProtocolUploadable: Bool {
         if let _ = uploadFileURL {
             return true
         } else if let _ = uploadData {
             return true
         } else if let _ = uploadStream {
             return true
-        } else if let _ = uploadMultipartFormDataTuple {
-            return true
         }
         
         return false
+    }
+}
+
+/// Multipart form data upload
+public protocol MultipartUploadable {
+    /// Upload multipart form data
+    var multipartFormData: (MultipartFormData -> ()) { get }
+    /// Upload multipart form data completion handler
+    var completionHandler: ((Request) -> ()) { get }
+    var encodingMemoryThreshold: UInt64 { get }
+}
+
+public extension MultipartUploadable {
+    var encodingMemoryThreshold: UInt64 {
+        return 1024*1024*50
     }
 }
 

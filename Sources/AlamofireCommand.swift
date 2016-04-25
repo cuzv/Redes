@@ -14,7 +14,9 @@ final public class AlamofireCommand: Command {
     private var underlyingRequest: Alamofire.Request?
     
     deinit {
-        debugPrint("AlamofireCommand deinit...")
+        if RedesDebugModeEnabled {
+            debugPrint("AlamofireCommand deinit...")
+        }
     }
 }
 
@@ -52,8 +54,8 @@ public extension AlamofireCommand {
         
         if let uploadCommand = request.setup as? Uploadable {
             // Need download
-            if !uploadCommand.validateUpload {
-                fatalError("You must implement one of protocol `Uploadable` `uploadXXX` methods.")
+            if !uploadCommand.isImplementedProtocolUploadable {
+                fatalError("You must implement one of `uploadXXX` methods.")
             }
             
             if let uploadFileURL = uploadCommand.uploadFileURL {
@@ -77,18 +79,30 @@ public extension AlamofireCommand {
                     headers: requestHeaderParameters,
                     stream: stream
                 )
-            } else if let (dataClosure, encodingResultClosure, threshold) = uploadCommand.uploadMultipartFormDataTuple {
-                Alamofire.upload(
-                    method,
-                    requestURLPath,
-                    headers: requestHeaderParameters,
-                    multipartFormData: dataClosure,
-                    encodingMemoryThreshold: threshold,
-                    encodingCompletion: encodingResultClosure
-                )
             }
+        } else if let multipartUploadCommand = request.setup as? MultipartUploadable {
+            Alamofire.upload(
+                method,
+                requestURLPath,
+                headers: requestHeaderParameters,
+                multipartFormData: multipartUploadCommand.multipartFormData,
+                encodingMemoryThreshold: multipartUploadCommand.encodingMemoryThreshold,
+                encodingCompletion: { [weak self] (encodingResult: Manager.MultipartFormDataEncodingResult) in
+                    guard let _self = self else { return }
+                    switch encodingResult {
+                    case .Success(let upload, _, _):
+                        _self.underlyingRequest = upload
+                        multipartUploadCommand.completionHandler(request)
+                        _self.doneRequest()
+                    case .Failure(let encodingError):
+                        let result: Alamofire.Result<Void, NSError> = .Failure(encodingError as NSError)
+                        let response: Alamofire.Response<Void, NSError> = Alamofire.Response(request: nil, response: nil, data: nil, result: result)
+                        _self.buildPhysicalFailureResult(response: response)
+                    }
+                }
+            )
         } else if let downloadCommand = request.setup as? Downloadable {
-            // Need upload
+            // Need download
             let (resumeData, downloadFileDestination) = downloadCommand.downloadDestinationTuple
             if let resumeData = resumeData {
                 underlyingRequest = Alamofire.download(resumeData: resumeData, destination: downloadFileDestination)
@@ -118,7 +132,9 @@ public extension AlamofireCommand {
         guard let underlyingRequest = underlyingRequest else { return }
         
         underlyingRequest.delegate.queue.addOperationWithBlock {
-            debugPrint("Request completion.")
+            if RedesDebugModeEnabled {
+                debugPrint("Request completion.")
+            }
         }
     }
     
@@ -128,7 +144,9 @@ public extension AlamofireCommand {
         let state = underlyingRequest.task.state
         if state == .Running || state == .Suspended {
             underlyingRequest.task.cancel()
-            debugPrint("Removing request...")
+            if RedesDebugModeEnabled {
+                debugPrint("Removing request...")
+            }
         }
     }
 }
@@ -297,7 +315,13 @@ private extension AlamofireCommand {
     func buildPhysicalFailureResult<T>(response response: Alamofire.Response<T, NSError>)
         -> Result<Response, T, NSError>
     {
-        debugPrint("Real status code: \(response.response?.statusCode)")
+        if RedesDebugModeEnabled {
+            if let statusCode = response.response?.statusCode {
+                debugPrint("Real status code: \(statusCode)")
+            } else {
+                debugPrint("Alamofire.Response: \(response)")
+            }
+        }
         
         return buildOperationFailureResult(
             response: response,
@@ -341,8 +365,10 @@ private extension AlamofireCommand {
                 )
             }
             
-            // Print pertty value
-            debugPrint(pretty)
+            if RedesDebugModeEnabled {
+                // Print pertty value
+                debugPrint("Pretty response print: \(pretty)")
+            }
             
             let (success, result, message, statusCode) = validationHandler(pretty)
             if success {
