@@ -12,6 +12,7 @@ class ViewController: UIViewController  {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         
     }
     
@@ -25,9 +26,9 @@ extension ViewController {
     func performLogin() {
         let loginApi = LoginApi()
     
-//        loginApi.asyncResponseJSON {
-//            debugPrint($0)
-//        }
+        loginApi.asyncResponseJSON {
+            debugPrint($0)
+        }
 //        .responseJSON {
 //            switch $0 {
 //            case .Success(let rsp, _):

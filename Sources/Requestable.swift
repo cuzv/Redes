@@ -91,7 +91,7 @@ public extension Uploadable {
         return nil
     }
     
-    var multipartDataUploadTuple: (
+    var uploadMultipartFormDataTuple: (
         (MultipartFormData -> ()),
         (MultipartFormDataEncodingResult -> ())?,
         encodingMemoryThreshold: UInt64)? {
