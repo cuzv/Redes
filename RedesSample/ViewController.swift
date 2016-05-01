@@ -30,20 +30,20 @@ extension ViewController {
         loginApi.asyncResponseJSON {
             debugPrint($0)
         }
-//        .responseJSON {
-//            switch $0 {
-//            case .Success(let rsp, _):
-//                if let URLResponse = rsp.URLResponse {
-//                    let headerFields = URLResponse.allHeaderFields
-//                    debugPrint(headerFields)
-//                }
-//            case .Failure(_, let error):
-//                debugPrint(error)
-//                if error.isFatalError {
-//                    // 404, 408, ...
-//                }
-//            }
-//        }
+        .responseJSON {
+            switch $0 {
+            case .Success(let rsp, _):
+                if let URLResponse = rsp.URLResponse {
+                    let headerFields = URLResponse.allHeaderFields
+                    debugPrint(headerFields)
+                }
+            case .Failure(_, let error):
+                debugPrint(error)
+                if error.isFatalError {
+                    // 404, 408, ...
+                }
+            }
+        }
 //
 //        loginApi.responseJSON {
 //            debugPrint($0)

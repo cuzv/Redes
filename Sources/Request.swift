@@ -35,15 +35,15 @@ final public class Request {
         sendCommand()
     }
     
-    init(setup: protocol<Requestable, Responseable, Downloadable>) {
+    init(setup: protocol<Requestable, Responseable, MultipartUploadable>) {
         networkUnavailable = false
         self.setup = setup
         self.command = setup.requestCommand
         sendCommand()
     }
     
-    init(setup: protocol<Requestable, Responseable, Uploadable, Downloadable>) {
-        networkUnavailable = false        
+    init(setup: protocol<Requestable, Responseable, Downloadable>) {
+        networkUnavailable = false
         self.setup = setup
         self.command = setup.requestCommand
         sendCommand()
