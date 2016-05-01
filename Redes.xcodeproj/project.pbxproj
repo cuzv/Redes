@@ -24,6 +24,7 @@
 		469768311BE8B816004D037F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 469768301BE8B816004D037F /* Assets.xcassets */; };
 		469768341BE8B816004D037F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 469768321BE8B816004D037F /* LaunchScreen.storyboard */; };
 		4697683B1BE8D046004D037F /* Redes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 469768181BE8B7D5004D037F /* Redes.framework */; };
+		46CFE5731CD6412E0098C995 /* BatchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CFE5721CD6412E0098C995 /* BatchRequest.swift */; };
 		46DBDFBB1BFB3ED400F9177D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46DBDFBA1BFB3ED400F9177D /* SystemConfiguration.framework */; };
 		46FEE2CF1BEE52FA00A48DBB /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FEE2CE1BEE52FA00A48DBB /* Command.swift */; };
 		46FEE2E01BF097E100A48DBB /* AlamofireCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FEE2DF1BF097E100A48DBB /* AlamofireCommand.swift */; };
@@ -53,6 +54,7 @@
 		469768301BE8B816004D037F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		469768331BE8B816004D037F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		469768351BE8B816004D037F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		46CFE5721CD6412E0098C995 /* BatchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchRequest.swift; sourceTree = "<group>"; };
 		46DBDFBA1BFB3ED400F9177D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		46FEE2CE1BEE52FA00A48DBB /* Command.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
 		46FEE2DF1BF097E100A48DBB /* AlamofireCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireCommand.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				466CB6B61BE9FAEA00327014 /* ResponseSerialization.swift */,
 				466CB6AC1BE9D67500327014 /* Responseable.swift */,
 				466CB6BC1BEA0E7400327014 /* Result.swift */,
+				46CFE5721CD6412E0098C995 /* BatchRequest.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -302,6 +305,7 @@
 				466CB6B21BE9D67500327014 /* Responseable.swift in Sources */,
 				466CB6B71BE9FAEA00327014 /* ResponseSerialization.swift in Sources */,
 				466CB6B51BE9DD5300327014 /* Request.swift in Sources */,
+				46CFE5731CD6412E0098C995 /* BatchRequest.swift in Sources */,
 				466CB6B11BE9D67500327014 /* Requestable.swift in Sources */,
 				466CB6AD1BE9D67500327014 /* Bridge.swift in Sources */,
 				46FEE2CF1BEE52FA00A48DBB /* Command.swift in Sources */,

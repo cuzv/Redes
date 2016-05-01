@@ -1,9 +1,9 @@
 //
-//  Response.swift
+//  BatchRequest.swift
 //  Redes
 //
-//  Created by Moch Xiao on 11/4/15.
-//  Copyright © 2015 Moch Xiao (http://mochxiao.com).
+//  Created by Moch Xiao on 5/1/16.
+//  Copyright © 2016 Moch Xiao (http://mochxiao.com).
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -25,31 +25,3 @@
 //
 
 import Foundation
-import Alamofire
-
-public struct Response {
-    /// The request sent to the server.
-    public let originalSetup: protocol<Requestable, Responseable>
-    /// The data returned by the server.
-    public let data: NSData?
-    /// The server's response to the URL request.
-    public let URLResponse: NSHTTPURLResponse?
-    /// The message returned by the server or constructed internal.
-    public let message: String?
-    /// The status code returned by the server or constructed internal.
-    public let statusCode: Int?
-
-    public init(
-        setup: protocol<Requestable, Responseable>,
-        data: NSData?,
-        response: NSHTTPURLResponse?,
-        message: String?,
-        statusCode: Int?)
-    {
-        originalSetup = setup
-        self.data = data
-        self.URLResponse = response
-        self.message = message
-        self.statusCode = statusCode
-    }
-}
