@@ -97,3 +97,37 @@ struct UploadApi: Requestable, Responseable, Uploadable {
 }
 
 
+struct LoginViaMobileAPI: MicroShopAPI, Requestable, Responseable {
+    var mobile: String = "18122222222"
+    var smsCaptcha: String = "123456"
+    
+    var moduleName: String { return "item" }
+    var className: String { return "User" }
+
+    var requestMethod: Redes.Method { return .POST }
+    var APIName: String { return "loginByMobile" }
+    var requestBodyParameters: [String: AnyObject] {
+        return [
+            "mobile": mobile,
+            "smsCaptcha": smsCaptcha
+        ]
+    }
+}
+
+struct AccountAmountAPI: MicroShopAPI, Requestable, Responseable {
+    var moduleName: String { return "item" }
+    var className: String { return "User" }
+    var APIName: String  { return "getAmount" }
+}
+
+struct ShopInfoAPI: MicroShopAPI, Requestable, Responseable {
+    var moduleName: String { return "item" }
+    var className: String { return "Shop" }
+    var APIName: String { return "getInfo" }
+}
+
+struct SaleDataAPI: MicroShopAPI, Requestable, Responseable {
+    var moduleName: String { return "item" }
+    var className: String { return "Shop" }
+    var APIName: String { return "getStatDataByTotSaleData" }
+}

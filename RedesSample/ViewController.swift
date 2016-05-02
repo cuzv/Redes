@@ -7,25 +7,28 @@
 //
 
 import UIKit
+import Redes
 
 class ViewController: UIViewController  {
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
+        Redes.setupDebugModeEnable(true)
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
 //        performLogin()
-        perfromUpload()
+//        perfromUpload()
+        performBatchRequest()
     }
 }
 
 // Before you run this project, checkout `API.swift` and change the setups to your server configuration.
 extension ViewController {
     func performLogin() {
-        let loginApi = LoginApi()
+        let loginApi = LoginViaMobileAPI()
+        
     
         loginApi.asyncResponseJSON {
             debugPrint($0)
@@ -44,18 +47,18 @@ extension ViewController {
                 }
             }
         }
-//
-//        loginApi.responseJSON {
-//            debugPrint($0)
-//        }
-//        .responseString {
-//            switch $0 {
-//            case .Success(_, let string):
-//                debugPrint(string)
-//            case .Failure(_, let error):
-//                debugPrint(error)
-//            }
-//        }
+
+        loginApi.responseJSON {
+            debugPrint($0)
+        }
+        .responseString {
+            switch $0 {
+            case .Success(_, let string):
+                debugPrint(string)
+            case .Failure(_, let error):
+                debugPrint(error)
+            }
+        }
 //        .cancel()
     }
     
@@ -64,6 +67,27 @@ extension ViewController {
         UploadApi().asyncResponseJSON {
             /// Never run to here
             debugPrint($0)
+        }
+    }
+    
+    func performBatchRequest() {
+        let loginApi = LoginViaMobileAPI()
+        let amountApi = AccountAmountAPI()
+        let shopInfoApi = ShopInfoAPI()
+        let saleDataAPI = SaleDataAPI()
+        
+        let batch = BatchRequest(setups: [loginApi, amountApi, shopInfoApi, saleDataAPI])
+        
+        batch.responseJSON { (rsts: [Result<Response, AnyObject, NSError>]) in
+            debugPrint("rsts.count: \(rsts.count)")
+            for rst in rsts {
+                debugPrint(rst)
+            }
+        }.responseString { (rsts: [Result<Response, String, NSError>]) in
+            debugPrint("rsts.count: \(rsts.count)")
+            for rst in rsts {
+                debugPrint(rst)
+            }
         }
     }
 }

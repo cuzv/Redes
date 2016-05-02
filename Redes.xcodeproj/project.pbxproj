@@ -13,7 +13,6 @@
 		466CB6B11BE9D67500327014 /* Requestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466CB6AB1BE9D67500327014 /* Requestable.swift */; };
 		466CB6B21BE9D67500327014 /* Responseable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466CB6AC1BE9D67500327014 /* Responseable.swift */; };
 		466CB6B51BE9DD5300327014 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466CB6B41BE9DD5300327014 /* Request.swift */; };
-		466CB6B71BE9FAEA00327014 /* ResponseSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466CB6B61BE9FAEA00327014 /* ResponseSerialization.swift */; };
 		466CB6B91BEA031E00327014 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466CB6B81BEA031E00327014 /* API.swift */; };
 		467806AD1BEA2E0900414EEB /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466CB6BA1BEA076000327014 /* Response.swift */; };
 		467806AE1BEA2E0D00414EEB /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466CB6BC1BEA0E7400327014 /* Result.swift */; };
@@ -25,6 +24,7 @@
 		469768341BE8B816004D037F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 469768321BE8B816004D037F /* LaunchScreen.storyboard */; };
 		4697683B1BE8D046004D037F /* Redes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 469768181BE8B7D5004D037F /* Redes.framework */; };
 		46CFE5731CD6412E0098C995 /* BatchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CFE5721CD6412E0098C995 /* BatchRequest.swift */; };
+		46CFE5761CD6497C0098C995 /* TestAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CFE5751CD6497C0098C995 /* TestAPI.swift */; };
 		46DBDFBB1BFB3ED400F9177D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46DBDFBA1BFB3ED400F9177D /* SystemConfiguration.framework */; };
 		46FEE2CF1BEE52FA00A48DBB /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FEE2CE1BEE52FA00A48DBB /* Command.swift */; };
 		46FEE2E01BF097E100A48DBB /* AlamofireCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FEE2DF1BF097E100A48DBB /* AlamofireCommand.swift */; };
@@ -41,7 +41,6 @@
 		466CB6AB1BE9D67500327014 /* Requestable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Requestable.swift; sourceTree = "<group>"; };
 		466CB6AC1BE9D67500327014 /* Responseable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Responseable.swift; sourceTree = "<group>"; };
 		466CB6B41BE9DD5300327014 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
-		466CB6B61BE9FAEA00327014 /* ResponseSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseSerialization.swift; sourceTree = "<group>"; };
 		466CB6B81BEA031E00327014 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		466CB6BA1BEA076000327014 /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		466CB6BC1BEA0E7400327014 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
@@ -55,6 +54,7 @@
 		469768331BE8B816004D037F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		469768351BE8B816004D037F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		46CFE5721CD6412E0098C995 /* BatchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchRequest.swift; sourceTree = "<group>"; };
+		46CFE5751CD6497C0098C995 /* TestAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestAPI.swift; sourceTree = "<group>"; };
 		46DBDFBA1BFB3ED400F9177D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		46FEE2CE1BEE52FA00A48DBB /* Command.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
 		46FEE2DF1BF097E100A48DBB /* AlamofireCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireCommand.swift; sourceTree = "<group>"; };
@@ -95,7 +95,6 @@
 				466CB6B41BE9DD5300327014 /* Request.swift */,
 				466CB6AB1BE9D67500327014 /* Requestable.swift */,
 				466CB6BA1BEA076000327014 /* Response.swift */,
-				466CB6B61BE9FAEA00327014 /* ResponseSerialization.swift */,
 				466CB6AC1BE9D67500327014 /* Responseable.swift */,
 				466CB6BC1BEA0E7400327014 /* Result.swift */,
 				46CFE5721CD6412E0098C995 /* BatchRequest.swift */,
@@ -133,6 +132,7 @@
 				469768321BE8B816004D037F /* LaunchScreen.storyboard */,
 				4697682D1BE8B816004D037F /* Main.storyboard */,
 				4697682B1BE8B816004D037F /* ViewController.swift */,
+				46CFE5751CD6497C0098C995 /* TestAPI.swift */,
 			);
 			path = RedesSample;
 			sourceTree = "<group>";
@@ -303,7 +303,6 @@
 			files = (
 				46FEE2E01BF097E100A48DBB /* AlamofireCommand.swift in Sources */,
 				466CB6B21BE9D67500327014 /* Responseable.swift in Sources */,
-				466CB6B71BE9FAEA00327014 /* ResponseSerialization.swift in Sources */,
 				466CB6B51BE9DD5300327014 /* Request.swift in Sources */,
 				46CFE5731CD6412E0098C995 /* BatchRequest.swift in Sources */,
 				466CB6B11BE9D67500327014 /* Requestable.swift in Sources */,
@@ -322,6 +321,7 @@
 			files = (
 				4697682C1BE8B816004D037F /* ViewController.swift in Sources */,
 				466CB6B91BEA031E00327014 /* API.swift in Sources */,
+				46CFE5761CD6497C0098C995 /* TestAPI.swift in Sources */,
 				4697682A1BE8B816004D037F /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

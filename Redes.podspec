@@ -1,10 +1,9 @@
 Pod::Spec.new do |s|
   s.name = 'Redes'
-  s.version = '0.8.0'
+  s.version = '0.8.5'
   s.license = 'MIT'
   s.summary = 'High-level network layer abstraction library written in Swift'
   s.homepage = 'https://github.com/cuzv/Redes'
-#  s.social_media_url = 'https://twitter.com/moxhxiao'
   s.author = { "Moch Xiao" => "cuzval@gmail.com" }
   s.source = { :git => 'https://github.com/cuzv/Redes.git', :tag => s.version }
 
