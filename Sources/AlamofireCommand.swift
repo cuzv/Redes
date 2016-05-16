@@ -180,7 +180,7 @@ public extension AlamofireCommand {
         
         if request.networkUnavailable {
             dispatch_async(queue ?? dispatch_get_main_queue(), {
-                let error = Error.errorWithCode(RedesStatusCode.PhysicalError.rawValue, failureReason: "FAILURE: Network unavailable.")
+                let error = Error.redes_errorWithCode(RedesStatusCode.PhysicalError.rawValue, failureReason: "FAILURE: Network unavailable.")
                 completionHandler(nil, nil, nil, error)
             })
             return
@@ -329,7 +329,7 @@ private extension AlamofireCommand {
             message: message,
             statusCode: statusCode
         )
-        let error = Error.errorWithCode(statusCode, failureReason: message)
+        let error = Error.redes_errorWithCode(statusCode, failureReason: message)
         return .Failure(rsp, error)
     }
     
@@ -419,7 +419,7 @@ private extension AlamofireCommand {
     {
         dispatch_async(queue ?? dispatch_get_main_queue(), {
             let message = "FAILURE: Network unavailable."
-            let error = Error.errorWithCode(RedesStatusCode.PhysicalError.rawValue, failureReason: message)
+            let error = Error.redes_errorWithCode(RedesStatusCode.PhysicalError.rawValue, failureReason: message)
             let rsp = Response(
                 setup: setup,
                 data: nil,
