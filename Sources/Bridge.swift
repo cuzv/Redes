@@ -129,3 +129,10 @@ public enum ParameterEncoding {
         }
     }
 }
+
+internal extension Error {
+    static func errorWithCode(code: Int, failureReason: String) -> NSError {
+        let userInfo = [NSLocalizedFailureReasonErrorKey: failureReason]
+        return NSError(domain: Error.Domain, code: code, userInfo: userInfo)
+    }
+}
