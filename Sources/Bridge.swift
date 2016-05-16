@@ -72,7 +72,6 @@ extension NSURLRequest: URLRequestConvertible {
 // MARK: - typealias
 
 public typealias MultipartFormData = Alamofire.MultipartFormData
-public typealias DownloadFileDestination = Alamofire.Request.DownloadFileDestination
 
 // MARK:
 

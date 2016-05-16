@@ -96,6 +96,13 @@ struct UploadApi: Requestable, Responseable, Uploadable {
     }
 }
 
+struct DownloadApi: Requestable, Responseable, Downloadable {
+    var requestURLPath: URLStringConvertible {
+        return "http://tse1.mm.bing.net/th?id=OIP.Ma778e8864fbc00cb75e973e2e92905eao2&w=135&h=272&c=7&rs=1&qlt=90&o=4&pid=1.9"
+    }
+}
+
+// MARK: - 
 
 struct LoginViaMobileAPI: MicroShopAPI, Requestable, Responseable {
     var mobile: String = "18122222222"

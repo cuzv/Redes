@@ -168,4 +168,9 @@ public extension Request {
         command.responsePropertyList(queue: queue, options: options, completionHandler: completionHandler)
         return self
     }
+    
+    public func progress(closure: ((bytesRead: Int64, totalBytesRead: Int64, totalBytesExpectedToRead: Int64) -> Void)?) -> Self {
+        command.progress(closure)
+        return self
+    }
 }

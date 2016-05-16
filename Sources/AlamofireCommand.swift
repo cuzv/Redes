@@ -121,9 +121,9 @@ public extension AlamofireCommand {
             )
         } else if let downloadCommand = request.setup as? Downloadable {
             // Need download
-            let (resumeData, downloadFileDestination) = downloadCommand.downloadDestinationTuple
-            if let resumeData = resumeData {
-                underlyingRequest = Alamofire.download(resumeData: resumeData, destination: downloadFileDestination)
+            let destination = downloadCommand.destination
+            if let resumeData = downloadCommand.resulmeData {
+                underlyingRequest = Alamofire.download(resumeData: resumeData, destination: destination)
             } else {
                 underlyingRequest = Alamofire.download(
                     method,
@@ -131,7 +131,7 @@ public extension AlamofireCommand {
                     parameters: request.setup.requestBodyParameters,
                     encoding: request.setup.requestParameterEncoding.parameterEncoding(),
                     headers: requestHeaderParameters,
-                    destination: downloadFileDestination
+                    destination: destination
                 )
             }
         } else {
@@ -305,6 +305,10 @@ public extension AlamofireCommand {
                 )
             }
         )
+    }
+    
+    func progress(closure: ((bytesRead: Int64, totalBytesRead: Int64, totalBytesExpectedToRead: Int64) -> Void)?) {
+        underlyingRequest?.progress(closure)
     }
 }
 

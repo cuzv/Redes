@@ -22,7 +22,8 @@
 		4697682F1BE8B816004D037F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4697682D1BE8B816004D037F /* Main.storyboard */; };
 		469768311BE8B816004D037F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 469768301BE8B816004D037F /* Assets.xcassets */; };
 		469768341BE8B816004D037F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 469768321BE8B816004D037F /* LaunchScreen.storyboard */; };
-		4697683B1BE8D046004D037F /* Redes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 469768181BE8B7D5004D037F /* Redes.framework */; };
+		46AD4E831CD7B0A6001D5619 /* Redes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 469768181BE8B7D5004D037F /* Redes.framework */; };
+		46AD4E841CD7B0A6001D5619 /* Redes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 469768181BE8B7D5004D037F /* Redes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		46CFE5731CD6412E0098C995 /* BatchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CFE5721CD6412E0098C995 /* BatchRequest.swift */; };
 		46CFE5761CD6497C0098C995 /* TestAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CFE5751CD6497C0098C995 /* TestAPI.swift */; };
 		46DBDFBB1BFB3ED400F9177D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46DBDFBA1BFB3ED400F9177D /* SystemConfiguration.framework */; };
@@ -30,6 +31,30 @@
 		46FEE2E01BF097E100A48DBB /* AlamofireCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FEE2DF1BF097E100A48DBB /* AlamofireCommand.swift */; };
 		AF23178DB84A5594E8781D35 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1192F85E916F9D24EFDA3054 /* Pods.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		46AD4E851CD7B0A6001D5619 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4697680F1BE8B7D5004D037F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 469768171BE8B7D5004D037F;
+			remoteInfo = Redes;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		46AD4E871CD7B0A6001D5619 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				46AD4E841CD7B0A6001D5619 /* Redes.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1192F85E916F9D24EFDA3054 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,7 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4697683B1BE8D046004D037F /* Redes.framework in Frameworks */,
+				46AD4E831CD7B0A6001D5619 /* Redes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,10 +221,12 @@
 				469768231BE8B816004D037F /* Sources */,
 				469768241BE8B816004D037F /* Frameworks */,
 				469768251BE8B816004D037F /* Resources */,
+				46AD4E871CD7B0A6001D5619 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				46AD4E861CD7B0A6001D5619 /* PBXTargetDependency */,
 			);
 			name = RedesSample;
 			productName = RedesSample;
@@ -327,6 +354,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		46AD4E861CD7B0A6001D5619 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 469768171BE8B7D5004D037F /* Redes */;
+			targetProxy = 46AD4E851CD7B0A6001D5619 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		4697682D1BE8B816004D037F /* Main.storyboard */ = {
@@ -486,6 +521,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = RedesSample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -498,6 +535,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = RedesSample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

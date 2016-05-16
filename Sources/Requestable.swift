@@ -133,11 +133,28 @@ public extension MultipartUploadable {
 // MARK: - Downloadable
 
 public protocol Downloadable {
-    /// Download file 
-    /// NSData?: resume data
-    var downloadDestinationTuple: (NSData?, DownloadFileDestination) { get }
+    /// Downloaded resume data
+    var resulmeData: NSData? { get }
+    /// File save location
+    var destination: (temporaryURL: NSURL, response: NSHTTPURLResponse) -> NSURL { get }
 }
 
 public extension Downloadable {
+    var resulmeData: NSData? {
+        return nil
+    }
+    
+    var destination: (temporaryURL: NSURL, response: NSHTTPURLResponse) -> NSURL {
+        return Alamofire.Request.suggestedDownloadDestination(directory: .DocumentDirectory, domain: .UserDomainMask)
+    }
 }
 
+public extension NSHTTPURLResponse {
+    public var suggestedDestination: NSURL? {
+        let directoryURLs = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+        if !directoryURLs.isEmpty {
+            return directoryURLs[0].URLByAppendingPathComponent(suggestedFilename!)
+        }
+        return nil
+    }
+}

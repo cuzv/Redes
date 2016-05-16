@@ -42,5 +42,9 @@ public protocol Command: class {
     func responseJSON(queue queue: dispatch_queue_t?, options: NSJSONReadingOptions, completionHandler: Result<Response, AnyObject, NSError> -> ())
     /// Response PList
     func responsePropertyList(queue queue: dispatch_queue_t?, options: NSPropertyListReadOptions, completionHandler: Result<Response, AnyObject, NSError> -> ())
+    
+    /// bytesRead, totalBytesRead, totalBytesExpectedToRead
+    func progress(closure: ((bytesRead: Int64, totalBytesRead: Int64, totalBytesExpectedToRead: Int64) -> Void)?)
+
 }
 

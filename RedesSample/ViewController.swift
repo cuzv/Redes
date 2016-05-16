@@ -20,7 +20,9 @@ class ViewController: UIViewController  {
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
 //        performLogin()
 //        perfromUpload()
-        performBatchRequest()
+        performDownload()
+//        performBatchRequest()
+        
     }
 }
 
@@ -70,7 +72,19 @@ extension ViewController {
         }
     }
     
+    func performDownload() {
+        
+        DownloadApi().response { (req: NSURLRequest?, resp: NSHTTPURLResponse?, data: NSData?, error: NSError?) in
+            debugPrint(error)
+            debugPrint(resp?.suggestedDestination)
+        }
+        .progress { (bytesRead, totalBytesRead, totalBytesExpectedToRead) in
+            debugPrint("propress: \(CGFloat(totalBytesRead) / CGFloat(totalBytesExpectedToRead))")
+        }
+    }
+    
     func performBatchRequest() {
+        
         let loginApi = LoginViaMobileAPI()
         let amountApi = AccountAmountAPI()
         let shopInfoApi = ShopInfoAPI()
@@ -91,6 +105,3 @@ extension ViewController {
         }
     }
 }
-
-
-
