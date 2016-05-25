@@ -103,5 +103,14 @@ extension ViewController {
                 debugPrint(rst)
             }
         }
+        
+        let d1 = DownloadApi()
+        let d2 = DownloadApi()
+        
+        let batch2 = BatchRequest(setups: [d1, d2])
+        batch2.response { (rsts: [(NSURLRequest?, NSHTTPURLResponse?, NSData?, NSError?)]) in
+            
+        }
+        
     }
 }

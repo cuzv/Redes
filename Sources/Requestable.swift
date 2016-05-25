@@ -50,7 +50,6 @@ public protocol Requestable {
 
 /// Implement the optional methods
 public extension Requestable {
-    
     var requestCommand: Command {
         return AlamofireCommand()
     }
@@ -145,15 +144,23 @@ public extension Downloadable {
     }
     
     var destination: (temporaryURL: NSURL, response: NSHTTPURLResponse) -> NSURL {
-        return Alamofire.Request.suggestedDownloadDestination(directory: .DocumentDirectory, domain: .UserDomainMask)
+        return { (temporaryURL: NSURL, response: NSHTTPURLResponse) -> NSURL in
+            if let suggestedDestination = response.suggestedDestination {
+                return suggestedDestination
+            }
+            return temporaryURL
+        }
     }
 }
+
+// AMRK: - Helpers
 
 public extension NSHTTPURLResponse {
     public var suggestedDestination: NSURL? {
         let directoryURLs = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-        if !directoryURLs.isEmpty {
-            return directoryURLs[0].URLByAppendingPathComponent(suggestedFilename!)
+        if !directoryURLs.isEmpty, let suggestedFilename = self.suggestedFilename {
+            let address = unsafeBitCast(unsafeAddressOf(self), UnsafePointer<Int>.self).memory
+            return directoryURLs[0].URLByAppendingPathComponent(String(address) + suggestedFilename)
         }
         return nil
     }
