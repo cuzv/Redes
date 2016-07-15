@@ -1,5 +1,5 @@
 [![License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://github.com/cuzv/PhotoBrowser/blob/master/LICENSE)
-[![CocoaPods Compatible](https://img.shields.io/badge/CocoaPods-v0.8.8-green.svg)](https://github.com/CocoaPods/CocoaPods)
+[![CocoaPods Compatible](https://img.shields.io/badge/CocoaPods-v0.8.9-green.svg)](https://github.com/CocoaPods/CocoaPods)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Weibo](https://img.shields.io/badge/Weibo-cuzval-yellowgreen.svg)](http://weibo.com/cuzval/)
 [![Twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](http://twitter.com/mochxiao)
@@ -86,13 +86,13 @@ On your application targets’ “General” settings tab, in the “Linked Fram
 
 On your application targets’ “Build Phases” settings tab, click the “+” icon and choose “New Run Script Phase”. Create a Run Script with the following content:
 
-``` 
+```
 /usr/local/bin/carthage copy-frameworks
 ```
 
 and add the paths to the frameworks you want to use under “Input Files”:
 
-``` 
+```
 $(SRCROOT)/Carthage/Build/iOS/Redes.framework
 ```
 
@@ -131,7 +131,7 @@ let loginApi = LoginApi()
 
 loginApi.asyncResponseJSON {
     debugPrint($0)
-}        
+}
 
 loginApi.responseJSON {
     debugPrint($0)

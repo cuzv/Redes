@@ -159,9 +159,10 @@ public extension NSHTTPURLResponse {
     public var suggestedDestination: NSURL? {
         let directoryURLs = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
         if !directoryURLs.isEmpty, let suggestedFilename = self.suggestedFilename {
-            let address = unsafeBitCast(unsafeAddressOf(self), UnsafePointer<Int>.self).memory
+            let address = unsafeBitCast(unsafeAddressOf(self), Int.self)
             return directoryURLs[0].URLByAppendingPathComponent(String(address) + suggestedFilename)
         }
         return nil
     }
 }
+

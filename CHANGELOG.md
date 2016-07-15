@@ -14,3 +14,6 @@ High-level network layer abstraction library written in Swift.
 
 修复下载文件默认保存地址可能重复导致保存失败的问题。
 
+### 0.8.9
+
+添加辅助方法
