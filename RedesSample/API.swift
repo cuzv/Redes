@@ -88,7 +88,7 @@ struct DownloadApi: Requestable, Responseable, Downloadable {
 // MARK: - 
 
 struct LoginViaMobileAPI: MicroShopAPI, Requestable, Responseable {
-    var mobile: String = "18122222222"
+    var mobile: String = "13488888888"
     var smsCaptcha: String = "123456"
     
     var moduleName: String { return "item" }
