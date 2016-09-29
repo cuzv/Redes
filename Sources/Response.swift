@@ -29,20 +29,20 @@ import Alamofire
 
 public struct Response {
     /// The request sent to the server.
-    public let originalSetup: protocol<Requestable, Responseable>
+    public let originalSetup: Requestable & Responseable
     /// The data returned by the server.
-    public let data: NSData?
+    public let data: Data?
     /// The server's response to the URL request.
-    public let URLResponse: NSHTTPURLResponse?
+    public let URLResponse: HTTPURLResponse?
     /// The message returned by the server or constructed internal.
     public let message: String?
     /// The status code returned by the server or constructed internal.
     public let statusCode: Int?
 
     public init(
-        setup: protocol<Requestable, Responseable>,
-        data: NSData?,
-        response: NSHTTPURLResponse?,
+        setup: Requestable & Responseable,
+        data: Data?,
+        response: HTTPURLResponse?,
         message: String?,
         statusCode: Int?)
     {

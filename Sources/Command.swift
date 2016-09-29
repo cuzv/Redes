@@ -28,23 +28,23 @@ import Foundation
 
 public protocol Command: class {
     /// Add request
-    func injectRequest(request: Request)
+    func injectRequest(_ request: Request)
     /// Remove request
     func removeRequest()
     
     /// Response default
-    func response(queue queue: dispatch_queue_t?, completionHandler: (NSURLRequest?, NSHTTPURLResponse?, NSData?, NSError?) -> ())
+    func response(queue: DispatchQueue?, completionHandler: (URLRequest?, HTTPURLResponse?, Data?, NSError?) -> ())
     /// Response binary data
-    func responseData(queue queue: dispatch_queue_t?, completionHandler: Result<Response, NSData, NSError> -> ())
+    func responseData(queue: DispatchQueue?, completionHandler: (Result<Response, Data, NSError>) -> ())
     /// Response string
-    func responseString(queue queue: dispatch_queue_t?, encoding: NSStringEncoding?, completionHandler: Result<Response, String, NSError> -> ())
+    func responseString(queue: DispatchQueue?, encoding: String.Encoding?, completionHandler: (Result<Response, String, NSError>) -> ())
     /// Response JSON
-    func responseJSON(queue queue: dispatch_queue_t?, options: NSJSONReadingOptions, completionHandler: Result<Response, AnyObject, NSError> -> ())
+    func responseJSON(queue: DispatchQueue?, options: JSONSerialization.ReadingOptions, completionHandler: (Result<Response, AnyObject, NSError>) -> ())
     /// Response PList
-    func responsePropertyList(queue queue: dispatch_queue_t?, options: NSPropertyListReadOptions, completionHandler: Result<Response, AnyObject, NSError> -> ())
+    func responsePropertyList(queue: DispatchQueue?, options: PropertyListSerialization.ReadOptions, completionHandler: (Result<Response, AnyObject, NSError>) -> ())
     
     /// bytesRead, totalBytesRead, totalBytesExpectedToRead
-    func progress(closure: ((bytesRead: Int64, totalBytesRead: Int64, totalBytesExpectedToRead: Int64) -> Void)?)
+    func progress(_ closure: ((_ bytesRead: Int64, _ totalBytesRead: Int64, _ totalBytesExpectedToRead: Int64) -> Void)?)
 
 }
 

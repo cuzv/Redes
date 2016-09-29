@@ -28,8 +28,8 @@ import Foundation
 import Alamofire
 
 final public class AlamofireCommand: Command {
-    public private(set) weak var request: Request?
-    private var underlyingRequest: Alamofire.Request?
+    public fileprivate(set) weak var request: Request?
+    fileprivate var underlyingRequest: Alamofire.Request?
     
     deinit {
         if RedesDebugModeEnabled {
@@ -41,7 +41,7 @@ final public class AlamofireCommand: Command {
 // MARK: - Request
 
 public extension AlamofireCommand {
-    public func injectRequest(request: Request) {
+    public func injectRequest(_ request: Request) {
         self.request = request
 
         processRequest()
@@ -49,14 +49,14 @@ public extension AlamofireCommand {
     }
     
     // Check network reachability
-    private func isNetworkUnavailable() -> Bool {
+    fileprivate func isNetworkUnavailable() -> Bool {
         // Supporse default is available
         guard let sharedManager = ReachabilityManager.sharedManager else { return false }
         
         return !sharedManager.isReachable()
     }
     
-    private func processRequest() {
+    fileprivate func processRequest() {
         guard let request = request else { return }
 
         if isNetworkUnavailable() {
@@ -146,10 +146,10 @@ public extension AlamofireCommand {
         }
     }
     
-    private func doneRequest() {
+    fileprivate func doneRequest() {
         guard let underlyingRequest = underlyingRequest else { return }
         
-        underlyingRequest.delegate.queue.addOperationWithBlock {
+        underlyingRequest.delegate.queue.addOperation {
             if RedesDebugModeEnabled {
                 debugPrint("Request completion.")
             }
@@ -159,9 +159,9 @@ public extension AlamofireCommand {
     public func removeRequest() {
         guard let underlyingRequest = underlyingRequest else { return }
         
-        let state = underlyingRequest.task.state
-        if state == .Running || state == .Suspended {
-            underlyingRequest.task.cancel()
+        let state = underlyingRequest.task?.state
+        if state == .running || state == .suspended {
+            underlyingRequest.task?.cancel()
             if RedesDebugModeEnabled {
                 debugPrint("Removing request...")
             }
@@ -173,13 +173,13 @@ public extension AlamofireCommand {
 
 public extension AlamofireCommand {
     func response(
-        queue queue: dispatch_queue_t?,
-        completionHandler: (NSURLRequest?, NSHTTPURLResponse?, NSData?, NSError?) -> ())
+        queue: DispatchQueue?,
+        completionHandler: @escaping (URLRequest?, HTTPURLResponse?, Data?, NSError?) -> ())
     {
         guard let request = request else { return }
         
         if request.networkUnavailable {
-            dispatch_async(queue ?? dispatch_get_main_queue(), {
+            (queue ?? DispatchQueue.main).async(execute: {
                 let error = Error.redes_errorWithCode(RedesStatusCode.PhysicalError.rawValue, failureReason: "FAILURE: Network unavailable.")
                 completionHandler(nil, nil, nil, error)
             })
@@ -190,8 +190,8 @@ public extension AlamofireCommand {
     }
     
     func responseData(
-        queue queue: dispatch_queue_t?,
-        completionHandler: Result<Response, NSData, NSError> -> ())
+        queue: DispatchQueue?,
+        completionHandler: @escaping (Result<Response, Data, NSError>) -> ())
     {
         guard let request = request else { return }
         
@@ -218,9 +218,9 @@ public extension AlamofireCommand {
     }
     
     func responseString(
-        queue queue: dispatch_queue_t?,
-        encoding: NSStringEncoding?,
-        completionHandler: Result<Response, String, NSError> -> ())
+        queue: DispatchQueue?,
+        encoding: String.Encoding?,
+        completionHandler: @escaping (Result<Response, String, NSError>) -> ())
     {
         guard let request = request else { return }
         
@@ -248,9 +248,9 @@ public extension AlamofireCommand {
     }
     
     public func responseJSON(
-        queue queue: dispatch_queue_t?,
-        options: NSJSONReadingOptions,
-        completionHandler: Result<Response, AnyObject, NSError> -> ())
+        queue: DispatchQueue?,
+        options: JSONSerialization.ReadingOptions,
+        completionHandler: @escaping (Result<Response, AnyObject, NSError>) -> ())
     {
         guard let request = request else { return }
         
@@ -278,9 +278,9 @@ public extension AlamofireCommand {
     }
     
     func responsePropertyList(
-        queue queue: dispatch_queue_t?,
-        options: NSPropertyListReadOptions,
-        completionHandler: Result<Response, AnyObject, NSError> -> ())
+        queue: DispatchQueue?,
+        options: PropertyListSerialization.ReadOptions,
+        completionHandler: @escaping (Result<Response, AnyObject, NSError>) -> ())
     {
         guard let request = request else { return }
         
@@ -307,7 +307,7 @@ public extension AlamofireCommand {
         )
     }
     
-    func progress(closure: ((bytesRead: Int64, totalBytesRead: Int64, totalBytesExpectedToRead: Int64) -> Void)?) {
+    func progress(_ closure: ((_ bytesRead: Int64, _ totalBytesRead: Int64, _ totalBytesExpectedToRead: Int64) -> Void)?) {
         underlyingRequest?.progress(closure)
     }
 }
@@ -317,7 +317,7 @@ public extension AlamofireCommand {
 private extension AlamofireCommand {
     /// Generate manual failure closure parameters
     func buildOperationFailureResult<T>(
-        response response: Alamofire.Response<T, NSError>,
+        response: Alamofire.Response<T, NSError>,
         message: String,
         statusCode: Int)
         -> Result<Response, T, NSError>
@@ -334,7 +334,7 @@ private extension AlamofireCommand {
     }
     
     /// Generate server request failure closure parameters
-    func buildPhysicalFailureResult<T>(response response: Alamofire.Response<T, NSError>)
+    func buildPhysicalFailureResult<T>(response: Alamofire.Response<T, NSError>)
         -> Result<Response, T, NSError>
     {
         if RedesDebugModeEnabled {
@@ -354,7 +354,7 @@ private extension AlamofireCommand {
     
     /// Generate success closure parameters
     func buildSuccessResult<T>(
-        response response: Alamofire.Response<T, NSError>,
+        response: Alamofire.Response<T, NSError>,
         result: T,
         message: String,
         statusCode: Int)
@@ -372,8 +372,8 @@ private extension AlamofireCommand {
     
     /// Birdege `Alamofire` response to `Redes` result
     func bridgeToResult<K>(
-        @noescape completionHandler completionHandler: Result<Response, K, NSError> -> (),
-        @noescape validationHandler: K -> (Bool, K, String, Int),
+        completionHandler: (Result<Response, K, NSError>) -> (),
+        validationHandler: (K) -> (Bool, K, String, Int),
         response: Alamofire.Response<K, NSError>)
     {
         if response.result.isSuccess {
@@ -413,11 +413,11 @@ private extension AlamofireCommand {
     }
     
     func bridgeToNetworkUnavailable<T>(
-        setup setup: protocol<Requestable, Responseable>,
-        completionHandler: Result<Response, T, NSError> -> (),
-        queue: dispatch_queue_t?)
+        setup: Requestable & Responseable,
+        completionHandler: @escaping (Result<Response, T, NSError>) -> (),
+        queue: DispatchQueue?)
     {
-        dispatch_async(queue ?? dispatch_get_main_queue(), {
+        (queue ?? DispatchQueue.main).async(execute: {
             let message = "FAILURE: Network unavailable."
             let error = Error.redes_errorWithCode(RedesStatusCode.PhysicalError.rawValue, failureReason: message)
             let rsp = Response(
@@ -425,7 +425,7 @@ private extension AlamofireCommand {
                 data: nil,
                 response: nil,
                 message: message,
-                statusCode: RedesStatusCode.PhysicalError.rawValue
+                statusCode: RedesStatusCode.physicalError.rawValue
             )
             completionHandler(.Failure(rsp, error))
         })

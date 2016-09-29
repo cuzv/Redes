@@ -39,16 +39,16 @@ import SystemConfiguration
 final public class ReachabilityManager {
     let reachabilityRef: SCNetworkReachability?
     
-    private static let sharedInstance = ReachabilityManager()
+    fileprivate static let sharedInstance = ReachabilityManager()
     class var sharedManager: ReachabilityManager? {
         return sharedInstance
     }
 
-    private var reachabilityFlags: SCNetworkReachabilityFlags {
+    fileprivate var reachabilityFlags: SCNetworkReachabilityFlags {
         guard let reachabilityRef = reachabilityRef else { return SCNetworkReachabilityFlags() }
         
         var flags = SCNetworkReachabilityFlags()
-        let gotFlags = withUnsafeMutablePointer(&flags) {
+        let gotFlags = withUnsafeMutablePointer(to: &flags) {
             SCNetworkReachabilityGetFlags(reachabilityRef, UnsafeMutablePointer($0))
         }
         
@@ -61,10 +61,10 @@ final public class ReachabilityManager {
     
     init?() {
         var zeroAddress = sockaddr_in()
-        zeroAddress.sin_len = UInt8(sizeofValue(zeroAddress))
+        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
         zeroAddress.sin_family = sa_family_t(AF_INET)
         
-        guard let _reachabilityRef = withUnsafePointer(&zeroAddress, {
+        guard let _reachabilityRef = withUnsafePointer(to: &zeroAddress, {
             SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
         }) else {
             reachabilityRef = nil
@@ -81,7 +81,7 @@ public extension ReachabilityManager {
         return isReachableWithFlags(flags)
     }
     
-    private func isReachableWithFlags(flags: SCNetworkReachabilityFlags) -> Bool {
+    fileprivate func isReachableWithFlags(_ flags: SCNetworkReachabilityFlags) -> Bool {
         
         if !isReachable(flags) {
             return false
@@ -94,12 +94,12 @@ public extension ReachabilityManager {
         return true
     }
     
-    private func isReachable(flags: SCNetworkReachabilityFlags) -> Bool {
-        return flags.contains(.Reachable)
+    fileprivate func isReachable(_ flags: SCNetworkReachabilityFlags) -> Bool {
+        return flags.contains(.reachable)
     }
     
-    private func isConnectionRequiredOrTransient(flags: SCNetworkReachabilityFlags) -> Bool {
-        let testcase:SCNetworkReachabilityFlags = [.ConnectionRequired, .TransientConnection]
-        return flags.intersect(testcase) == testcase
+    fileprivate func isConnectionRequiredOrTransient(_ flags: SCNetworkReachabilityFlags) -> Bool {
+        let testcase:SCNetworkReachabilityFlags = [.connectionRequired, .transientConnection]
+        return flags.intersection(testcase) == testcase
     }
 }

@@ -28,33 +28,34 @@ import Foundation
 import Alamofire
 
 /// T: protocol<Requestable, Responseable>
-public func request<T: protocol<Requestable, Responseable>>(setup: T) -> Request {
+public func request<T: Requestable & Responseable>(_ setup: T) -> Request {
     return Request(setup: setup)
 }
 
 /// T: protocol<Requestable, Responseable, Uploadable>
-public func request<T: protocol<Requestable, Responseable, Uploadable>>(setup: T) -> Request {
+public func request<T: Requestable & Responseable & Uploadable>(_ setup: T) -> Request {
     return Request(setup: setup)
 }
 
 /// T: protocol<Requestable, Responseable, MultipartUploadable>
-public func request<T: protocol<Requestable, Responseable, MultipartUploadable>>(setup: T) -> Request {
+public func request<T: Requestable & Responseable & MultipartUploadable>(_ setup: T) -> Request {
     return Request(setup: setup)
 }
 
 /// T: protocol<Requestable, Responseable, Downloadable>
-public func request<T: protocol<Requestable, Responseable, Downloadable>>(setup: T) -> Request {
+public func request<T: Requestable & Responseable & Downloadable>(_ setup: T) -> Request {
     return Request(setup: setup)
 }
 
 /// Set up NSURLCache
 /// Should invoke on `application:didFinishLaunchingWithOptions:`
-public func setupSharedURLCache(memoryCapacity memoryCapacity: Int, diskCapacity: Int, diskPath: String? = nil) {
-    NSURLCache.setSharedURLCache(NSURLCache(memoryCapacity: memoryCapacity, diskCapacity: diskCapacity, diskPath: diskPath))
+public func setupSharedURLCache(memoryCapacity: Int, diskCapacity: Int) {
+    URLCache.shared.memoryCapacity = memoryCapacity
+    URLCache.shared.diskCapacity = diskCapacity
 }
 
 internal var RedesDebugModeEnabled = false
-public func setupDebugModeEnable(enable: Bool) {
+public func setupDebugModeEnable(_ enable: Bool) {
     RedesDebugModeEnabled = enable
 }
 
@@ -63,8 +64,8 @@ public func setupDebugModeEnable(enable: Bool) {
 public extension Requestable where Self: Responseable {
     /// Response
     public func response(
-        queue queue: dispatch_queue_t? = nil,
-        completionHandler: (NSURLRequest?, NSHTTPURLResponse?, NSData?, NSError?) -> ())
+        queue: DispatchQueue? = nil,
+        completionHandler:  @escaping (URLRequest?, HTTPURLResponse?, Data?, NSError?) -> ())
         -> Request
     {
         return Redes.request(self).response(
@@ -75,8 +76,8 @@ public extension Requestable where Self: Responseable {
     
     /// Resposne data
     public func responseData(
-        queue queue: dispatch_queue_t? = nil,
-        completionHandler: Result<Response, NSData, NSError> -> ())
+        queue: DispatchQueue? = nil,
+        completionHandler:  @escaping (Result<Response, Data, NSError>) -> ())
         -> Request
     {
         return Redes.request(self).responseData(
@@ -87,9 +88,9 @@ public extension Requestable where Self: Responseable {
 
     /// Response strting data
     public func responseString(
-        queue queue: dispatch_queue_t? = nil,
-        encoding: NSStringEncoding? = nil,
-        completionHandler: Result<Response, String, NSError> -> ())
+        queue: DispatchQueue? = nil,
+        encoding: String.Encoding? = nil,
+        completionHandler:  @escaping (Result<Response, String, NSError>) -> ())
         -> Request
     {
         return Redes.request(self).responseString(
@@ -101,9 +102,9 @@ public extension Requestable where Self: Responseable {
     
     /// Response json data
     public func responseJSON(
-        queue queue: dispatch_queue_t? = nil,
-        options: NSJSONReadingOptions = .AllowFragments,
-        completionHandler: Result<Response, AnyObject, NSError> -> ())
+        queue: DispatchQueue? = nil,
+        options: JSONSerialization.ReadingOptions = .allowFragments,
+        completionHandler:  @escaping (Result<Response, AnyObject, NSError>) -> ())
         -> Request
     {
         return Redes.request(self).responseJSON(
@@ -115,9 +116,9 @@ public extension Requestable where Self: Responseable {
     
     /// Response PList
     public func responsePropertyList(
-        queue queue: dispatch_queue_t? = nil,
-        options: NSPropertyListReadOptions = NSPropertyListReadOptions(),
-        completionHandler: Result<Response, AnyObject, NSError> -> ())
+        queue: DispatchQueue? = nil,
+        options: PropertyListSerialization.ReadOptions = PropertyListSerialization.ReadOptions(),
+        completionHandler:  @escaping (Result<Response, AnyObject, NSError>) -> ())
         -> Request
     {
         return Redes.request(self).responsePropertyList(
@@ -129,7 +130,7 @@ public extension Requestable where Self: Responseable {
 }
 
 public extension Requestable where Self: Responseable {
-    public func asyncResponseJSON(completionHandler: Result<Response, AnyObject, NSError> -> ()) -> Request {
+    public func asyncResponseJSON(_ completionHandler:  @escaping (Result<Response, AnyObject, NSError>) -> ()) -> Request {
         return Redes.request(self).asyncResponseJSON(completionHandler)
     }
 }
@@ -137,19 +138,19 @@ public extension Requestable where Self: Responseable {
 // MARK: - Resonse JSON asynchronous
 
 public extension Redes.Request  {
-    public func asyncResponseJSON(completionHandler: Result<Response, AnyObject, NSError> -> ())
+    public func asyncResponseJSON(_ completionHandler:  @escaping (Result<Response, AnyObject, NSError>) -> ())
         -> Self
     {
-        responseJSON(queue: dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), completionHandler: completionHandler)
+        _ = responseJSON(queue: DispatchQueue.global(), completionHandler: completionHandler)
         return self
     }
 }
 
 public extension Redes.BatchRequest {
-    public func asyncResponseJSON(completionHandler: [Result<Response, AnyObject, NSError>] -> ())
+    public func asyncResponseJSON(_ completionHandler:  @escaping ([Result<Response, AnyObject, NSError>]) -> ())
         -> Self
     {
-        responseJSON(queue: dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), completionHandler: completionHandler)
+        _ = responseJSON(queue: DispatchQueue.global(), completionHandler: completionHandler)
         return self
     }
 }

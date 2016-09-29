@@ -34,7 +34,7 @@ public protocol Requestable {
     var requestCommand: Command { get }
     
     /// The request url string
-    var requestURLPath: URLStringConvertible { get }
+    var requestURLPath: URLConvertible { get }
 
     /// The request method
     var requestMethod: Method { get }
@@ -54,8 +54,8 @@ public extension Requestable {
         return AlamofireCommand()
     }
     
-    var requestMethod: Method {
-        return .GET
+    var requestMethod: HTTPMethod {
+        return .get
     }
 
     var requestBodyParameters: [String: AnyObject] {
@@ -67,7 +67,7 @@ public extension Requestable {
     }
     
     var requestParameterEncoding: ParameterEncoding {
-        return .URL
+        return .url
     }
     
     var requestTimeoutInterval: Double {
@@ -80,23 +80,23 @@ public extension Requestable {
 /// You must implement one of follow `uploadXXX` methods or `multipartFormData`.
 public protocol Uploadable {
     /// Upload file
-    var uploadFileURL: NSURL? { get }
+    var uploadFileURL: URL? { get }
     /// Upload binary date
-    var uploadData: NSData? { get }
+    var uploadData: Data? { get }
     /// Upload stream
-    var uploadStream: NSInputStream? { get }
+    var uploadStream: InputStream? { get }
 }
 
 public extension Uploadable {
-    var uploadFileURL: NSURL? {
+    var uploadFileURL: URL? {
         return nil
     }
     
-    var uploadData: NSData? {
+    var uploadData: Data? {
         return nil
     }
     
-    var uploadStream: NSInputStream? {
+    var uploadStream: InputStream? {
         return nil
     }
     
@@ -117,7 +117,7 @@ public extension Uploadable {
 /// Multipart form data upload
 public protocol MultipartUploadable {
     /// Upload multipart form data
-    var multipartFormData: (MultipartFormData -> ()) { get }
+    var multipartFormData: ((MultipartFormData) -> ()) { get }
     /// Upload multipart form data completion handler
     var completionHandler: ((Request) -> ()) { get }
     var encodingMemoryThreshold: UInt64 { get }
@@ -133,18 +133,18 @@ public extension MultipartUploadable {
 
 public protocol Downloadable {
     /// Downloaded resume data
-    var resulmeData: NSData? { get }
+    var resulmeData: Data? { get }
     /// File save location
-    var destination: (temporaryURL: NSURL, response: NSHTTPURLResponse) -> NSURL { get }
+    var destination: (_ temporaryURL: URL, _ response: HTTPURLResponse) -> URL { get }
 }
 
 public extension Downloadable {
-    var resulmeData: NSData? {
+    var resulmeData: Data? {
         return nil
     }
     
-    var destination: (temporaryURL: NSURL, response: NSHTTPURLResponse) -> NSURL {
-        return { (temporaryURL: NSURL, response: NSHTTPURLResponse) -> NSURL in
+    var destination: (_ temporaryURL: URL, _ response: HTTPURLResponse) -> URL {
+        return { (temporaryURL: URL, response: HTTPURLResponse) -> URL in
             if let suggestedDestination = response.suggestedDestination {
                 return suggestedDestination
             }
@@ -155,12 +155,12 @@ public extension Downloadable {
 
 // AMRK: - Helpers
 
-public extension NSHTTPURLResponse {
-    public var suggestedDestination: NSURL? {
-        let directoryURLs = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+public extension HTTPURLResponse {
+    public var suggestedDestination: URL? {
+        let directoryURLs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         if !directoryURLs.isEmpty, let suggestedFilename = self.suggestedFilename {
-            let address = unsafeBitCast(unsafeAddressOf(self), Int.self)
-            return directoryURLs[0].URLByAppendingPathComponent(String(address) + suggestedFilename)
+            let address = unsafeBitCast(Unmanaged.passUnretained(self).toOpaque(), to: Int.self)
+            return directoryURLs[0].appendingPathComponent(String(address) + suggestedFilename)
         }
         return nil
     }

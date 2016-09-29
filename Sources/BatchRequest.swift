@@ -26,11 +26,11 @@
 
 import Foundation
 
-public class BatchRequest {
-    public typealias Element = protocol<Requestable, Responseable>
+open class BatchRequest {
+    public typealias Element = Requestable & Responseable
     
     internal var setups: [Element]
-    public private(set) var requests: [Request]
+    open fileprivate(set) var requests: [Request]
 
     deinit {
         if RedesDebugModeEnabled {
@@ -44,6 +44,14 @@ public class BatchRequest {
             return Redes.Request(setup: setup)
         }
     }
+    
+    fileprivate func makeBarrierQueue() -> DispatchQueue {
+        return DispatchQueue(label: "com.mochxiao.redes.batchrequest.barrierqueue")
+    }
+    
+    fileprivate func makeParseQueue() -> DispatchQueue {
+        return DispatchQueue(label: "com.mochxiao.redes.batchrequest.parsequeue")
+    }
 }
 
 // MARK: - Response serialization
@@ -51,88 +59,89 @@ public class BatchRequest {
 public extension BatchRequest {
     /// Response
     public func response(
-        queue queue: dispatch_queue_t? = nil,
-              completionHandler: [(NSURLRequest?, NSHTTPURLResponse?, NSData?, NSError?)] -> ())
+        queue: DispatchQueue? = nil,
+              completionHandler: @escaping ([(URLRequest?, HTTPURLResponse?, Data?, NSError?)]) -> ())
         -> Self
     {
-        var results: [(NSURLRequest?, NSHTTPURLResponse?, NSData?, NSError?)] = []
-        let barrierQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_SERIAL)
-        let parseQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_SERIAL)
+        var results: [(URLRequest?, HTTPURLResponse?, Data?, NSError?)] = []
+        
+        let barrierQueue = makeBarrierQueue()
+        let parseQueue = makeParseQueue()
         requests.forEach { (req: Request) in
-            dispatch_barrier_async(barrierQueue) {
-                let semaphore = dispatch_semaphore_create(0)
-                req.response(queue: parseQueue) { (req: NSURLRequest?, rsp: NSHTTPURLResponse?, data: NSData?, error: NSError?) in
+            barrierQueue.async(flags: .barrier, execute: {
+                let semaphore = DispatchSemaphore(value: 0)
+                req.response(queue: parseQueue) { (req: URLRequest?, rsp: HTTPURLResponse?, data: Data?, error: NSError?) in
                     results.append((req, rsp, data, error))
-                    dispatch_semaphore_signal(semaphore)
+                    semaphore.signal()
                 }
-                dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
-            }
+                semaphore.wait(timeout: DispatchTime.distantFuture)
+            }) 
         }
         
-        dispatch_barrier_async(barrierQueue) {
-            dispatch_async(queue ?? dispatch_get_main_queue()) {
+        barrierQueue.async(flags: .barrier, execute: {
+            (queue ?? DispatchQueue.main).async {
                 completionHandler(results)
             }
-        }
+        }) 
 
         return self
     }
 
     /// Resposne data
     public func responseData(
-        queue queue: dispatch_queue_t? = nil,
-              completionHandler: [Result<Response, NSData, NSError>] -> ())
+        queue: DispatchQueue? = nil,
+              completionHandler: @escaping ([Result<Response, Data, NSError>]) -> ())
         -> Self
     {
-        var results: [Result<Response, NSData, NSError>] = []
-        let barrierQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_SERIAL)
-        let parseQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_SERIAL)
+        var results: [Result<Response, Data, NSError>] = []
+        let barrierQueue = makeBarrierQueue()
+        let parseQueue = makeParseQueue()
         requests.forEach { (req: Request) in
-            dispatch_barrier_async(barrierQueue) {
-                let semaphore = dispatch_semaphore_create(0)
-                req.responseData(queue: parseQueue) { (result: Result<Response, NSData, NSError>) in
+            barrierQueue.async(flags: .barrier, execute: {
+                let semaphore = DispatchSemaphore(value: 0)
+                req.responseData(queue: parseQueue) { (result: Result<Response, Data, NSError>) in
                     results.append(result)
-                    dispatch_semaphore_signal(semaphore)
+                    semaphore.signal()
                 }
-                dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
-            }
+                semaphore.wait(timeout: DispatchTime.distantFuture)
+            }) 
         }
         
-        dispatch_barrier_async(barrierQueue) {
-            dispatch_async(queue ?? dispatch_get_main_queue()) {
+        barrierQueue.async(flags: .barrier, execute: {
+            (queue ?? DispatchQueue.main).async {
                 completionHandler(results)
             }
-        }
+        }) 
 
         return self
     }
 
     /// Response strting data
     public func responseString(
-        queue queue: dispatch_queue_t? = nil,
-              encoding: NSStringEncoding? = nil,
-              completionHandler: [Result<Response, String, NSError>] -> ())
+        queue: DispatchQueue? = nil,
+              encoding: String.Encoding? = nil,
+              completionHandler: @escaping ([Result<Response, String, NSError>]) -> ())
         -> Self
     {
         var results: [Result<Response, String, NSError>] = []
-        let barrierQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_SERIAL)
-        let parseQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_SERIAL)
+        let barrierQueue = makeBarrierQueue()
+        let parseQueue = makeParseQueue()
         requests.forEach { (req: Request) in
-            dispatch_barrier_async(barrierQueue) {
-                let semaphore = dispatch_semaphore_create(0)
+            barrierQueue.async(flags: .barrier, execute: {
+                let semaphore = DispatchSemaphore(value: 0)
                 req.responseString(queue: parseQueue, encoding: encoding) { (result: Result<Response, String, NSError>) in
                     results.append(result)
-                    dispatch_semaphore_signal(semaphore)
+                    semaphore.signal()
                 }
-                dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
-            }
+                semaphore.wait(timeout: DispatchTime.distantFuture)
+            }) 
         }
         
-        dispatch_barrier_async(barrierQueue) {
-            dispatch_async(queue ?? dispatch_get_main_queue()) {
+        barrierQueue.async(flags: .barrier, execute: {
+            (queue ?? DispatchQueue.main).async {
                 completionHandler(results)
             }
-        }
+        }) 
         
         return self
     }
@@ -140,60 +149,60 @@ public extension BatchRequest {
     
     /// Response json data
     public func responseJSON(
-        queue queue: dispatch_queue_t? = nil,
-              options: NSJSONReadingOptions = .AllowFragments,
-              completionHandler: [Result<Response, AnyObject, NSError>] -> ())
+        queue: DispatchQueue? = nil,
+              options: JSONSerialization.ReadingOptions = .allowFragments,
+              completionHandler: @escaping ([Result<Response, AnyObject, NSError>]) -> ())
         -> Self
     {
         var results: [Result<Response, AnyObject, NSError>] = []
-        let barrierQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_SERIAL)
-        let parseQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_SERIAL)
+        let barrierQueue = makeBarrierQueue()
+        let parseQueue = makeParseQueue()
         requests.forEach { (req: Request) in
-            dispatch_barrier_async(barrierQueue) {
-                let semaphore = dispatch_semaphore_create(0)
+            barrierQueue.async(flags: .barrier, execute: {
+                let semaphore = DispatchSemaphore(value: 0)
                 req.responseJSON(queue: parseQueue, options: options) { (result: Result<Response, AnyObject, NSError>) in
                     results.append(result)
-                    dispatch_semaphore_signal(semaphore)
+                    semaphore.signal()
                 }
-                dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
-            }
+                semaphore.wait(timeout: DispatchTime.distantFuture)
+            }) 
         }
         
-        dispatch_barrier_async(barrierQueue) {
-            dispatch_async(queue ?? dispatch_get_main_queue()) {
+        barrierQueue.async(flags: .barrier, execute: {
+            (queue ?? DispatchQueue.main).async {
                 completionHandler(results)
             }
-        }
+        }) 
         
         return self
     }
     
     /// Response PList
     public func responsePropertyList(
-        queue queue: dispatch_queue_t? = nil,
-              options: NSPropertyListReadOptions = NSPropertyListReadOptions(),
-              completionHandler: [Result<Response, AnyObject, NSError>] -> ())
+        queue: DispatchQueue? = nil,
+              options: PropertyListSerialization.ReadOptions = PropertyListSerialization.ReadOptions(),
+              completionHandler: @escaping ([Result<Response, AnyObject, NSError>]) -> ())
         -> Self
     {
         var results: [Result<Response, AnyObject, NSError>] = []
-        let barrierQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_SERIAL)
-        let parseQueue = dispatch_queue_create(nil, DISPATCH_QUEUE_SERIAL)
+        let barrierQueue = makeBarrierQueue()
+        let parseQueue = makeParseQueue()
         requests.forEach { (req: Request) in
-            dispatch_barrier_async(barrierQueue) {
-                let semaphore = dispatch_semaphore_create(0)
+            barrierQueue.async(flags: .barrier, execute: {
+                let semaphore = DispatchSemaphore(value: 0)
                 req.responsePropertyList(queue: parseQueue, options: options) { (result: Result<Response, AnyObject, NSError>) in
                     results.append(result)
-                    dispatch_semaphore_signal(semaphore)
+                    semaphore.signal()
                 }
-                dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
-            }
+                semaphore.wait(timeout: DispatchTime.distantFuture)
+            }) 
         }
         
-        dispatch_barrier_async(barrierQueue) {
-            dispatch_async(queue ?? dispatch_get_main_queue()) {
+        barrierQueue.async(flags: .barrier, execute: {
+            (queue ?? DispatchQueue.main).async {
                 completionHandler(results)
             }
-        }
+        }) 
 
         return self
     }

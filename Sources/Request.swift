@@ -28,8 +28,8 @@ import Foundation
 import Alamofire
 
 final public class Request {
-    internal var setup: protocol<Requestable, Responseable>
-    public private(set) var command: Command
+    internal var setup: Requestable & Responseable
+    public fileprivate(set) var command: Command
     /// Default `false`, means network could reach
     internal var networkUnavailable: Bool
         
@@ -39,28 +39,28 @@ final public class Request {
         }
     }
     
-    init(setup: protocol<Requestable, Responseable>) {
+    init(setup: Requestable & Responseable) {
         networkUnavailable = false
         self.setup = setup
         self.command = setup.requestCommand
         sendCommand()
     }
 
-    init(setup: protocol<Requestable, Responseable, Uploadable>) {
+    init(setup: Requestable & Responseable & Uploadable) {
         networkUnavailable = false
         self.setup = setup
         self.command = setup.requestCommand
         sendCommand()
     }
     
-    init(setup: protocol<Requestable, Responseable, MultipartUploadable>) {
+    init(setup: Requestable & Responseable & MultipartUploadable) {
         networkUnavailable = false
         self.setup = setup
         self.command = setup.requestCommand
         sendCommand()
     }
     
-    init(setup: protocol<Requestable, Responseable, Downloadable>) {
+    init(setup: Requestable & Responseable & Downloadable) {
         networkUnavailable = false
         self.setup = setup
         self.command = setup.requestCommand
@@ -72,7 +72,7 @@ final public class Request {
 
 public extension Request {
     /// Send the `start request` command
-    private func sendCommand() {
+    fileprivate func sendCommand() {
         if RedesDebugModeEnabled {
             debugPrint(self)
         }
@@ -108,7 +108,7 @@ extension Request: CustomDebugStringConvertible {
         output.append("requestHeaderParameters: \(setup.requestHeaderParameters)")
         output.append("requestBodyParameters: \(setup.requestBodyParameters)")
         output.append("-------------------------------------------------")        
-        return output.joinWithSeparator("\n")
+        return output.joined(separator: "\n")
     }
 }
 
@@ -118,8 +118,8 @@ extension Request: CustomDebugStringConvertible {
 public extension Request {
     /// Response
     public func response(
-        queue queue: dispatch_queue_t? = nil,
-              completionHandler: (NSURLRequest?, NSHTTPURLResponse?, NSData?, NSError?) -> ())
+        queue: DispatchQueue? = nil,
+              completionHandler: @escaping (URLRequest?, HTTPURLResponse?, Data?, NSError?) -> ())
         -> Self
     {
         command.response(queue: queue, completionHandler: completionHandler)
@@ -128,8 +128,8 @@ public extension Request {
     
     /// Resposne data
     public func responseData(
-        queue queue: dispatch_queue_t? = nil,
-              completionHandler: Result<Response, NSData, NSError> -> ())
+        queue: DispatchQueue? = nil,
+              completionHandler:  @escaping (Result<Response, Data, NSError>) -> ())
         -> Self
     {
         command.responseData(queue: queue, completionHandler: completionHandler)
@@ -138,9 +138,9 @@ public extension Request {
     
     /// Response strting data
     public func responseString(
-        queue queue: dispatch_queue_t? = nil,
-              encoding: NSStringEncoding? = nil,
-              completionHandler: Result<Response, String, NSError> -> ())
+        queue: DispatchQueue? = nil,
+              encoding: String.Encoding? = nil,
+              completionHandler:  @escaping (Result<Response, String, NSError>) -> ())
         -> Self
     {
         command.responseString(queue: queue, encoding: encoding, completionHandler: completionHandler)
@@ -149,9 +149,9 @@ public extension Request {
     
     /// Response json data
     public func responseJSON(
-        queue queue: dispatch_queue_t? = nil,
-              options: NSJSONReadingOptions = .AllowFragments,
-              completionHandler: Result<Response, AnyObject, NSError> -> ())
+        queue: DispatchQueue? = nil,
+              options: JSONSerialization.ReadingOptions = .allowFragments,
+              completionHandler:  @escaping (Result<Response, AnyObject, NSError>) -> ())
         -> Self
     {
         command.responseJSON(queue: queue, options: options, completionHandler: completionHandler)
@@ -160,16 +160,16 @@ public extension Request {
     
     /// Response PList
     public func responsePropertyList(
-        queue queue: dispatch_queue_t? = nil,
-              options: NSPropertyListReadOptions = NSPropertyListReadOptions(),
-              completionHandler: Result<Response, AnyObject, NSError> -> ())
+        queue: DispatchQueue? = nil,
+              options: PropertyListSerialization.ReadOptions = PropertyListSerialization.ReadOptions(),
+              completionHandler:  @escaping (Result<Response, AnyObject, NSError>) -> ())
         -> Self
     {
         command.responsePropertyList(queue: queue, options: options, completionHandler: completionHandler)
         return self
     }
     
-    public func progress(closure: ((bytesRead: Int64, totalBytesRead: Int64, totalBytesExpectedToRead: Int64) -> Void)?) -> Self {
+    public func progress(_ closure: ((_ bytesRead: Int64, _ totalBytesRead: Int64, _ totalBytesExpectedToRead: Int64) -> Void)?) -> Self {
         command.progress(closure)
         return self
     }

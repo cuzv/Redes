@@ -27,16 +27,16 @@
 import Foundation
 import Alamofire
 
-public enum Result<R, Value, Error: ErrorType> {
-    case Success(R, Value)
-    case Failure(R, Error)
+public enum Result<Response, Value, RedesError: Error> {
+    case success(Response, Value)
+    case failure(Response, RedesError)
     
     /// Returns `true` if the result is a success, `false` otherwise.
     public var isSuccess: Bool {
         switch self {
-        case .Success:
+        case .success:
             return true
-        case .Failure:
+        case .failure:
             return false
         }
     }
@@ -47,11 +47,11 @@ public enum Result<R, Value, Error: ErrorType> {
     }
     
     /// Returns the associated response
-    public var response: R {
+    public var response: Response {
         switch self {
-        case .Success(let response, _):
+        case .success(let response, _):
             return response
-        case .Failure(let response, _):
+        case .failure(let response, _):
             return response
         }
     }
@@ -59,19 +59,19 @@ public enum Result<R, Value, Error: ErrorType> {
     /// Returns the associated value if the result is a success, `nil` otherwise.
     public var value: Value? {
         switch self {
-        case .Success(_, let value):
+        case .success(_, let value):
             return value
-        case .Failure:
+        case .failure:
             return nil
         }
     }
     
     /// Returns the associated error value if the result is a failure, `nil` otherwise.
-    public var error: Error? {
+    public var error: RedesError? {
         switch self {
-        case .Success:
+        case .success:
             return nil
-        case .Failure(_, let error):
+        case .failure(_, let error):
             return error
         }
     }
@@ -84,9 +84,9 @@ extension Result: CustomStringConvertible {
     /// success or failure.
     public var description: String {
         switch self {
-        case .Success:
+        case .success:
             return "SUCCESS"
-        case .Failure:
+        case .failure:
             return "FAILURE"
         }
     }
@@ -99,9 +99,9 @@ extension Result: CustomDebugStringConvertible {
     /// success or failure in addition to the value or error.
     public var debugDescription: String {
         switch self {
-        case .Success(_, let value):
+        case .success(_, let value):
             return "SUCCESS: \(value)"
-        case .Failure(_, let error):
+        case .failure(_, let error):
             return "FAILURE: \(error)"
         }
     }
