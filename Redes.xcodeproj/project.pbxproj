@@ -7,29 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		466CB6AD1BE9D67500327014 /* Bridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466CB6A71BE9D67500327014 /* Bridge.swift */; };
+		462C754A1D9E406D00B3A852 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C75491D9E406D00B3A852 /* Error.swift */; };
+		462C75511D9E72B800B3A852 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C75501D9E72B800B3A852 /* Request.swift */; };
+		462C75531D9E853D00B3A852 /* RequestSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C75521D9E853D00B3A852 /* RequestSender.swift */; };
+		464B3BD21D9EB07F007D0AE5 /* Redes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 469768181BE8B7D5004D037F /* Redes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		466077591D9EB0210016A7C4 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 466077571D9EAFF80016A7C4 /* Alamofire.framework */; };
 		466CB6AF1BE9D67500327014 /* Redes.h in Headers */ = {isa = PBXBuildFile; fileRef = 466CB6A91BE9D67500327014 /* Redes.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		466CB6B01BE9D67500327014 /* Redes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466CB6AA1BE9D67500327014 /* Redes.swift */; };
-		466CB6B11BE9D67500327014 /* Requestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466CB6AB1BE9D67500327014 /* Requestable.swift */; };
-		466CB6B21BE9D67500327014 /* Responseable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466CB6AC1BE9D67500327014 /* Responseable.swift */; };
-		466CB6B51BE9DD5300327014 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466CB6B41BE9DD5300327014 /* Request.swift */; };
 		466CB6B91BEA031E00327014 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466CB6B81BEA031E00327014 /* API.swift */; };
-		467806AD1BEA2E0900414EEB /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466CB6BA1BEA076000327014 /* Response.swift */; };
 		467806AE1BEA2E0D00414EEB /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466CB6BC1BEA0E7400327014 /* Result.swift */; };
-		468F2ECB1BFB351F004EB867 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468F2ECA1BFB351F004EB867 /* Reachability.swift */; };
 		4697682A1BE8B816004D037F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469768291BE8B816004D037F /* AppDelegate.swift */; };
 		4697682C1BE8B816004D037F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4697682B1BE8B816004D037F /* ViewController.swift */; };
 		4697682F1BE8B816004D037F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4697682D1BE8B816004D037F /* Main.storyboard */; };
 		469768311BE8B816004D037F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 469768301BE8B816004D037F /* Assets.xcassets */; };
 		469768341BE8B816004D037F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 469768321BE8B816004D037F /* LaunchScreen.storyboard */; };
 		46AD4E831CD7B0A6001D5619 /* Redes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 469768181BE8B7D5004D037F /* Redes.framework */; };
-		46AD4E841CD7B0A6001D5619 /* Redes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 469768181BE8B7D5004D037F /* Redes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		46CFE5731CD6412E0098C995 /* BatchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CFE5721CD6412E0098C995 /* BatchRequest.swift */; };
 		46CFE5761CD6497C0098C995 /* TestAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CFE5751CD6497C0098C995 /* TestAPI.swift */; };
 		46DBDFBB1BFB3ED400F9177D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46DBDFBA1BFB3ED400F9177D /* SystemConfiguration.framework */; };
-		46FEE2CF1BEE52FA00A48DBB /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FEE2CE1BEE52FA00A48DBB /* Command.swift */; };
-		46FEE2E01BF097E100A48DBB /* AlamofireCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46FEE2DF1BF097E100A48DBB /* AlamofireCommand.swift */; };
-		643A5B354FAE5F323B5DE65D /* Pods_Redes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03FF7392D2F59C1810DBE10 /* Pods_Redes.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,11 +38,11 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		46AD4E871CD7B0A6001D5619 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				46AD4E841CD7B0A6001D5619 /* Redes.framework in Embed Frameworks */,
+				464B3BD21D9EB07F007D0AE5 /* Redes.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -57,17 +50,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		466CB6A71BE9D67500327014 /* Bridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bridge.swift; sourceTree = "<group>"; };
+		462C75491D9E406D00B3A852 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		462C754C1D9E624F00B3A852 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = "../../Library/Developer/Xcode/DerivedData/Redes-gzmoydgdpcdkmeamodfzhfqqbjup/Build/Products/Debug-iphonesimulator/Alamofire/Alamofire.framework"; sourceTree = "<group>"; };
+		462C75501D9E72B800B3A852 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		462C75521D9E853D00B3A852 /* RequestSender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestSender.swift; sourceTree = "<group>"; };
+		466077571D9EAFF80016A7C4 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = "../../Library/Developer/Xcode/DerivedData/Redes-gzmoydgdpcdkmeamodfzhfqqbjup/Build/Products/Debug-iphoneos/Alamofire/Alamofire.framework"; sourceTree = "<group>"; };
 		466CB6A81BE9D67500327014 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		466CB6A91BE9D67500327014 /* Redes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Redes.h; sourceTree = "<group>"; };
-		466CB6AA1BE9D67500327014 /* Redes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Redes.swift; sourceTree = "<group>"; };
-		466CB6AB1BE9D67500327014 /* Requestable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Requestable.swift; sourceTree = "<group>"; };
-		466CB6AC1BE9D67500327014 /* Responseable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Responseable.swift; sourceTree = "<group>"; };
-		466CB6B41BE9DD5300327014 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		466CB6B81BEA031E00327014 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
-		466CB6BA1BEA076000327014 /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		466CB6BC1BEA0E7400327014 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
-		468F2ECA1BFB351F004EB867 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		469768181BE8B7D5004D037F /* Redes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Redes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		469768271BE8B816004D037F /* RedesSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RedesSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		469768291BE8B816004D037F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -76,11 +67,8 @@
 		469768301BE8B816004D037F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		469768331BE8B816004D037F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		469768351BE8B816004D037F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		46CFE5721CD6412E0098C995 /* BatchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchRequest.swift; sourceTree = "<group>"; };
 		46CFE5751CD6497C0098C995 /* TestAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestAPI.swift; sourceTree = "<group>"; };
 		46DBDFBA1BFB3ED400F9177D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		46FEE2CE1BEE52FA00A48DBB /* Command.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
-		46FEE2DF1BF097E100A48DBB /* AlamofireCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireCommand.swift; sourceTree = "<group>"; };
 		5818F72EC4AFA435B26FDFFE /* Pods-Redes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Redes.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Redes/Pods-Redes.debug.xcconfig"; sourceTree = "<group>"; };
 		8C6E776759B3254496BF2A8E /* Pods-Redes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Redes.release.xcconfig"; path = "Pods/Target Support Files/Pods-Redes/Pods-Redes.release.xcconfig"; sourceTree = "<group>"; };
 		D03FF7392D2F59C1810DBE10 /* Pods_Redes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Redes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,8 +79,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				466077591D9EB0210016A7C4 /* Alamofire.framework in Frameworks */,
 				46DBDFBB1BFB3ED400F9177D /* SystemConfiguration.framework in Frameworks */,
-				643A5B354FAE5F323B5DE65D /* Pods_Redes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,19 +98,12 @@
 		466CB6A61BE9D67500327014 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				46FEE2DF1BF097E100A48DBB /* AlamofireCommand.swift */,
-				466CB6A71BE9D67500327014 /* Bridge.swift */,
-				46FEE2CE1BEE52FA00A48DBB /* Command.swift */,
 				466CB6A81BE9D67500327014 /* Info.plist */,
-				468F2ECA1BFB351F004EB867 /* Reachability.swift */,
 				466CB6A91BE9D67500327014 /* Redes.h */,
-				466CB6AA1BE9D67500327014 /* Redes.swift */,
-				466CB6B41BE9DD5300327014 /* Request.swift */,
-				466CB6AB1BE9D67500327014 /* Requestable.swift */,
-				466CB6BA1BEA076000327014 /* Response.swift */,
-				466CB6AC1BE9D67500327014 /* Responseable.swift */,
 				466CB6BC1BEA0E7400327014 /* Result.swift */,
-				46CFE5721CD6412E0098C995 /* BatchRequest.swift */,
+				462C75491D9E406D00B3A852 /* Error.swift */,
+				462C75501D9E72B800B3A852 /* Request.swift */,
+				462C75521D9E853D00B3A852 /* RequestSender.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -165,6 +146,8 @@
 		57C0845E65AB89143D395CFD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				466077571D9EAFF80016A7C4 /* Alamofire.framework */,
+				462C754C1D9E624F00B3A852 /* Alamofire.framework */,
 				46DBDFBA1BFB3ED400F9177D /* SystemConfiguration.framework */,
 				D03FF7392D2F59C1810DBE10 /* Pods_Redes.framework */,
 			);
@@ -332,17 +315,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46FEE2E01BF097E100A48DBB /* AlamofireCommand.swift in Sources */,
-				466CB6B21BE9D67500327014 /* Responseable.swift in Sources */,
-				466CB6B51BE9DD5300327014 /* Request.swift in Sources */,
-				46CFE5731CD6412E0098C995 /* BatchRequest.swift in Sources */,
-				466CB6B11BE9D67500327014 /* Requestable.swift in Sources */,
-				466CB6AD1BE9D67500327014 /* Bridge.swift in Sources */,
-				46FEE2CF1BEE52FA00A48DBB /* Command.swift in Sources */,
-				468F2ECB1BFB351F004EB867 /* Reachability.swift in Sources */,
-				466CB6B01BE9D67500327014 /* Redes.swift in Sources */,
+				462C75531D9E853D00B3A852 /* RequestSender.swift in Sources */,
+				462C754A1D9E406D00B3A852 /* Error.swift in Sources */,
+				462C75511D9E72B800B3A852 /* Request.swift in Sources */,
 				467806AE1BEA2E0D00414EEB /* Result.swift in Sources */,
-				467806AD1BEA2E0900414EEB /* Response.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

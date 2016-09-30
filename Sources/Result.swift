@@ -25,11 +25,10 @@
 //
 
 import Foundation
-import Alamofire
 
-public enum Result<Response, Value, RedesError: Error> {
-    case success(Response, Value)
-    case failure(Response, RedesError)
+public enum Result<Value> {
+    case success(Value)
+    case failure(RedesError)
     
     /// Returns `true` if the result is a success, `false` otherwise.
     public var isSuccess: Bool {
@@ -46,20 +45,11 @@ public enum Result<Response, Value, RedesError: Error> {
         return !isSuccess
     }
     
-    /// Returns the associated response
-    public var response: Response {
-        switch self {
-        case .success(let response, _):
-            return response
-        case .failure(let response, _):
-            return response
-        }
-    }
     
     /// Returns the associated value if the result is a success, `nil` otherwise.
     public var value: Value? {
         switch self {
-        case .success(_, let value):
+        case .success(let value):
             return value
         case .failure:
             return nil
@@ -71,7 +61,7 @@ public enum Result<Response, Value, RedesError: Error> {
         switch self {
         case .success:
             return nil
-        case .failure(_, let error):
+        case .failure(let error):
             return error
         }
     }
@@ -99,9 +89,9 @@ extension Result: CustomDebugStringConvertible {
     /// success or failure in addition to the value or error.
     public var debugDescription: String {
         switch self {
-        case .success(_, let value):
+        case .success(let value):
             return "SUCCESS: \(value)"
-        case .failure(_, let error):
+        case .failure(let error):
             return "FAILURE: \(error)"
         }
     }
