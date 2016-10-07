@@ -8,16 +8,37 @@
 
 import Foundation
 
-public extension DataRequest {
-    public func resume() -> Self {
-        return RedesRequestSender.shared.add(self)
+public extension Requestable {
+    public func makeRequest() -> DataRequest {
+        return DataRequest(request: self)
     }
     
-    public func cancel() -> Self {
-        return RedesRequestSender.shared.remove(self)
+    public func action() -> DataRequest {
+        return makeRequest().resume()
+    }
+}
+public extension Uploadable {
+    public func makeRequest() -> UploadRequest {
+        return UploadRequest(request: self)
     }
     
-    public func suspend() -> Self {
-        return RedesRequestSender.shared.suspend(self)
+    public func action() -> UploadRequest {
+        return makeRequest().resume()
+    }
+}
+
+public extension MultipartUploadable {
+    public func makeRequest() -> MultipartUploadRequest {
+        return MultipartUploadRequest(request: self)
+    }
+}
+
+public extension Downloadable {
+    public func makeRequest() -> DownloadRequest {
+        return DownloadRequest(request: self)
+    }
+    
+    public func action() -> DownloadRequest {
+        return makeRequest().resume()
     }
 }

@@ -35,4 +35,4 @@ Carthage/Build
 xcuserdata/
 .svn
 .DS_Store
-TestAPI.swift
+Localizable.strings

@@ -11,11 +11,12 @@
 		461546161DA6A0D000F4BF67 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461546151DA6A0D000F4BF67 /* Response.swift */; };
 		461546181DA6A62F00F4BF67 /* Redes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461546171DA6A62F00F4BF67 /* Redes.swift */; };
 		4615461A1DA6A7E400F4BF67 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 462C754C1D9E624F00B3A852 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4615461E1DA789E600F4BF67 /* BatchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4615461D1DA789E600F4BF67 /* BatchRequest.swift */; };
 		462C754A1D9E406D00B3A852 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C75491D9E406D00B3A852 /* Error.swift */; };
 		462C75511D9E72B800B3A852 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C75501D9E72B800B3A852 /* Request.swift */; };
-		462C75531D9E853D00B3A852 /* RequestSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C75521D9E853D00B3A852 /* RequestSender.swift */; };
 		464B3BD21D9EB07F007D0AE5 /* Redes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 469768181BE8B7D5004D037F /* Redes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		464B3BD51D9EB17B007D0AE5 /* Pods_Redes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03FF7392D2F59C1810DBE10 /* Pods_Redes.framework */; };
+		46693B2F1DA7DC9E004662B1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 46693B2E1DA7DC9E004662B1 /* Localizable.strings */; };
 		466CB6AF1BE9D67500327014 /* Redes.h in Headers */ = {isa = PBXBuildFile; fileRef = 466CB6A91BE9D67500327014 /* Redes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		466CB6B91BEA031E00327014 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466CB6B81BEA031E00327014 /* API.swift */; };
 		467806AE1BEA2E0D00414EEB /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466CB6BC1BEA0E7400327014 /* Result.swift */; };
@@ -25,7 +26,7 @@
 		469768311BE8B816004D037F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 469768301BE8B816004D037F /* Assets.xcassets */; };
 		469768341BE8B816004D037F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 469768321BE8B816004D037F /* LaunchScreen.storyboard */; };
 		46AD4E831CD7B0A6001D5619 /* Redes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 469768181BE8B7D5004D037F /* Redes.framework */; };
-		46CFE5761CD6497C0098C995 /* TestAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CFE5751CD6497C0098C995 /* TestAPI.swift */; };
+		46CFE5761CD6497C0098C995 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CFE5751CD6497C0098C995 /* Helpers.swift */; };
 		46DBDFBB1BFB3ED400F9177D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46DBDFBA1BFB3ED400F9177D /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
@@ -56,13 +57,14 @@
 
 /* Begin PBXFileReference section */
 		461546111DA6700E00F4BF67 /* Bridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bridge.swift; sourceTree = "<group>"; };
-		461546151DA6A0D000F4BF67 /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		461546151DA6A0D000F4BF67 /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Response.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		461546171DA6A62F00F4BF67 /* Redes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Redes.swift; sourceTree = "<group>"; };
+		4615461D1DA789E600F4BF67 /* BatchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BatchRequest.swift; sourceTree = "<group>"; };
 		462C75491D9E406D00B3A852 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		462C754C1D9E624F00B3A852 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = "../../Library/Developer/Xcode/DerivedData/Redes-gzmoydgdpcdkmeamodfzhfqqbjup/Build/Products/Debug-iphonesimulator/Alamofire/Alamofire.framework"; sourceTree = "<group>"; };
 		462C75501D9E72B800B3A852 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
-		462C75521D9E853D00B3A852 /* RequestSender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestSender.swift; sourceTree = "<group>"; };
 		466077571D9EAFF80016A7C4 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = "../../Library/Developer/Xcode/DerivedData/Redes-gzmoydgdpcdkmeamodfzhfqqbjup/Build/Products/Debug-iphoneos/Alamofire/Alamofire.framework"; sourceTree = "<group>"; };
+		46693B2E1DA7DC9E004662B1 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		466CB6A81BE9D67500327014 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		466CB6A91BE9D67500327014 /* Redes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Redes.h; sourceTree = "<group>"; };
 		466CB6B81BEA031E00327014 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
@@ -75,7 +77,7 @@
 		469768301BE8B816004D037F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		469768331BE8B816004D037F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		469768351BE8B816004D037F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		46CFE5751CD6497C0098C995 /* TestAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestAPI.swift; sourceTree = "<group>"; };
+		46CFE5751CD6497C0098C995 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		46DBDFBA1BFB3ED400F9177D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		5818F72EC4AFA435B26FDFFE /* Pods-Redes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Redes.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Redes/Pods-Redes.debug.xcconfig"; sourceTree = "<group>"; };
 		8C6E776759B3254496BF2A8E /* Pods-Redes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Redes.release.xcconfig"; path = "Pods/Target Support Files/Pods-Redes/Pods-Redes.release.xcconfig"; sourceTree = "<group>"; };
@@ -112,9 +114,9 @@
 				462C75491D9E406D00B3A852 /* Error.swift */,
 				461546111DA6700E00F4BF67 /* Bridge.swift */,
 				462C75501D9E72B800B3A852 /* Request.swift */,
-				462C75521D9E853D00B3A852 /* RequestSender.swift */,
 				461546151DA6A0D000F4BF67 /* Response.swift */,
 				461546171DA6A62F00F4BF67 /* Redes.swift */,
+				4615461D1DA789E600F4BF67 /* BatchRequest.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -149,7 +151,8 @@
 				469768321BE8B816004D037F /* LaunchScreen.storyboard */,
 				4697682D1BE8B816004D037F /* Main.storyboard */,
 				4697682B1BE8B816004D037F /* ViewController.swift */,
-				46CFE5751CD6497C0098C995 /* TestAPI.swift */,
+				46CFE5751CD6497C0098C995 /* Helpers.swift */,
+				46693B2E1DA7DC9E004662B1 /* Localizable.strings */,
 			);
 			path = RedesSample;
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				469768341BE8B816004D037F /* LaunchScreen.storyboard in Resources */,
+				46693B2F1DA7DC9E004662B1 /* Localizable.strings in Resources */,
 				469768311BE8B816004D037F /* Assets.xcassets in Resources */,
 				4697682F1BE8B816004D037F /* Main.storyboard in Resources */,
 			);
@@ -327,8 +331,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				461546121DA6700E00F4BF67 /* Bridge.swift in Sources */,
-				462C75531D9E853D00B3A852 /* RequestSender.swift in Sources */,
 				462C754A1D9E406D00B3A852 /* Error.swift in Sources */,
+				4615461E1DA789E600F4BF67 /* BatchRequest.swift in Sources */,
 				461546181DA6A62F00F4BF67 /* Redes.swift in Sources */,
 				462C75511D9E72B800B3A852 /* Request.swift in Sources */,
 				461546161DA6A0D000F4BF67 /* Response.swift in Sources */,
@@ -342,7 +346,7 @@
 			files = (
 				4697682C1BE8B816004D037F /* ViewController.swift in Sources */,
 				466CB6B91BEA031E00327014 /* API.swift in Sources */,
-				46CFE5761CD6497C0098C995 /* TestAPI.swift in Sources */,
+				46CFE5761CD6497C0098C995 /* Helpers.swift in Sources */,
 				4697682A1BE8B816004D037F /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

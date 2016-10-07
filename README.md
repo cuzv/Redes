@@ -16,12 +16,6 @@ High-level network layer abstraction library written in Swift.
 - Wrap network layer, brings more conducive to expansion. If you preferred use `Alamofire` and` Socket` both, only need to specify which way you want to use for request in command inside, and then expand the corresponding request mode implement (default only implements `Alamofire`)
 - The code change of network layer does not affect the  business layer, underlying free replacement transducer, a request to call as long as the business layer rule to conform `redes` ask
 
-## Features
-
-- Wrap `Alamofire`, which means support `Alamofire`'s all features
-- Networking status check
-- Easy to expansion
-
 ## Requirements
 
 - iOS 9.0+
@@ -102,24 +96,30 @@ Since Redes related to [Alamofire](https://github.com/Alamofire/Alamofire), you 
 
 ## Usage
 
-- Make your API conforms to `protocol<Requestable, Responseable>`
+- Make your API conforms to `Requestable`
 
 ``` swift
-struct LoginApi: Requestable, Responseable {
+struct LoginApi: Requestable {
     var userName: String = ""
     var passWord: String = ""
 
-    var requestURLPath: URLStringConvertible {
+    var url: URLConvertible {
         return "https://host/to/path"
     }
-    var requestMethod: Redes.Method {
+    
+	var method: HTTPMethod {
         return .POST
     }
-    var requestBodyParameters: [String: AnyObject] {
+    
+    var var bodies: HTTPBodies {
         return [
             "user": userName,
             "pass": passWord
         ]
+    }
+    
+    var headers: HTTPHeaders {
+        return [:]
     }
 }
 ```
@@ -127,22 +127,22 @@ struct LoginApi: Requestable, Responseable {
 - Build api and start request & process result
 
 ``` swift
-let loginApi = LoginApi()
+let loginRequest = LoginApi().action()
 
-loginApi.asyncResponseJSON {
-    debugPrint($0)
+loginRequest.responseJSON {
+    debugPrint($0.result)
 }
 
-loginApi.responseJSON {
-    debugPrint($0)
+loginRequest.responseJSON(queue: DispatchQueue.global()) {
+    debugPrint($0.result)
 }
 .responseString {
-    switch $0 {
-    case .Success(_, let string):
-        debugPrint(string)
-    case .Failure(_, let error):
-        debugPrint(error)
-    }
+	switch $0.result {
+	case .success(let value):
+		debugPrint(value)
+	case .failure(let error):
+         debugPrint(error)
+  	}
 }
 // .cancel()
 ```
@@ -151,9 +151,7 @@ loginApi.responseJSON {
 
 ### Caching
 
-Caching is handled on the system framework level by [`NSURLCache`](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSURLCache_Class/Reference/Reference.html#//apple_ref/occ/cl/NSURLCache).
-
-You could set shared URLCache by using `setupSharedURLCache(memoryCapacity:diskCapacity:diskPath:)` convenient.
+Caching is handled on the system framework level by [`URLCache`](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSURLCache_Class/Reference/Reference.html#//apple_ref/occ/cl/NSURLCache).
 
 ### Notice
 
