@@ -9,17 +9,11 @@
 import Foundation
 
 public enum RedesError: Error {
-    public enum NetworkFailureReason {
-        case requestFailed(Error)
-        case responseFailed(Error)
-    }
-    
     public enum ParseFailureReason {
+        case formInvalid
         case codeCanNotFound
-        case codeInvalid
         case messageCanNotFound
         case dataCanNotFound
-        case dataCanNotParse
     }
     
     public struct BusinessFailedReason {
@@ -31,14 +25,14 @@ public enum RedesError: Error {
         }
     }
     
-    case networkFailed(reason: NetworkFailureReason)
+    case internalFailed(reason: Error)
     case parseFailed(reason: ParseFailureReason)
     case businessFailed(reason: BusinessFailedReason)
 }
 
 extension RedesError {
     public var isNetworkFailed: Bool {
-        if case .networkFailed = self { return true }
+        if case .internalFailed = self { return true }
         return false
     }
     
@@ -50,15 +44,6 @@ extension RedesError {
     public var isBusinessFailed: Bool {
         if case .businessFailed = self { return true }
         return false
-    }
-}
-
-extension RedesError.NetworkFailureReason {
-    public var localizedDescription: String? {
-        switch self {
-        case .requestFailed(let error), .responseFailed(let error):
-            return error.localizedDescription
-        }
     }
 }
 
@@ -78,7 +63,7 @@ extension RedesError: LocalizedError {
     /// A localized message describing what error occurred.
     public var errorDescription: String? {
         switch self {
-        case .networkFailed(reason: let reason):
+        case .internalFailed(reason: let reason):
             return reason.localizedDescription
         case .parseFailed(reason: let reason):
             return "Parse Failed: \(reason)"

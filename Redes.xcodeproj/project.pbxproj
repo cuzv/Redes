@@ -7,11 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		461546121DA6700E00F4BF67 /* Bridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461546111DA6700E00F4BF67 /* Bridge.swift */; };
+		461546161DA6A0D000F4BF67 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461546151DA6A0D000F4BF67 /* Response.swift */; };
+		461546181DA6A62F00F4BF67 /* Redes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461546171DA6A62F00F4BF67 /* Redes.swift */; };
+		4615461A1DA6A7E400F4BF67 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 462C754C1D9E624F00B3A852 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		462C754A1D9E406D00B3A852 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C75491D9E406D00B3A852 /* Error.swift */; };
 		462C75511D9E72B800B3A852 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C75501D9E72B800B3A852 /* Request.swift */; };
 		462C75531D9E853D00B3A852 /* RequestSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462C75521D9E853D00B3A852 /* RequestSender.swift */; };
 		464B3BD21D9EB07F007D0AE5 /* Redes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 469768181BE8B7D5004D037F /* Redes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		466077591D9EB0210016A7C4 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 466077571D9EAFF80016A7C4 /* Alamofire.framework */; };
+		464B3BD51D9EB17B007D0AE5 /* Pods_Redes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D03FF7392D2F59C1810DBE10 /* Pods_Redes.framework */; };
 		466CB6AF1BE9D67500327014 /* Redes.h in Headers */ = {isa = PBXBuildFile; fileRef = 466CB6A91BE9D67500327014 /* Redes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		466CB6B91BEA031E00327014 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466CB6B81BEA031E00327014 /* API.swift */; };
 		467806AE1BEA2E0D00414EEB /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466CB6BC1BEA0E7400327014 /* Result.swift */; };
@@ -42,6 +46,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				4615461A1DA6A7E400F4BF67 /* Alamofire.framework in Embed Frameworks */,
 				464B3BD21D9EB07F007D0AE5 /* Redes.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -50,6 +55,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		461546111DA6700E00F4BF67 /* Bridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bridge.swift; sourceTree = "<group>"; };
+		461546151DA6A0D000F4BF67 /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		461546171DA6A62F00F4BF67 /* Redes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Redes.swift; sourceTree = "<group>"; };
 		462C75491D9E406D00B3A852 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		462C754C1D9E624F00B3A852 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = "../../Library/Developer/Xcode/DerivedData/Redes-gzmoydgdpcdkmeamodfzhfqqbjup/Build/Products/Debug-iphonesimulator/Alamofire/Alamofire.framework"; sourceTree = "<group>"; };
 		462C75501D9E72B800B3A852 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
@@ -79,7 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				466077591D9EB0210016A7C4 /* Alamofire.framework in Frameworks */,
+				464B3BD51D9EB17B007D0AE5 /* Pods_Redes.framework in Frameworks */,
 				46DBDFBB1BFB3ED400F9177D /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -102,8 +110,11 @@
 				466CB6A91BE9D67500327014 /* Redes.h */,
 				466CB6BC1BEA0E7400327014 /* Result.swift */,
 				462C75491D9E406D00B3A852 /* Error.swift */,
+				461546111DA6700E00F4BF67 /* Bridge.swift */,
 				462C75501D9E72B800B3A852 /* Request.swift */,
 				462C75521D9E853D00B3A852 /* RequestSender.swift */,
+				461546151DA6A0D000F4BF67 /* Response.swift */,
+				461546171DA6A62F00F4BF67 /* Redes.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -315,9 +326,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				461546121DA6700E00F4BF67 /* Bridge.swift in Sources */,
 				462C75531D9E853D00B3A852 /* RequestSender.swift in Sources */,
 				462C754A1D9E406D00B3A852 /* Error.swift in Sources */,
+				461546181DA6A62F00F4BF67 /* Redes.swift in Sources */,
 				462C75511D9E72B800B3A852 /* Request.swift in Sources */,
+				461546161DA6A0D000F4BF67 /* Response.swift in Sources */,
 				467806AE1BEA2E0D00414EEB /* Result.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
