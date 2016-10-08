@@ -1,9 +1,24 @@
 //
 //  Response.swift
-//  Redes
+//  Copyright (c) 2015-2016 Moch Xiao (http://mochxiao.com).
 //
-//  Created by Moch Xiao on 10/6/16.
-//  Copyright © 2016 Moch Xiao. All rights reserved.
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 //
 
 import Foundation
@@ -11,10 +26,18 @@ import Alamofire
 
 // MARK: -
 
+/// Used to store all data associated with an non-serialized response of a data or upload request.
 public struct DefaultDataResponse: CustomStringConvertible, CustomDebugStringConvertible {
+    /// The URL request sent to the server.
     public let request: URLRequest?
+    
+    /// The server's response to the URL request.
     public let response: HTTPURLResponse?
+    
+    /// The data returned by the server.
     public let data: Data?
+    
+    /// The error encountered while executing or validating the request.
     public let error: Error?
     
     internal init(
@@ -55,10 +78,18 @@ public struct DefaultDataResponse: CustomStringConvertible, CustomDebugStringCon
 
 // MARK: -
 
+/// Used to store all data associated with a serialized response of a data or upload request.
 public struct DataResponse<Value>: CustomStringConvertible, CustomDebugStringConvertible {
+    /// The URL request sent to the server.
     public let request: URLRequest?
+    
+    /// The server's response to the URL request.
     public let response: HTTPURLResponse?
+    
+    /// The data returned by the server.
     public let data: Data?
+    
+    /// The result of response serialization.
     public let result: Result<Value>
     
     internal init(
@@ -133,13 +164,26 @@ private func dataResponse<T: Parsable>(from resp: Alamofire.DataResponse<Any>, u
 
 // MARK: - 
 
+/// Used to store all data associated with an non-serialized response of a download request.
 public struct DefaultDownloadResponse {
+    /// The URL request sent to the server.
     public let request: URLRequest?
+    
+    /// The server's response to the URL request.
     public let response: HTTPURLResponse?
+    
+    /// The temporary destination URL of the data returned from the server.
     public let temporaryURL: URL?
+    
+    /// The final destination URL of the data returned from the server if it was moved.
     public let destinationURL: URL?
+    
+    /// The resume data generated if the request was cancelled.
     public let resumeData: Data?
+    
+    /// The error encountered while executing or validating the request.
     public let error: Error?
+
     init(
         request: URLRequest?,
         response: HTTPURLResponse?,
@@ -170,11 +214,22 @@ public struct DefaultDownloadResponse {
 
 /// Used to store all data associated with a serialized response of a download request.
 public struct DownloadResponse<Value>: CustomStringConvertible, CustomDebugStringConvertible {
+    /// The URL request sent to the server.
     public let request: URLRequest?
+    
+    /// The server's response to the URL request.
     public let response: HTTPURLResponse?
+    
+    /// The temporary destination URL of the data returned from the server.
     public let temporaryURL: URL?
+    
+    /// The final destination URL of the data returned from the server if it was moved.
     public let destinationURL: URL?
+    
+    /// The resume data generated if the request was cancelled.
     public let resumeData: Data?
+    
+    /// The result of response serialization.
     public let result: Result<Value>
     
     init(
@@ -263,19 +318,18 @@ public protocol Parsable {
     func parse(data: Any) throws -> Out
 }
 
-
+/// Server response [json][xml][plist][...] should like this format,
+/// you can define those field by youself.
+///    {
+///        "code": 0,
+///        "msg": "",
+///        "data": {}
+///    }
 public struct DefaultParser<Output>: Parsable {
     public let codeFieldName: String
     public let messageFieldName: String
     public let dataFieldName: String
 
-    /// Server response [json][xml][plist][...] should like this format,
-    /// you can define those field by youself.
-    ///    {
-    ///        "code": 0,
-    ///        "msg": "",
-    ///        "data": {}
-    ///    }
     /// My situation is: ["codeFieldName": "code", "messageFieldName": "msg", "data": "result"]
     public init(codeFieldName: String = "code", messageFieldName: String = "msg", dataFieldName: String = "result") {
         self.codeFieldName = codeFieldName
@@ -322,6 +376,12 @@ public struct DefaultParser<Output>: Parsable {
 // MARK: -  DataRequest
 
 public extension DataRequest {
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: The code to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func response(
         queue: DispatchQueue? = nil,
@@ -334,6 +394,12 @@ public extension DataRequest {
         return self
     }
     
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: The code to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responseData(
         queue: DispatchQueue? = nil,
@@ -346,6 +412,12 @@ public extension DataRequest {
         return self
     }
     
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: A closure to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responseString(
         queue: DispatchQueue? = nil,
@@ -358,6 +430,13 @@ public extension DataRequest {
         return self
     }
 
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter parser:            The parser to process vendors framework response data.
+    /// - parameter completionHandler: A closure to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responseJSON<T: Parsable>(
         queue: DispatchQueue? = nil,
@@ -371,6 +450,12 @@ public extension DataRequest {
         return self
     }
     
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: A closure to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responseJSON(
         queue: DispatchQueue? = nil,
@@ -379,6 +464,12 @@ public extension DataRequest {
         return responseJSON(queue: queue, parser: DefaultParser<Any>(), completionHandler: completionHandler)
     }
     
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: A closure to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responsePropertyList<T: Parsable>(
         queue: DispatchQueue? = nil,
@@ -396,6 +487,12 @@ public extension DataRequest {
 // MARK: - BatchRequest
 
 public extension BatchRequest {
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: The code to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func response(
         queue: DispatchQueue? = nil,
@@ -426,6 +523,12 @@ public extension BatchRequest {
         return self
     }
 
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: The code to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responseData(
         queue: DispatchQueue? = nil,
@@ -455,7 +558,51 @@ public extension BatchRequest {
         
         return self
     }
+    
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: A closure to be executed once the request has finished.
+    ///
+    /// - returns: The request.
+    @discardableResult
+    public func responseString(
+        queue: DispatchQueue? = nil,
+        completionHandler: @escaping ([DataResponse<String>]) -> ()) -> BatchRequest
+    {
+        let group = DispatchGroup()
+        let serialQueue = DispatchQueue(label: "com.mochxiao.redes.batchrequst.responsedata."
+            + UUID().uuidString.replacingOccurrences(of: "-", with: ""))
+        var results: [DataResponse<String>] = []
+        
+        underlyings.forEach { (request: Alamofire.DataRequest) in
+            serialQueue.async(group: group, flags: .barrier) {
+                let semaphore = DispatchSemaphore(value: 0)
+                request.responseString(queue: DispatchQueue.global()) { (resp: Alamofire.DataResponse<String>) in
+                    results.append(DataResponse<String>(from: resp))
+                    semaphore.signal()
+                }
+                semaphore.wait()
+            }
+        }
+        
+        group.notify(queue: serialQueue) {
+            (queue ?? DispatchQueue.main).async {
+                completionHandler(results)
+            }
+        }
+        
+        return self
+    }
+    
 
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter parser:            The parser to process vendors framework response data.
+    /// - parameter completionHandler: A closure to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responseJSON<T: Parsable>(
         queue: DispatchQueue? = nil,
@@ -487,6 +634,12 @@ public extension BatchRequest {
         return self
     }
     
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: A closure to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responseJSON(
         queue: DispatchQueue? = nil,
@@ -495,6 +648,12 @@ public extension BatchRequest {
         return responseJSON(queue: queue, parser: DefaultParser<Any>(), completionHandler: completionHandler)
     }
     
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: A closure to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responsePropertyList<T: Parsable>(
         queue: DispatchQueue? = nil,
@@ -530,6 +689,12 @@ public extension BatchRequest {
 // MARK: - UploadRequest
 
 public extension UploadRequest {
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: The code to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func response(
         queue: DispatchQueue? = nil,
@@ -542,6 +707,12 @@ public extension UploadRequest {
         return self
     }
     
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: The code to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responseData(
         queue: DispatchQueue? = nil,
@@ -554,6 +725,12 @@ public extension UploadRequest {
         return self
     }
     
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: A closure to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responseString(
         queue: DispatchQueue? = nil,
@@ -566,6 +743,13 @@ public extension UploadRequest {
         return self
     }
     
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter parser:            The parser to process vendors framework response data.
+    /// - parameter completionHandler: A closure to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responseJSON<T: Parsable>(
         queue: DispatchQueue? = nil,
@@ -579,6 +763,12 @@ public extension UploadRequest {
         return self
     }
     
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: A closure to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responseJSON(
         queue: DispatchQueue? = nil,
@@ -587,6 +777,12 @@ public extension UploadRequest {
         return responseJSON(queue: queue, parser: DefaultParser<Any>(), completionHandler: completionHandler)
     }
     
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: A closure to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responsePropertyList<T: Parsable>(
         queue: DispatchQueue? = nil,
@@ -605,6 +801,12 @@ public extension UploadRequest {
 // MARK: - MultipartUploadRequest
 
 public extension MultipartUploadRequest {
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: The code to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     public func response(
         queue: DispatchQueue? = nil,
         completionHandler: @escaping (DefaultDataResponse) -> ()) -> MultipartUploadRequest
@@ -625,6 +827,12 @@ public extension MultipartUploadRequest {
         return self
     }
     
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: The code to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responseData(
         queue: DispatchQueue? = nil,
@@ -646,6 +854,12 @@ public extension MultipartUploadRequest {
         return self
     }
     
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: A closure to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responseString(
         queue: DispatchQueue? = nil,
@@ -667,6 +881,13 @@ public extension MultipartUploadRequest {
         return self
     }
 
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter parser:            The parser to process vendors framework response data.
+    /// - parameter completionHandler: A closure to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responseJSON<T: Parsable>(
         queue: DispatchQueue? = nil,
@@ -689,6 +910,12 @@ public extension MultipartUploadRequest {
         return self
     }
     
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: A closure to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responseJSON(
         queue: DispatchQueue? = nil,
@@ -696,12 +923,46 @@ public extension MultipartUploadRequest {
     {
         return responseJSON(queue: queue, parser: DefaultParser<Any>(), completionHandler: completionHandler)
     }
+    
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: A closure to be executed once the request has finished.
+    ///
+    /// - returns: The request.
+    @discardableResult
+    public func responsePropertyList<T: Parsable>(
+        queue: DispatchQueue? = nil,
+        parser: T,
+        completionHandler: @escaping (DataResponse<T.Out>) -> ()) -> MultipartUploadRequest
+    {
+        guard let result = result else {
+            return self
+        }
+        
+        switch result {
+        case .success(let uploadRequest):
+            uploadRequest.responsePropertyList(queue: queue) { (resp: Alamofire.DataResponse<Any>) in
+                completionHandler(dataResponse(from: resp, using: parser))
+            }
+        case .failure(let error):
+            completionHandler(DataResponse(request: nil, response: nil, data: nil, result: Redes.Result.failure(.internalFailed(reason: error))))
+        }
+        
+        return self
+    }
 }
 
 
 // MARK: - DownloadRequest
 
 public extension DownloadRequest {
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: The code to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func response(
         queue: DispatchQueue? = nil,
@@ -714,6 +975,12 @@ public extension DownloadRequest {
         return self
     }
     
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: The code to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responseData(
         queue: DispatchQueue? = nil,
@@ -726,6 +993,12 @@ public extension DownloadRequest {
         return self
     }
     
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: A closure to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responseString(
         queue: DispatchQueue? = nil,
@@ -738,6 +1011,13 @@ public extension DownloadRequest {
         return self
     }
     
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter parser:            The parser to process vendors framework response data.
+    /// - parameter completionHandler: A closure to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responseJSON<T: Parsable>(
         queue: DispatchQueue? = nil,
@@ -751,6 +1031,12 @@ public extension DownloadRequest {
         return self
     }
     
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: A closure to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responseJSON(
         queue: DispatchQueue? = nil,
@@ -759,6 +1045,12 @@ public extension DownloadRequest {
         return responseJSON(queue: queue, parser: DefaultParser<Any>(), completionHandler: completionHandler)
     }
     
+    /// Adds a handler to be called once the request has finished.
+    ///
+    /// - parameter queue:             The queue on which the completion handler is dispatched.
+    /// - parameter completionHandler: A closure to be executed once the request has finished.
+    ///
+    /// - returns: The request.
     @discardableResult
     public func responsePropertyList<T: Parsable>(
         queue: DispatchQueue? = nil,
@@ -771,5 +1063,4 @@ public extension DownloadRequest {
         
         return self
     }
-    
 }

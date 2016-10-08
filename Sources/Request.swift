@@ -1,9 +1,24 @@
 //
 //  Request.swift
-//  Redes
+//  Copyright (c) 2015-2016 Moch Xiao (http://mochxiao.com).
 //
-//  Created by Moch Xiao on 9/30/16.
-//  Copyright © 2016 Moch Xiao. All rights reserved.
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 //
 
 import Foundation
@@ -21,11 +36,19 @@ public typealias HTTPHeaders = [String: String]
 public typealias HTTPBodies = [String: Any]
 
 public protocol Requestable: CustomStringConvertible, CustomDebugStringConvertible {
+    /// Http request url, must provide.
     var url: URLConvertible { get }
+    
+    /// Http headers key value pairs, empty by default.
     var headers: HTTPHeaders { get }
+    
+    /// Http bodies key value pairs, empty by default.
     var bodies: HTTPBodies { get }
     
+    /// Http action method, `.get` by default.
     var method: HTTPMethod { get }
+    
+    /// Http request paramters encoding, `.url` by default.
     var encoding: ParameterEncoding { get }
 }
 
@@ -81,8 +104,13 @@ extension Dictionary {
 // MARK: - DataRequest
 
 public protocol RequestSender {
+    /// Resumes the request.
     func resume() -> Self
+    
+    /// Cancels the request.
     func cancel() -> Self
+    
+    /// Suspends the request.
     func suspend() -> Self
 }
 
@@ -157,8 +185,11 @@ public struct DataRequest: DataRequestSender {
 // MARK: - UploadRequest
 
 public enum UploadElement {
+    /// Upload using file url.
     case file(URL)
+    /// Upload using data.
     case data(Data)
+    /// Upload using stream.
     case inputStream(InputStream)
 }
 
@@ -226,7 +257,7 @@ public struct MultipartUploadElement {
     public let mimeType: String
     public let raw: UploadElement
     
-    /// Only work when raw is `.inputStream`
+    /// Only provide and work when raw is `.inputStream`
     public let length: UInt64
     public init(name: String, filename: String, mimeType: String, raw: UploadElement, length: UInt64 = 0) {
         self.name = name
@@ -267,6 +298,10 @@ public class MultipartUploadRequest {
     public private(set) var result: Result?
     
     /// Note: Response func should invoke in handler closure.
+    
+    /// Resume the upload request.
+    ///
+    /// - parameter handler: handle the response area.
     public func resume(handler: @escaping (MultipartUploadRequest) -> ()) {
         Alamofire.upload(multipartFormData: { (formData: MultipartFormData) in
             for element in self.request.elements {
@@ -322,9 +357,10 @@ public class MultipartUploadRequest {
 // MARK: - DownloadRequest
 
 public protocol Downloadable: Requestable {
-    /// Downloaded resume data
+    /// Downloaded resume data.
     var resulmeData: Data? { get }
-    /// File save location
+    
+    /// File save location.
     var destination: (URL, HTTPURLResponse) -> URL { get }
 }
 
