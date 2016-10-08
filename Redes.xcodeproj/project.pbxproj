@@ -28,6 +28,7 @@
 		46CAB5301DA91E920079AFAD /* Pods_Redes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46CAB52F1DA91E920079AFAD /* Pods_Redes.framework */; };
 		46CFE5761CD6497C0098C995 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CFE5751CD6497C0098C995 /* Helpers.swift */; };
 		46DBDFBB1BFB3ED400F9177D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46DBDFBA1BFB3ED400F9177D /* SystemConfiguration.framework */; };
+		B7241CFF5FA0880B8B7F9120 /* Pods_Redes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9DA828A8EE21DFF8C358BA4 /* Pods_Redes.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 		46DBDFBA1BFB3ED400F9177D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		5818F72EC4AFA435B26FDFFE /* Pods-Redes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Redes.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Redes/Pods-Redes.debug.xcconfig"; sourceTree = "<group>"; };
 		8C6E776759B3254496BF2A8E /* Pods-Redes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Redes.release.xcconfig"; path = "Pods/Target Support Files/Pods-Redes/Pods-Redes.release.xcconfig"; sourceTree = "<group>"; };
+		F9DA828A8EE21DFF8C358BA4 /* Pods_Redes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Redes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +92,7 @@
 			files = (
 				46CAB5301DA91E920079AFAD /* Pods_Redes.framework in Frameworks */,
 				46DBDFBB1BFB3ED400F9177D /* SystemConfiguration.framework in Frameworks */,
+				B7241CFF5FA0880B8B7F9120 /* Pods_Redes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,6 +165,7 @@
 				46CAB52F1DA91E920079AFAD /* Pods_Redes.framework */,
 				462C754C1D9E624F00B3A852 /* Alamofire.framework */,
 				46DBDFBA1BFB3ED400F9177D /* SystemConfiguration.framework */,
+				F9DA828A8EE21DFF8C358BA4 /* Pods_Redes.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
