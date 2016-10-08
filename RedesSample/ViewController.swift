@@ -127,7 +127,11 @@ extension ViewController {
             self.progressView.progress = Float(progress.completedUnitCount) / Float(progress.totalUnitCount)
         }
         download.response { (resp: DefaultDownloadResponse) in
-            let data = try! Data(contentsOf: resp.destinationURL!)
+            guard let destinationURL = resp.destinationURL else {
+                debugPrint("could not get response destinationURL")
+                return
+            }
+            let data = try! Data(contentsOf: destinationURL)
             self.downloadedData = data
             self.imageView.image = UIImage(data: data)
         }
