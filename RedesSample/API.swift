@@ -23,7 +23,6 @@ protocol MicroShopAPI {
 
 // MARK: - API 后台规则填充
 
-private let identifier: String = UUID().uuidString
 extension MicroShopAPI where Self: Redes.Requestable {
     private var encryptToken: String { return NSLocalizedString("api_token", comment: "") }
     var APIVersion: String { return "v1" }
@@ -40,7 +39,7 @@ extension MicroShopAPI where Self: Redes.Requestable {
         // dataSignature = MD5码：密钥 + URLPath + 请求参数部分(k1=v1&k2=v2)
         // 注意，计算时的顺序要和请求时保持一致
         // 将此签名加入到header头中： Data-Signature:{数据签名值dataSignature}
-        return "\(encryptToken)/\(APIVersion)/\(className)/\(APIName)\(bodies.queryString)".md5
+        return "\(encryptToken)/\(APIVersion)/\(className)/\(APIName)/\(bodies.queryString)".md5
     }
     
     var headers: [String: String] {
@@ -53,34 +52,34 @@ extension MicroShopAPI where Self: Redes.Requestable {
         // Member-Signature：登录用户的签名，没有传空（必须）
         // Data-Signature：请求的数据签名值（必须）
         return [
-            "Client-Idcard": identifier,
-            "Client-System": "ios-micro-shop",
+            "Client-Idcard": "AC20B1F4-AB2E-4725-8872-4F9A2999B879",
+            "Client-System": "ios-micro-buy",
             "Client-App-Version": "1.1.0",
-            "Client-Device-Model": "iPhone 7,2",
+            "Client-Device-Model": "Simulator",
             "Client-System-Version": "iOS 10.0.1",
-            "Member-Id": "14441",
-            "Member-Signature": "",
+            "Member-Id": "859",
+            "Member-Signature": "3ca0f10a1e5839a2a59b08048469ff59",
             "Data-Signature": dataSignature,
-            "Belong-To-Shop-Id": "14441"
+            "Belong-To-Shop-Id": "859"
         ]
     }
 }
 
 // MARK: - Requests
 
-struct LoginViaMobileAPI: MicroShopAPI, Requestable {
-    var mobile: String = "13477777777"
-    var smsCaptcha: String = "123456"
+struct LoginAPI: MicroShopAPI, Requestable {
+    var mobile: String = "18583221776"
+    var password: String = "111111"
     
     var moduleName: String { return "item" }
     var className: String { return "User" }
-    var APIName: String { return "loginByMobile" }
+    var APIName: String { return "login" }
     
     var method: HTTPMethod { return .post }
     var bodies: [String : Any] {
         return [
-            "mobile": mobile,
-            "smsCaptcha": smsCaptcha
+            "userName": mobile,
+            "password": password
         ]
     }
 
@@ -109,14 +108,14 @@ struct SaleDataAPI: MicroShopAPI, Requestable {
 
 struct DownloadApi: Downloadable {
     var url: URLConvertible {
-        return "http://tse1.mm.bing.net/th?id=OIP.Ma778e8864fbc00cb75e973e2e92905eao2&w=135&h=272&c=7&rs=1&qlt=90&o=4&pid=1.9"
+        return "http://img.test.haioo.com/sns/2016/10/08/9ae5473d339b11aa.png"
     }
 }
 
 
 // MARK: - Upload
 
-struct UploadApi: Uploadable {
+struct UploadApi: MicroShopAPI, Uploadable {
     let data: Data
     
     var url: URLConvertible {
@@ -126,9 +125,13 @@ struct UploadApi: Uploadable {
     var element: UploadElement {
         return UploadElement.data(data)
     }
+    
+    var moduleName: String { return "" }
+    var className: String { return "" }
+    var APIName: String { return "" }
 }
 
-struct MultipartUploadApi: MultipartUploadable {
+struct MultipartUploadApi: MicroShopAPI, MultipartUploadable {
     let data: Data
 
     var url: URLConvertible {
@@ -139,4 +142,8 @@ struct MultipartUploadApi: MultipartUploadable {
         let element = MultipartUploadElement(name: "file[]", filename: "test_345909034.png", mimeType: "image/jpeg", raw: .data(data))
         return [element]
     }
+    
+    var moduleName: String { return "" }
+    var className: String { return "" }
+    var APIName: String { return "" }
 }

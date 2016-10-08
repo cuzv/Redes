@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -41,22 +42,39 @@
                                     <action selector="handleDownload:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CgA-NS-pLI"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Pwa-NR-fOa">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="351" id="3pF-jV-YfM"/>
+                                    <constraint firstAttribute="width" constant="253" id="LOy-pI-cG0"/>
+                                </constraints>
+                            </imageView>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="1hI-nn-uCG"/>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="Pwa-NR-fOa" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="1sq-9O-OYp"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="1hI-nn-uCG" secondAttribute="leading" id="3bW-TU-qpb"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="1hI-nn-uCG" secondAttribute="trailing" id="FNF-Lw-pKZ"/>
                             <constraint firstItem="iUz-Cs-wGy" firstAttribute="centerX" secondItem="1q5-ae-VfI" secondAttribute="centerX" id="FsV-tg-E2c"/>
                             <constraint firstItem="uqt-TV-OQG" firstAttribute="centerX" secondItem="iUz-Cs-wGy" secondAttribute="centerX" id="OB6-zx-heP"/>
                             <constraint firstItem="1q5-ae-VfI" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Otb-Ql-4Ew"/>
+                            <constraint firstItem="1hI-nn-uCG" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="P1U-DF-pHD"/>
                             <constraint firstItem="uqt-TV-OQG" firstAttribute="top" secondItem="iUz-Cs-wGy" secondAttribute="bottom" constant="1" id="QO4-sQ-z9F"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Pwa-NR-fOa" secondAttribute="bottom" constant="75" id="bde-qe-SUb"/>
                             <constraint firstItem="1q5-ae-VfI" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="44" id="gpI-dl-rf0"/>
                             <constraint firstItem="bGk-9W-761" firstAttribute="top" secondItem="uqt-TV-OQG" secondAttribute="bottom" constant="2" id="hjE-TJ-QFy"/>
                             <constraint firstItem="iUz-Cs-wGy" firstAttribute="top" secondItem="1q5-ae-VfI" secondAttribute="bottom" constant="8" id="mFK-vu-rPR"/>
                             <constraint firstItem="bGk-9W-761" firstAttribute="centerX" secondItem="uqt-TV-OQG" secondAttribute="centerX" id="oyy-lv-K40"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="imageView" destination="Pwa-NR-fOa" id="UZ0-Xp-X1y"/>
+                        <outlet property="progressView" destination="1hI-nn-uCG" id="kvT-8B-2Yd"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="116" y="122.78860569715144"/>
         </scene>
     </scenes>
 </document>

@@ -8,4 +8,4 @@
 
 your_host = "https://app.testapi.haioo.com";
 api_token = "5XN%6mMXQ5U$RI^n";
-upload_url = "http://img.test.haioo.com/upload?act=userLogo";
+upload_url = "http://img.test.haioo.com/upload?act=sns";

@@ -9,10 +9,13 @@
 import UIKit
 import Redes
 
-class ViewController: UIViewController  {
+class ViewController: UIViewController  {    
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var progressView: UIProgressView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        progressView.progress = 0
     }
 
     @IBAction func handleSingleRequest(_ sender: UIButton) {
@@ -27,30 +30,30 @@ class ViewController: UIViewController  {
         perfromUpload()
     }
 
-    fileprivate var downloadUrl: URL?
+    fileprivate var downloadedData: Data?
     @IBAction func handleDownload(_ sender: UIButton) {
         performDownload()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        progressView.progress = 0
     }
 }
 
 
-
 // Before you run this project, checkout `API.swift` and change the setups to your server configuration.
 extension ViewController {
-    
-    
     func performLogin() {
-        
-        let loginRequest = LoginViaMobileAPI().makeRequest()
+        let loginRequest = LoginAPI().makeRequest()
         debugPrint(loginRequest)
         loginRequest.resume()
 //        loginRequest.downloadProgress { (progress: Progress) in
 //            debugPrint(progress)
 //        }
-//        loginRequest.responseJSON(parser: DefaultParser<[String: Any], Any>()) { (resp: DataResponse<Any>) in
+//        loginRequest.responseJSON(parser: DefaultParser<Any>()) { (resp: DataResponse<Any>) in
 //            debugPrint(resp.result)
 //        }
-//        loginRequest.responseJSON(parser: DefaultParser<[String: Any], [String: Any]>()) { (resp: DataResponse<[String: Any]>) in
+//        loginRequest.responseJSON(parser: DefaultParser<[String: Any]>()) { (resp: DataResponse<[String: Any]>) in
 //            debugPrint(resp.result)
 //        }
         
@@ -58,23 +61,26 @@ extension ViewController {
 //            debugPrint(resp.result)
 //        }
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(3 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
-            loginRequest.responseJSON { (resp: DataResponse<Any>) in
-                AccountAmountAPI().action().responseJSON { (resp: DataResponse<Any>) in
-                    debugPrint(resp.result)
-                }
-            }
-        }
+        
+//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(3 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
+//            loginRequest.responseJSON { (resp: DataResponse<Any>) in
+//                AccountAmountAPI().action().responseJSON { (resp: DataResponse<Any>) in
+//                    debugPrint(resp.result)
+//                }
+//            }
+//        }
     }
     
     
     func perfromUpload() {
-        guard let downloadUrl = downloadUrl else {
-            debugPrint("fetch download url fialure.")
+        guard let downloadedData = downloadedData else {
+            debugPrint("fetch download image data fialure.")
             return
         }
-        let data = try! Data(contentsOf: downloadUrl)
-//        let upload = UploadApi(data: data).makeRequest()
+        
+        progressView.progress = 0
+        
+//        let upload = UploadApi(data: downloadedData).makeRequest()
 //        upload.uploadProgress { (progress) in
 //            debugPrint(progress)
 //        }
@@ -83,31 +89,38 @@ extension ViewController {
 //            debugPrint(resp.result)
 //        }
 //        upload.resume()
+
         
-        let upload = MultipartUploadApi(data: data).makeRequest()
+        let upload = MultipartUploadApi(data: downloadedData).makeRequest()
+        debugPrint(upload)
         upload.resume { (request: MultipartUploadRequest) in
-            request.responseJSON { (resp: DataResponse<Any>) in
+            request.responseJSON(parser: DefaultParser(dataFieldName: "data")) { (resp: DataResponse<Any>) in
                 debugPrint(resp.result)
             }
+            
+            request.uploadProgress { (progress) in
+                self.progressView.progress = Float(progress.completedUnitCount) / Float(progress.totalUnitCount)
+            }
         }
-        
-//        testUpload(with: data)
     }
     
     func performDownload() {
+        progressView.progress = 0
+
         let download = DownloadApi().makeRequest()
-        download.downloadProgress { (progress) in
-            debugPrint(progress)
+        download.downloadProgress { (progress: Progress) in
+            self.progressView.progress = Float(progress.completedUnitCount) / Float(progress.totalUnitCount)
         }
         download.response { (resp: DefaultDownloadResponse) in
-            self.downloadUrl = resp.destinationURL
-            debugPrint(self.downloadUrl)
+            let data = try! Data(contentsOf: resp.destinationURL!)
+            self.downloadedData = data
+            self.imageView.image = UIImage(data: data)
         }
         download.resume()
     }
     
     func performBatchRequest() {
-        let loginApi = LoginViaMobileAPI()
+        let loginApi = LoginAPI()
         let accountAmountAPI = AccountAmountAPI()
         let shopInfoAPI = ShopInfoAPI()
         let saleDataAPI = SaleDataAPI()

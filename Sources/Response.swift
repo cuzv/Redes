@@ -102,7 +102,7 @@ public struct DataResponse<Value>: CustomStringConvertible, CustomDebugStringCon
 private func dataResponse<T: Parsable>(from resp: Alamofire.DataResponse<Any>, using parser: T) -> DataResponse<T.Out> {
     var result: Result<T.Out>
     if resp.result.isSuccess {
-        if let raw = resp.result.value as? T.In {
+        if let raw = resp.result.value {
             do {
                 let parsed = try parser.parse(data: raw)
                 result = Result<T.Out>.success(parsed)
@@ -226,7 +226,7 @@ public struct DownloadResponse<Value>: CustomStringConvertible, CustomDebugStrin
 private func downloadResponse<T: Parsable>(from resp: Alamofire.DownloadResponse<Any>, using parser: T) -> DownloadResponse<T.Out> {
     var result: Result<T.Out>
     if resp.result.isSuccess {
-        if let raw = resp.result.value as? T.In {
+        if let raw = resp.result.value {
             do {
                 let parsed = try parser.parse(data: raw)
                 result = Result<T.Out>.success(parsed)
@@ -258,49 +258,60 @@ private func downloadResponse<T: Parsable>(from resp: Alamofire.DownloadResponse
 
 // MARK: - 
 
-/// Server response [json][xml][plist][...] should like this format,
-/// you can define those field by youself.
-///    {
-///        "code": 0,
-///        "msg": "",
-///        "data": {}
-///    }
-public enum Fields {
-    static var code     = "code"
-    static var message  = "msg"
-    static var data     = "result"
-}
-
 public protocol Parsable {
-    associatedtype In
     associatedtype Out
-    func parse(data: In) throws -> Out
+    func parse(data: Any) throws -> Out
 }
 
-public struct DefaultParser<Input, Output>: Parsable {
-    public init() {}
+
+public struct DefaultParser<Output>: Parsable {
+    public let codeFieldName: String
+    public let messageFieldName: String
+    public let dataFieldName: String
+
+    /// Server response [json][xml][plist][...] should like this format,
+    /// you can define those field by youself.
+    ///    {
+    ///        "code": 0,
+    ///        "msg": "",
+    ///        "data": {}
+    ///    }
+    /// My situation is: ["codeFieldName": "code", "messageFieldName": "msg", "data": "result"]
+    public init(codeFieldName: String = "code", messageFieldName: String = "msg", dataFieldName: String = "result") {
+        self.codeFieldName = codeFieldName
+        self.messageFieldName = messageFieldName
+        self.dataFieldName = dataFieldName
+    }
     
-    public typealias In = Input
     public typealias Out = Output
 
-    public func parse(data: Input) throws -> Output {
-        guard let rsp = data as? [String: Any] else {
+    public func parse(data: Any) throws -> Out {
+        func intValue(fromJson json: [String: Any], forField key: String) -> Int? {
+            if let value = json[key] as? String {
+                return Int(value)
+            } else if let value = json[key] as? Int {
+                return value
+            }
+            return nil
+        }
+        
+        guard let json = data as? [String: Any] else {
             throw RedesError.parseFailed(reason: RedesError.ParseFailureReason.formInvalid)
         }
         
-        guard let code = rsp[Fields.code] as? Int else {
+        guard let code =  intValue(fromJson: json, forField: codeFieldName) else {
             throw RedesError.parseFailed(reason: RedesError.ParseFailureReason.codeCanNotFound)
         }
         
         if 0 != code {
             // failure
-            guard let message = rsp[Fields.message] as? String else {
+            guard let message = json[messageFieldName] as? String else {
                 throw RedesError.parseFailed(reason: RedesError.ParseFailureReason.messageCanNotFound)
             }
             throw RedesError.businessFailed(reason: RedesError.BusinessFailedReason(code: code, message: message))
         } else {
             // success
-            guard let data = rsp[Fields.data] as? Output else {
+            guard let data = json[dataFieldName] as? Output else {
                 throw RedesError.parseFailed(reason: RedesError.ParseFailureReason.dataCanNotFound)
             }
             return data
@@ -365,7 +376,7 @@ public extension DataRequest {
         queue: DispatchQueue? = nil,
         completionHandler: @escaping (DataResponse<Any>) -> ()) -> DataRequest
     {
-        return responseJSON(queue: queue, parser: DefaultParser<[String: Any], Any>(), completionHandler: completionHandler)
+        return responseJSON(queue: queue, parser: DefaultParser<Any>(), completionHandler: completionHandler)
     }
     
     @discardableResult
@@ -481,7 +492,7 @@ public extension BatchRequest {
         queue: DispatchQueue? = nil,
         completionHandler: @escaping ([DataResponse<Any>]) -> ()) -> BatchRequest
     {
-        return responseJSON(queue: queue, parser: DefaultParser<[String: Any], Any>(), completionHandler: completionHandler)
+        return responseJSON(queue: queue, parser: DefaultParser<Any>(), completionHandler: completionHandler)
     }
     
     @discardableResult
@@ -573,7 +584,7 @@ public extension UploadRequest {
         queue: DispatchQueue? = nil,
         completionHandler: @escaping (DataResponse<Any>) -> ()) -> UploadRequest
     {
-        return responseJSON(queue: queue, parser: DefaultParser<[String: Any], Any>(), completionHandler: completionHandler)
+        return responseJSON(queue: queue, parser: DefaultParser<Any>(), completionHandler: completionHandler)
     }
     
     @discardableResult
@@ -683,7 +694,7 @@ public extension MultipartUploadRequest {
         queue: DispatchQueue? = nil,
         completionHandler: @escaping (DataResponse<Any>) -> ()) -> MultipartUploadRequest
     {
-        return responseJSON(queue: queue, parser: DefaultParser<[String: Any], Any>(), completionHandler: completionHandler)
+        return responseJSON(queue: queue, parser: DefaultParser<Any>(), completionHandler: completionHandler)
     }
 }
 
@@ -745,7 +756,7 @@ public extension DownloadRequest {
         queue: DispatchQueue? = nil,
         completionHandler: @escaping (DownloadResponse<Any>) -> ()) -> DownloadRequest
     {
-        return responseJSON(queue: queue, parser: DefaultParser<[String: Any], Any>(), completionHandler: completionHandler)
+        return responseJSON(queue: queue, parser: DefaultParser<Any>(), completionHandler: completionHandler)
     }
     
     @discardableResult

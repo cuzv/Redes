@@ -246,7 +246,11 @@ public protocol MultipartUploadable: Requestable {
 }
 
 public extension MultipartUploadable {
-    var threshold: UInt64 { return 10_000_000 }
+    public var threshold: UInt64 { return 10_000_000 }
+    
+    public var method: HTTPMethod {
+        return .post
+    }
 }
 
 public class MultipartUploadRequest {
@@ -279,6 +283,8 @@ public class MultipartUploadRequest {
             switch result {
             case .success(request: let request, streamingFromDisk: _, streamFileURL: _):
                 self.result = Result.success(request)
+                // Fucking import.
+                request.resume()
             case .failure(let error):
                 self.result = Result.failure(error)
             }
@@ -286,6 +292,31 @@ public class MultipartUploadRequest {
             handler(self)
         }
     }
+    
+    /// Should invoke in #selector(resume(handler:))
+    public var uploadProgress: Progress? {
+        guard let result = result, case .success(let request) = result else {
+            return nil
+        }
+        
+        return request.uploadProgress
+    }
+    
+    /// Should invoke in #selector(resume(handler:))
+    @discardableResult
+    public func uploadProgress(queue: DispatchQueue = DispatchQueue.main, closure: @escaping ProgressHandler) -> Self {
+        guard let result = result, case .success(let request) = result else {
+            return self
+        }
+        
+        request.uploadProgress(queue: queue, closure: closure)
+        
+        return self
+    }
+
+//    deinit {
+//        debugPrint("MultipartUploadRequest deinit...")
+//    }
 }
 
 // MARK: - DownloadRequest
