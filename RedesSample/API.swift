@@ -54,7 +54,7 @@ extension MicroShopAPI where Self: Redes.Requestable {
         // dataSignature = MD5码：密钥 + URLPath + 请求参数部分(k1=v1&k2=v2)
         // 注意，计算时的顺序要和请求时保持一致
         // 将此签名加入到header头中： Data-Signature:{数据签名值dataSignature}
-        return "\(encryptToken)/\(APIVersion)/\(className)/\(APIName)/\(bodies.queryString)".md5
+        return "\(encryptToken)/\(APIVersion)/\(className)/\(APIName)\(bodies.queryString)".md5
     }
     
     var headers: [String: String] {
@@ -69,7 +69,7 @@ extension MicroShopAPI where Self: Redes.Requestable {
         return [
             "Client-Idcard": "AC20B1F4-AB2E-4725-8872-4F9A2999B879",
             "Client-System": "ios-micro-buy",
-            "Client-App-Version": "1.1.0",
+            "Client-App-Version": "1.4.0",
             "Client-Device-Model": "Simulator",
             "Client-System-Version": "iOS 10.0.1",
             "Member-Id": "859",

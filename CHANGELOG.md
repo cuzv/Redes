@@ -17,3 +17,11 @@ High-level network layer abstraction library written in Swift.
 ### 0.8.9
 
 添加辅助方法
+
+### 2.0.0
+
+适配到 Swift 3
+
+### 2.0.1
+
+targe 最小支持还原到 iOS8.0

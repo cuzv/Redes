@@ -72,9 +72,9 @@ extension ViewController {
 //            debugPrint(resp.result)
 //        }
         
-//        loginRequest.responseJSON { (resp: DataResponse<Any>) in
-//            debugPrint(resp.result)
-//        }
+        loginRequest.responseJSON { (resp: DataResponse<Any>) in
+            debugPrint(resp.result)
+        }
         
         
 //        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(3 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) {
@@ -149,7 +149,7 @@ extension ViewController {
         
         batch.responseJSON { (rsps: [DataResponse<Any>]) in
             for element in rsps {
-                debugPrint(element.request?.url)
+                debugPrint(element.request?.url ?? "req:")
             }
         }
     }
