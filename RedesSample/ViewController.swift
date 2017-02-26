@@ -59,7 +59,7 @@ class ViewController: UIViewController  {
 // Before you run this project, checkout `API.swift` and change the setups to your server configuration.
 extension ViewController {
     func performLogin() {
-        let loginRequest = LoginAPI().makeRequest()
+        let loginRequest = LoginViaMobileAPI().makeRequest()
         debugPrint(loginRequest)
         loginRequest.resume()
 //        loginRequest.downloadProgress { (progress: Progress) in
@@ -149,6 +149,7 @@ extension ViewController {
         
         batch.responseJSON { (rsps: [DataResponse<Any>]) in
             for element in rsps {
+                debugPrint(element.result.isSuccess)
                 debugPrint(element.request?.url ?? "req:")
             }
         }

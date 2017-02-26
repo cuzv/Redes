@@ -25,3 +25,7 @@ High-level network layer abstraction library written in Swift.
 ### 2.0.1
 
 targe 最小支持还原到 iOS8.0
+
+### 2.0.2
+
+用 DispatchGroup 替换 DispatchSemaphore

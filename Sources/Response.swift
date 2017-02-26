@@ -498,23 +498,23 @@ public extension BatchRequest {
         queue: DispatchQueue? = nil,
         completionHandler: @escaping ([DefaultDataResponse]) -> ()) -> BatchRequest
     {
-        let group = DispatchGroup()
-        let serialQueue = DispatchQueue(label: "com.mochxiao.redes.batchrequst.response."
-            + UUID().uuidString.replacingOccurrences(of: "-", with: ""))
+        let placeholder: DefaultDataResponse = DefaultDataResponse(request: nil, response: nil, data: nil, error: nil)
         var results: [DefaultDataResponse] = []
-
-        underlyings.forEach { (request: Alamofire.DataRequest) in
-            serialQueue.async(group: group, flags: .barrier) {
-                let semaphore = DispatchSemaphore(value: 0)
-                request.response(queue: DispatchQueue.global()) { (resp: Alamofire.DefaultDataResponse) in
-                    results.append(DefaultDataResponse(from: resp))
-                    semaphore.signal()
-                }
-                semaphore.wait()
+        for _ in underlyings {
+            results.append(placeholder)
+        }
+        
+        let group = DispatchGroup()
+        let concurrentQueue = DispatchQueue.global(qos: .default)
+        for (index, request) in underlyings.enumerated() {
+            group.enter()
+            request.response(queue: DispatchQueue.global()) { (resp: Alamofire.DefaultDataResponse) in
+                results[index] = DefaultDataResponse(from: resp)
+                group.leave()
             }
         }
         
-        group.notify(queue: serialQueue) {
+        group.notify(queue: concurrentQueue) {
             (queue ?? DispatchQueue.main).async {
                 completionHandler(results)
             }
@@ -534,23 +534,24 @@ public extension BatchRequest {
         queue: DispatchQueue? = nil,
         completionHandler: @escaping ([DataResponse<Data>]) -> ()) -> BatchRequest
     {
-        let group = DispatchGroup()
-        let serialQueue = DispatchQueue(label: "com.mochxiao.redes.batchrequst.responsedata."
-            + UUID().uuidString.replacingOccurrences(of: "-", with: ""))
+        let error = RedesError.parseFailed(reason: .dataCanNotFound)
+        let placeholder: DataResponse<Data> = DataResponse<Data>(request: nil, response: nil, data: nil, result: Result<Data>.failure(error))
         var results: [DataResponse<Data>] = []
-
-        underlyings.forEach { (request: Alamofire.DataRequest) in
-            serialQueue.async(group: group, flags: .barrier) {
-                let semaphore = DispatchSemaphore(value: 0)
-                request.responseData(queue: DispatchQueue.global()) { (resp: Alamofire.DataResponse<Data>) in
-                    results.append(DataResponse<Data>(from: resp))
-                    semaphore.signal()
-                }
-                semaphore.wait()
+        for _ in underlyings {
+            results.append(placeholder)
+        }
+        
+        let group = DispatchGroup()
+        let concurrentQueue = DispatchQueue.global(qos: .default)
+        for (index, request) in underlyings.enumerated() {
+            group.enter()
+            request.responseData(queue: DispatchQueue.global()) { (resp: Alamofire.DataResponse<Data>) in
+                results[index] = DataResponse<Data>(from: resp)
+                group.leave()
             }
         }
         
-        group.notify(queue: serialQueue) {
+        group.notify(queue: concurrentQueue) {
             (queue ?? DispatchQueue.main).async {
                 completionHandler(results)
             }
@@ -570,23 +571,24 @@ public extension BatchRequest {
         queue: DispatchQueue? = nil,
         completionHandler: @escaping ([DataResponse<String>]) -> ()) -> BatchRequest
     {
-        let group = DispatchGroup()
-        let serialQueue = DispatchQueue(label: "com.mochxiao.redes.batchrequst.responsedata."
-            + UUID().uuidString.replacingOccurrences(of: "-", with: ""))
+        let error = RedesError.parseFailed(reason: .dataCanNotFound)
+        let placeholder = DataResponse<String>(request: nil, response: nil, data: nil, result: Result<String>.failure(error))
         var results: [DataResponse<String>] = []
+        for _ in underlyings {
+            results.append(placeholder)
+        }
         
-        underlyings.forEach { (request: Alamofire.DataRequest) in
-            serialQueue.async(group: group, flags: .barrier) {
-                let semaphore = DispatchSemaphore(value: 0)
-                request.responseString(queue: DispatchQueue.global()) { (resp: Alamofire.DataResponse<String>) in
-                    results.append(DataResponse<String>(from: resp))
-                    semaphore.signal()
-                }
-                semaphore.wait()
+        let group = DispatchGroup()
+        let concurrentQueue = DispatchQueue.global(qos: .default)
+        for (index, request) in underlyings.enumerated() {
+            group.enter()
+            request.responseString(queue: DispatchQueue.global()) { (resp: Alamofire.DataResponse<String>) in
+                results[index] = DataResponse<String>(from: resp)
+                group.leave()
             }
         }
         
-        group.notify(queue: serialQueue) {
+        group.notify(queue: concurrentQueue) {
             (queue ?? DispatchQueue.main).async {
                 completionHandler(results)
             }
@@ -609,23 +611,24 @@ public extension BatchRequest {
         parser: T,
         completionHandler: @escaping ([DataResponse<T.Out>]) -> ()) -> BatchRequest
     {
-        let group = DispatchGroup()
-        let serialQueue = DispatchQueue(label: "com.mochxiao.redes.batchrequst.responsejson."
-            + UUID().uuidString.replacingOccurrences(of: "-", with: ""))
+        let error = RedesError.parseFailed(reason: .dataCanNotFound)
+        let placeholder = DataResponse<T.Out>(request: nil, response: nil, data: nil, result: Result<T.Out>.failure(error))
         var results: [DataResponse<T.Out>] = []
-
-        underlyings.forEach { (request: Alamofire.DataRequest) in
-            serialQueue.async(group: group, flags: .barrier) {
-                let semaphore = DispatchSemaphore(value: 0)
-                request.responseJSON(queue: DispatchQueue.global()) { (resp: Alamofire.DataResponse<Any>) in
-                    results.append(dataResponse(from: resp, using: parser))
-                    semaphore.signal()
-                }
-                semaphore.wait()
-            }
+        for _ in underlyings {
+            results.append(placeholder)
         }
         
-        group.notify(queue: serialQueue) {
+        let group = DispatchGroup()
+        let concurrentQueue = DispatchQueue.global(qos: .default)
+        for (index, request) in underlyings.enumerated() {
+            group.enter()
+            request.responseJSON(queue: DispatchQueue.global()) { (resp: Alamofire.DataResponse<Any>) in
+                results[index] = dataResponse(from: resp, using: parser)
+                group.leave()
+            }
+        }
+
+        group.notify(queue: concurrentQueue) {
             (queue ?? DispatchQueue.main).async {
                 completionHandler(results)
             }
@@ -660,23 +663,25 @@ public extension BatchRequest {
         parser: T,
         completionHandler: @escaping ([DataResponse<T.Out>]) -> ()) -> BatchRequest
     {
-        let group = DispatchGroup()
-        let serialQueue = DispatchQueue(label: "com.mochxiao.redes.batchrequst.responsepropertylist."
-            + UUID().uuidString.replacingOccurrences(of: "-", with: ""))
-        var results: [DataResponse<T.Out>] = []
         
-        underlyings.forEach { (request: Alamofire.DataRequest) in
-            serialQueue.async(group: group, flags: .barrier) {
-                let semaphore = DispatchSemaphore(value: 0)
-                request.responsePropertyList(queue: DispatchQueue.global()) { (resp: Alamofire.DataResponse<Any>) in
-                    results.append(dataResponse(from: resp, using: parser))
-                    semaphore.signal()
-                }
-                semaphore.wait()
+        let error = RedesError.parseFailed(reason: .dataCanNotFound)
+        let placeholder = DataResponse<T.Out>(request: nil, response: nil, data: nil, result: Result<T.Out>.failure(error))
+        var results: [DataResponse<T.Out>] = []
+        for _ in underlyings {
+            results.append(placeholder)
+        }
+        
+        let group = DispatchGroup()
+        let concurrentQueue = DispatchQueue.global(qos: .default)
+        for (index, request) in underlyings.enumerated() {
+            group.enter()
+            request.responsePropertyList(queue: DispatchQueue.global()) { (resp: Alamofire.DataResponse<Any>) in
+                results[index] = dataResponse(from: resp, using: parser)
+                group.leave()
             }
         }
         
-        group.notify(queue: serialQueue) {
+        group.notify(queue: concurrentQueue) {
             (queue ?? DispatchQueue.main).async {
                 completionHandler(results)
             }

@@ -100,6 +100,20 @@ struct LoginAPI: MicroShopAPI, Requestable {
 
 }
 
+struct LoginViaMobileAPI: MicroShopAPI, Requestable {
+    var moduleName: String { return "item" }
+    var className: String { return "User" }
+    var APIName: String { return "loginByMobile" }
+
+    var method: HTTPMethod { return .post }
+    var bodies: HTTPBodies {
+        return [
+            "mobile": "13488888888",
+            "smsCaptcha": "123456"
+        ]
+    }
+}
+
 struct AccountAmountAPI: MicroShopAPI, Requestable {
     var moduleName: String { return "item" }
     var className: String { return "User" }
