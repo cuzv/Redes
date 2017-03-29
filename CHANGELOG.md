@@ -30,6 +30,6 @@ targe 最小支持还原到 iOS8.0
 
 用 DispatchGroup 替换 DispatchSemaphore
 
-### 2.0.3
+### 2.0.4
 
 ParameterEncoding impl;

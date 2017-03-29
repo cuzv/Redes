@@ -79,7 +79,14 @@ public enum ParameterEncoding {
 
 extension ParameterEncoding {
     var alamofireValue: Alamofire.ParameterEncoding {
-        return URLEncoding.default
+        switch self {
+        case .url:
+            return URLEncoding.default
+        case .json:
+            return JSONEncoding.default
+        case .xml:
+            return PropertyListEncoding.xml
+        }
     }
 }
 
