@@ -137,7 +137,7 @@ struct SaleDataAPI: MicroShopAPI, Requestable {
 
 struct DownloadApi: Downloadable {
     var url: URLConvertible {
-        return "http://img.test.haioo.com/sns/2016/10/08/9ae5473d339b11aa.png"
+        return "http://img.test.haioo.com/userLogo/2017/03/21/0a78ff6ff0333692_422_704.png"
     }
 }
 

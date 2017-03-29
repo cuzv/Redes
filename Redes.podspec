@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'Redes'
-  s.version = '2.0.2'
+  s.version = '2.0.3'
   s.license = 'MIT'
   s.summary = 'High-level network layer abstraction library written in Swift'
   s.homepage = 'https://github.com/cuzv/Redes'

@@ -52,6 +52,8 @@ class ViewController: UIViewController  {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         progressView.progress = 0
+        
+        upload()
     }
 }
 
@@ -153,5 +155,42 @@ extension ViewController {
                 debugPrint(element.request?.url ?? "req:")
             }
         }
+    }
+    
+    
+    func upload() {
+        guard let image = imageView.image else { return }
+        if let data = UIImageJPEGRepresentation(image, 1) {
+            let credential = data.base64EncodedString(options: [])
+            let api = Base64Upload(data: credential)
+            api.makeRequest().resume().responseJSON(parser: DefaultParser(dataFieldName: "data")) { (resp: DataResponse<Any>) in
+                print(resp)
+            }
+        }
+    }
+}
+
+import Redes
+struct Base64Upload: Requestable {
+    let data: String
+    
+    var url: URLConvertible {
+        return "http://test.qrcode.haioo.com/upload?act=sns"
+    }
+    
+    var bodies: HTTPBodies {
+        return ["from": "base64", "imageData": data]
+    }
+    
+    var headers: HTTPHeaders {
+        return [:]
+    }
+    
+    var method: HTTPMethod {
+        return .post
+    }
+    
+    var encoding: ParameterEncoding {
+        return .url
     }
 }
